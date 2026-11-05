@@ -43,6 +43,7 @@
 
         <div class="panel-content">
           <ThemeSettingsView v-if="active === 'theme'" />
+          <ModelSettingsView v-else-if="active === 'model'" />
           <AboutView v-else-if="active === 'about'" />
         </div>
       </div>
@@ -54,6 +55,7 @@
 import { ref, watch } from 'vue'
 import UiModal from './UiModal.vue'
 import ThemeSettingsView from './settings/ThemeSettingsView.vue'
+import ModelSettingsView from './settings/ModelSettingsView.vue'
 import AboutView from './settings/AboutView.vue'
 
 const props = defineProps({
@@ -64,6 +66,7 @@ const emit = defineEmits(['update:modelValue'])
 /** 菜单项：本项目仅主题管理 + 关于（DESIGN §5.3 可增删）。 */
 const menuItems = [
   { key: 'theme', label: '主题管理', icon: 'ri-palette-line' },
+  { key: 'model', label: '模型管理', icon: 'ri-cpu-line' },
   { key: 'about', label: '关于', icon: 'ri-information-line' },
 ]
 

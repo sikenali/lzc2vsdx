@@ -29,3 +29,22 @@ test('main.js 注入 OPENVS_VISION_*/OPENVS_LLM_* 并监听 model-config IPC', a
   // require ipcMain
   assert.match(main, /const\s*\{\s*[^}]*ipcMain[^}]*\}\s*=\s*require\s*\(\s*['"]electron['"]\s*\)/)
 })
+
+test('设置菜单含模型管理', async () => {
+  const modal = await read('../../frontend/src/components/SettingsModal.vue')
+  assert.match(modal, /key:\s*['"]model['"]/)
+  assert.match(modal, /label:\s*['"]模型管理['"]/)
+  assert.match(modal, /ri-cpu-line/)
+})
+test('模型管理页两卡 + utils 回退', async () => {
+  const view = await read('../../frontend/src/components/settings/ModelSettingsView.vue')
+  assert.match(view, /视觉模型/)
+  assert.match(view, /文本解析/)
+  assert.match(view, /baseUrl|base_url|BASE_URL/)
+  assert.match(view, /apiKey|api_key|API_KEY/)
+  assert.match(view, /model\b/)
+  assert.match(view, /writeModelConfig|saveModelConfig/)
+  const util = await read('../../frontend/src/utils/modelConfig.js')
+  assert.match(util, /window\.c2vsdx/)
+  assert.match(util, /localStorage/)
+})
