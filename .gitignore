@@ -6,6 +6,7 @@ backend/runtime/
 .scratch/
 .DS_Store
 scratch/
+docs/
 .superpowers/
 electron/resources/backend/
 electron/release/
