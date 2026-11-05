@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, shell, session } = require('electron')
+const { app, BrowserWindow, dialog, shell, session, ipcMain } = require('electron')
 const { spawn } = require('child_process')
 const fs = require('fs')
 const http = require('http')
@@ -53,6 +53,43 @@ function backendExecutable() {
   return path.join(process.resourcesPath, 'backend', name)
 }
 
+// ---- 模型配置（userData/config.json，桌面端持久化 OPENVS_* 注入）----
+
+function modelConfigPath() {
+  return path.join(app.getPath('userData'), 'config.json')
+}
+
+function readModelConfig() {
+  try {
+    const raw = fs.readFileSync(modelConfigPath(), 'utf8')
+    const cfg = JSON.parse(raw)
+    return {
+      vision: { baseUrl: cfg?.vision?.baseUrl || '', apiKey: cfg?.vision?.apiKey || '', model: cfg?.vision?.model || '' },
+      llm: { baseUrl: cfg?.llm?.baseUrl || '', apiKey: cfg?.llm?.apiKey || '', model: cfg?.llm?.model || '' },
+    }
+  } catch {
+    return { vision: {}, llm: {} }
+  }
+}
+
+function writeModelConfig(cfg) {
+  try {
+    const data = {
+      vision: { baseUrl: cfg?.vision?.baseUrl || '', apiKey: cfg?.vision?.apiKey || '', model: cfg?.vision?.model || '' },
+      llm: { baseUrl: cfg?.llm?.baseUrl || '', apiKey: cfg?.llm?.apiKey || '', model: cfg?.llm?.model || '' },
+    }
+    fs.writeFileSync(modelConfigPath(), JSON.stringify(data, null, 2), 'utf8')
+    return { ok: true }
+  } catch (error) {
+    return { ok: false, error: String(error.message || error) }
+  }
+}
+
+function registerModelConfigIpc() {
+  ipcMain.handle('model-config:read', () => readModelConfig())
+  ipcMain.handle('model-config:write', (_event, cfg) => writeModelConfig(cfg))
+}
+
 function startBackend(port) {
   const exe = backendExecutable()
   if (!fs.existsSync(exe)) {
@@ -79,6 +116,15 @@ function startBackend(port) {
     env.PATH = `${path.join(gvRoot, 'bin')}:${env.PATH || ''}`
     env.LD_LIBRARY_PATH = `${path.join(gvRoot, 'lib')}:${env.LD_LIBRARY_PATH || ''}`
   }
+
+  // 模型配置：userData/config.json 非空字段注入 OPENVS_*（覆盖终端已设值）
+  const cfg = readModelConfig()
+  if (cfg.vision?.baseUrl) env.OPENVS_VISION_BASE_URL = cfg.vision.baseUrl
+  if (cfg.vision?.apiKey) env.OPENVS_VISION_API_KEY = cfg.vision.apiKey
+  if (cfg.vision?.model) env.OPENVS_VISION_MODEL = cfg.vision.model
+  if (cfg.llm?.baseUrl) env.OPENVS_LLM_BASE_URL = cfg.llm.baseUrl
+  if (cfg.llm?.apiKey) env.OPENVS_LLM_API_KEY = cfg.llm.apiKey
+  if (cfg.llm?.model) env.OPENVS_LLM_MODEL = cfg.llm.model
 
   backend = spawn(exe, [], {
     cwd: path.dirname(exe),
@@ -137,6 +183,7 @@ async function createWindow() {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   })
 
@@ -154,6 +201,8 @@ const gotLock = app.requestSingleInstanceLock()
 if (!gotLock) {
   app.quit()
 } else {
+  registerModelConfigIpc()
+
   app.on('second-instance', () => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore()
