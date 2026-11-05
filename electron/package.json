@@ -51,7 +51,7 @@
           ]
         }
       ],
-      "artifactName": "lzc2vsdx-windows-${version}.${ext}"
+      "artifactName": "lzc2vsdx-win-x86_64-${version}.${ext}"
     },
     "linux": {
       "target": [
@@ -63,7 +63,7 @@
         }
       ],
       "category": "Development",
-      "artifactName": "lzc2vsdx-linux-${version}.${ext}"
+      "artifactName": "lzc2vsdx-linux-x86_64-${version}.${ext}"
     }
   }
 }
