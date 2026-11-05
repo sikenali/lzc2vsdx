@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+node_modules/
+dist/
+backend/runtime/
+.scratch/
+.DS_Store
+scratch/
+.superpowers/
+electron/resources/backend/
+electron/release/
+/build/
+electron/resources/graphviz-linux/

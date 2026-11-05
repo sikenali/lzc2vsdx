@@ -1,0 +1,69 @@
+{
+  "name": "c2vsdx-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "C2VSDX desktop shell (Electron + bundled Flask backend)",
+  "main": "main.js",
+  "author": "C2VSDX",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win portable",
+    "dist:linux": "electron-builder --linux AppImage"
+  },
+  "devDependencies": {
+    "electron": "^34.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "cn.c2vsdx.desktop",
+    "productName": "C2VSDX",
+    "asar": true,
+    "compression": "normal",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/backend",
+        "to": "backend"
+      },
+      {
+        "from": "../frontend/dist",
+        "to": "frontend/dist"
+      },
+      {
+        "from": "resources/graphviz-linux",
+        "to": "graphviz-linux"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "C2VSDX-${version}-windows-portable.${ext}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Development",
+      "artifactName": "C2VSDX-${version}-linux-x86_64.${ext}"
+    }
+  }
+}
