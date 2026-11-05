@@ -51,7 +51,7 @@
           ]
         }
       ],
-      "artifactName": "C2VSDX-${version}-windows-portable.${ext}"
+      "artifactName": "lzc2vsdx-windows-${version}.${ext}"
     },
     "linux": {
       "target": [
@@ -63,7 +63,7 @@
         }
       ],
       "category": "Development",
-      "artifactName": "C2VSDX-${version}-linux-x86_64.${ext}"
+      "artifactName": "lzc2vsdx-linux-${version}.${ext}"
     }
   }
 }
