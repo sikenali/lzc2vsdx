@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
 /* ── §9 Toast 规范（Nebula 科技风）───────────────────────── */
 .toast {
   position: fixed;
-  top: 16px;                          /* §9 距顶 16px */
+  top: calc(16px + var(--titlebar-h, 0px));   /* §9 距顶 16px；桌面端避让 36px 标题栏 */
   left: 50%;
   transform: translateX(-50%);
   z-index: 10000;

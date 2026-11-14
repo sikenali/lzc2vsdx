@@ -6,8 +6,8 @@ const read = (p) => readFile(new URL(p, import.meta.url), 'utf8')
 
 test('toast 事件契约为 {type,message} 且 §9 顶部居中', async () => {
   const app = await read('./App.vue')
-  // §9 位置：顶部 16px 居中（DESIGN-1）
-  assert.match(app, /top:\s*16px/)
+  // §9 位置：顶部 16px 居中（桌面端避让 36px 标题栏）
+  assert.match(app, /top:\s*calc\(16px\s*\+\s*var\(--titlebar-h,\s*0px\)\)/)
   assert.match(app, /left:\s*50%/)
   assert.match(app, /z-index:\s*10000/)
   // 事件契约：读取 event.detail 并构建 {type,message}
