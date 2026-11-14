@@ -104,12 +104,12 @@ function settings() { emit('open-settings') }
   position: sticky; top: 0; z-index: 100;
   border-bottom: 0.6px solid transparent;
   /* 电光青微发光分割线 */
-  border-image: linear-gradient(90deg, transparent, rgba(0,212,170,0.25) 50%, transparent) 1;
+  border-image: linear-gradient(90deg, transparent, rgba(var(--tech-cyan-rgb),0.25) 50%, transparent) 1;
 }
 
 [data-theme="dark"] .app-header {
   background: rgba(15, 22, 35, 0.88);
-  border-image: linear-gradient(90deg, transparent, rgba(0,245,200,0.18) 50%, transparent) 1;
+  border-image: linear-gradient(90deg, transparent, rgba(var(--tech-cyan-rgb),0.18) 50%, transparent) 1;
 }
 
 .header-brand {
@@ -124,7 +124,7 @@ function settings() { emit('open-settings') }
 }
 .brand-name:hover {
   color: var(--tech-cyan);
-  text-shadow: 0 0 8px rgba(0, 212, 170, 0.5);
+  text-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.5);
 }
 
 .brand-divider { width: 1.5px; height: 18px; background: var(--line); flex: none; }
@@ -155,7 +155,7 @@ function settings() { emit('open-settings') }
   position: absolute; bottom: -2px; left: 0;
   height: 2.5px; border-radius: 2px 2px 0 0;
   background: linear-gradient(90deg, var(--tech-cyan), var(--tech-blue));
-  box-shadow: 0 0 8px rgba(0,212,170,0.5), 0 1px 3px rgba(0,212,170,0.3);
+  box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb),0.5), 0 1px 3px rgba(var(--tech-cyan-rgb),0.3);
   transition: transform var(--t-fast) var(--ease-spring),
               width     var(--t-fast) var(--ease-spring);
 }
@@ -181,13 +181,13 @@ function settings() { emit('open-settings') }
 .nav-item::before {
   content: ''; position: absolute; top: 0; left: 15%; right: 15%;
   height: 0.6px; opacity: 0;
-  background: linear-gradient(90deg, transparent, rgba(0,212,170,0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--tech-cyan-rgb),0.6), transparent);
   transition: opacity var(--t-fast) ease;
 }
 .nav-item:hover::before { opacity: 1; }
-.nav-item:hover { background: rgba(0,212,170,0.07); transform: translateY(-1px); }
+.nav-item:hover { background: rgba(var(--tech-cyan-rgb),0.07); transform: translateY(-1px); }
 .nav-item:active { transform: scale(0.97); transition-duration: var(--t-snap); }
-.nav-item:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,212,170,0.3); }
+.nav-item:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb),0.3); }
 
 /* 激活态：无背景填充，文字变电光青 + 滑条到位 */
 .nav-item.active { color: var(--tech-cyan); font-weight: 600; }
@@ -222,10 +222,10 @@ function settings() { emit('open-settings') }
   background: var(--tech-cyan);
   color: #0A1628;
   transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0, 212, 170, 0.35);
+  box-shadow: 0 4px 14px rgba(var(--tech-cyan-rgb), 0.35);
 }
 .round-btn:active { transform: scale(0.96); transition-duration: var(--t-snap); box-shadow: none; }
-.round-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,212,170,0.35); }
+.round-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb),0.35); }
 
 @media (max-width: 1100px) {
   .header-brand, .header-actions { width: auto; }

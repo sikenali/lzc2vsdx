@@ -25,7 +25,7 @@ ul, ol { list-style: none; }
 /* §1.6 Focus Ring：3px 电光青虚化外环 */
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.4);
+  box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.4);
   transition: box-shadow var(--t-fast) var(--ease-smooth);
 }
 
@@ -64,7 +64,7 @@ ul, ol { list-style: none; }
 .title-bar {
   width: 4px; height: 16px; border-radius: 2px;
   background: var(--tech-cyan); flex: none;
-  box-shadow: 0 0 6px rgba(0, 212, 170, 0.35);
+  box-shadow: 0 0 6px rgba(var(--tech-cyan-rgb), 0.35);
 }
 .title-text { font-size: 16px; font-weight: 600; color: var(--ink); white-space: nowrap; }
 .title-desc { font-size: 13px; color: var(--ink-4); white-space: nowrap; }
@@ -93,7 +93,7 @@ ul, ol { list-style: none; }
   font-family: var(--font-display);
   transition: background var(--t-fast) var(--ease-smooth), color var(--t-fast) var(--ease-smooth), border-color var(--t-fast) var(--ease-smooth);
 }
-.btn-ghost:hover { background: rgba(0, 212, 170, 0.06); border-color: rgba(0, 212, 170, 0.3); color: var(--tech-cyan); }
+.btn-ghost:hover { background: rgba(var(--tech-cyan-rgb), 0.06); border-color: rgba(var(--tech-cyan-rgb), 0.3); color: var(--tech-cyan); }
 
 .hint-row {
   display: inline-flex; align-items: center; gap: 6px;

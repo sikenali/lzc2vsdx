@@ -166,7 +166,7 @@ function switchLayout(layout) {
 .card-title::before {
   content: ''; width: 4px; height: 16px; border-radius: 2px;
   background: var(--tech-cyan); flex: none;
-  box-shadow: 0 0 6px rgba(0, 212, 170, 0.35);
+  box-shadow: 0 0 6px rgba(var(--tech-cyan-rgb), 0.35);
 }
 
 /* ---- §6.1 页头卡 ---- */
@@ -187,14 +187,14 @@ function switchLayout(layout) {
   display: inline-flex; align-items: center; gap: 6px;
   height: 36px; padding: 0 14px;
   border-radius: var(--radius-sm);
-  border: 0.6px solid rgba(0, 212, 170, 0.3);
+  border: 0.6px solid rgba(var(--tech-cyan-rgb), 0.3);
   background: transparent; color: var(--tech-cyan);
   font-size: 12px; font-weight: 500;
   font-family: var(--font-display);
   transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
 .reset-btn i { font-size: 14px; }
-.reset-btn:hover { background: rgba(0, 212, 170, 0.1); }
+.reset-btn:hover { background: rgba(var(--tech-cyan-rgb), 0.1); }
 
 .page-title {
   font-size: 20px; font-weight: 600; letter-spacing: 0.3px;
@@ -215,18 +215,18 @@ function switchLayout(layout) {
   cursor: pointer;
   transition: background var(--t-fast) ease, border-color var(--t-fast) ease;
 }
-.mode-card:hover { border-color: rgba(0, 212, 170, 0.3); }
+.mode-card:hover { border-color: rgba(var(--tech-cyan-rgb), 0.3); }
 
 /* §6.2 激活态：左侧 3×80px 电光青竖条 + 顶部微光条（无大底色块） */
 .mode-card.active {
   border-color: var(--tech-cyan);
-  background: rgba(0, 212, 170, 0.05);
+  background: rgba(var(--tech-cyan-rgb), 0.05);
 }
 .mode-card.active::before {
   content: ''; position: absolute; left: 0; top: 12px; bottom: 12px;
   width: 3px; border-radius: 0 2px 2px 0;
   background: var(--tech-cyan);
-  box-shadow: 0 0 8px rgba(0, 212, 170, 0.5);
+  box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.5);
 }
 
 .check-badge {
@@ -235,7 +235,7 @@ function switchLayout(layout) {
   background: var(--tech-cyan); color: #0A1628;
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 12px;
-  box-shadow: 0 0 8px rgba(0, 212, 170, 0.5);
+  box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.5);
 }
 
 /* §6.2 预览缩略图 100%×100px */
@@ -278,7 +278,7 @@ function switchLayout(layout) {
 
 /* §6.3 选中：外圈电光青光晕 */
 .accent-swatch.active {
-  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.2), 0 0 16px rgba(0, 212, 170, 0.4);
+  box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.2), 0 0 16px rgba(var(--tech-cyan-rgb), 0.4);
 }
 .accent-check { font-size: 20px; line-height: 1; }
 
@@ -297,10 +297,10 @@ function switchLayout(layout) {
   cursor: pointer;
   transition: background var(--t-fast) ease, border-color var(--t-fast) ease;
 }
-.layout-card:hover { border-color: rgba(0, 212, 170, 0.3); }
+.layout-card:hover { border-color: rgba(var(--tech-cyan-rgb), 0.3); }
 .layout-card.active {
   border-color: var(--tech-cyan);
-  background: rgba(0, 212, 170, 0.05);
+  background: rgba(var(--tech-cyan-rgb), 0.05);
 }
 
 /* Mockup 150px 高 */

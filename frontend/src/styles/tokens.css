@@ -10,6 +10,7 @@
 :root {
   /* ── §7 Light（Parchment 兼容层 + 科技点缀）────────────────── */
   --tech-cyan:      #00D4AA;
+  --tech-cyan-rgb:  0, 212, 170;   /* 随强调色变化，用于 rgba() 色调/光晕 */
   --tech-blue:      #4A9EFF;
   --tech-coral:     #FF4D6D;
   --tech-gold:      #FFB347;
@@ -66,10 +67,10 @@
   --shadow-xl:   0 12px 40px rgba(0, 0, 0, 0.12);
 
   /* §1.4 glow 阴影（电光青） */
-  --glow-xs:   0 2px 8px rgba(0, 212, 170, 0.08);
-  --glow-sm:   0 4px 20px rgba(0, 212, 170, 0.12);
-  --glow-md:   0 8px 32px rgba(0, 212, 170, 0.18);
-  --glow-lg:   0 12px 48px rgba(0, 212, 170, 0.25);
+  --glow-xs:   0 2px 8px rgba(var(--tech-cyan-rgb), 0.08);
+  --glow-sm:   0 4px 20px rgba(var(--tech-cyan-rgb), 0.12);
+  --glow-md:   0 8px 32px rgba(var(--tech-cyan-rgb), 0.18);
+  --glow-lg:   0 12px 48px rgba(var(--tech-cyan-rgb), 0.25);
 
   /* ── §11.2 动效变量 ─────────────────────────────────────── */
   --ease:        cubic-bezier(0.4, 0, 0.2, 1);
@@ -137,27 +138,33 @@
 [data-accent="cyan"] {
   --primary: #00D4AA; --primary-soft: #E8FFF8; --primary-deep: #0A6B5A;
   --btn-shadow: rgba(0,212,170,0.28); --primary-fill: #00D4AA; --primary-on: #0A1628;
+  --tech-cyan: #00D4AA; --tech-cyan-rgb: 0, 212, 170;
 }
 [data-accent="gold"] {
   --primary: #FFB347; --primary-soft: #FFF8E6; --primary-deep: #C67A10;
   --btn-shadow: rgba(255,179,71,0.28); --primary-fill: #FFB347; --primary-on: #0A1628;
+  --tech-cyan: #FFB347; --tech-cyan-rgb: 255, 179, 71;
 }
 [data-accent="green"] {
   --primary: #00A878; --primary-soft: #E6FFF4; --primary-deep: #008A62;
   --btn-shadow: rgba(0,168,120,0.28); --primary-fill: #00A878; --primary-on: #0A1628;
+  --tech-cyan: #00A878; --tech-cyan-rgb: 0, 168, 120;
 }
 [data-accent="blue"] {
   --primary: #4A9EFF; --primary-soft: #EBF4FF; --primary-deep: #2D7FD9;
   --btn-shadow: rgba(74,158,255,0.28); --primary-fill: #4A9EFF; --primary-on: #0A1628;
+  --tech-cyan: #4A9EFF; --tech-cyan-rgb: 74, 158, 255;
 }
 [data-accent="coral"] {
   --primary: #FF4D6D; --primary-soft: #FFF0F3; --primary-deep: #D13A56;
   --btn-shadow: rgba(255,77,109,0.28); --primary-fill: #FF4D6D; --primary-on: #0A1628;
+  --tech-cyan: #FF4D6D; --tech-cyan-rgb: 255, 77, 109;
 }
 
 /* ── §7 Dark（TechDark 深空科技风）─────────────────────────── */
 [data-theme="dark"] {
   --tech-cyan:  #00F5C8;
+  --tech-cyan-rgb:  0, 245, 200;   /* 随强调色变化 */
   --tech-blue:  #6BB3FF;
   --tech-coral: #FF6B85;
   --tech-gold:  #FFCC66;
@@ -211,10 +218,10 @@
   --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.70);
   --shadow-xl:  0 12px 40px rgba(0, 0, 0, 0.80);
 
-  --glow-xs:  0 2px 8px rgba(0, 245, 200, 0.12);
-  --glow-sm:  0 4px 20px rgba(0, 245, 200, 0.18);
-  --glow-md:  0 8px 32px rgba(0, 245, 200, 0.25);
-  --glow-lg:  0 12px 48px rgba(0, 245, 200, 0.35);
+  --glow-xs:  0 2px 8px rgba(var(--tech-cyan-rgb), 0.12);
+  --glow-sm:  0 4px 20px rgba(var(--tech-cyan-rgb), 0.18);
+  --glow-md:  0 8px 32px rgba(var(--tech-cyan-rgb), 0.25);
+  --glow-lg:  0 12px 48px rgba(var(--tech-cyan-rgb), 0.35);
 
   --bg:        var(--color-bg-main);
   --bg-card:   var(--color-bg-card);
@@ -244,20 +251,25 @@
 [data-theme="dark"][data-accent="cyan"] {
   --primary: #00F5C8; --primary-soft: #0A2A25; --primary-deep: #00B89A;
   --btn-shadow: rgba(0,245,200,0.32); --primary-fill: #00F5C8; --primary-on: #0A1628;
+  --tech-cyan: #00F5C8; --tech-cyan-rgb: 0, 245, 200;
 }
 [data-theme="dark"][data-accent="gold"] {
   --primary: #FFCC66; --primary-soft: #1E1508; --primary-deep: #FFCC66;
   --btn-shadow: rgba(255,204,102,0.32); --primary-fill: #FFCC66; --primary-on: #0A1628;
+  --tech-cyan: #FFCC66; --tech-cyan-rgb: 255, 204, 102;
 }
 [data-theme="dark"][data-accent="green"] {
   --primary: #00D4AA; --primary-soft: #0A2A22; --primary-deep: #00D4AA;
   --btn-shadow: rgba(0,212,170,0.28); --primary-fill: #00D4AA; --primary-on: #0A1628;
+  --tech-cyan: #00D4AA; --tech-cyan-rgb: 0, 212, 170;
 }
 [data-theme="dark"][data-accent="blue"] {
   --primary: #6BB3FF; --primary-soft: #0C1A2E; --primary-deep: #6BB3FF;
   --btn-shadow: rgba(107,179,255,0.32); --primary-fill: #6BB3FF; --primary-on: #0A1628;
+  --tech-cyan: #6BB3FF; --tech-cyan-rgb: 107, 179, 255;
 }
 [data-theme="dark"][data-accent="coral"] {
   --primary: #FF6B85; --primary-soft: #1E0C12; --primary-deep: #FF6B85;
   --btn-shadow: rgba(255,107,133,0.32); --primary-fill: #FF6B85; --primary-on: #0A1628;
+  --tech-cyan: #FF6B85; --tech-cyan-rgb: 255, 107, 133;
 }

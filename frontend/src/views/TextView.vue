@@ -76,7 +76,7 @@ const router = useRouter()
 const types = [
   { key: 'flowchart',    title: '流程图',  desc: '节点流转与分支',  icon: 'ri-flow-chart',         iconColor: '#FFB347', iconBg: 'rgba(255,179,71,0.1)' },
   { key: 'sequence',     title: '时序图',  desc: '参与者消息交互',  icon: 'ri-time-line',          iconColor: '#4A9EFF', iconBg: 'rgba(74,158,255,0.1)' },
-  { key: 'composition',  title: '组成图',  desc: '模块构成拆解',    icon: 'ri-stack-line',         iconColor: '#00D4AA', iconBg: 'rgba(0,212,170,0.1)' },
+  { key: 'composition',  title: '组成图',  desc: '模块构成拆解',    icon: 'ri-stack-line',         iconColor: '#00D4AA', iconBg: 'rgba(var(--tech-cyan-rgb),0.1)' },
   { key: 'component',    title: '关系图',  desc: '实体关联映射',    icon: 'ri-links-line',         iconColor: '#00A878', iconBg: 'rgba(0,168,120,0.1)' },
   { key: 'architecture', title: '架构图',  desc: '分层系统架构',    icon: 'ri-building-2-line',    iconColor: '#94A3B8', iconBg: 'rgba(148,163,184,0.1)' },
   { key: 'swimlane',     title: '泳道图',  desc: '跨角色流程泳道',  icon: 'ri-layout-column-line', iconColor: '#FF4D6D', iconBg: 'rgba(255,77,109,0.1)' },
@@ -178,13 +178,13 @@ async function generate() {
 }
 .text-input:focus {
   outline: none;
-  box-shadow: inset 0 0 0 1px var(--tech-cyan), 0 0 0 3px rgba(0, 212, 170, 0.15);
+  box-shadow: inset 0 0 0 1px var(--tech-cyan), 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.15);
 }
 
 .model-select:focus {
   outline: none;
   border-color: var(--tech-cyan);
-  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.3);
+  box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.3);
   border-radius: var(--radius-sm);
 }
 
@@ -218,7 +218,7 @@ async function generate() {
   font-size: 12px; border: 0.6px solid var(--line);
   transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
-.clear-btn:hover { color: var(--tech-cyan); background: rgba(0, 212, 170, 0.08); }
+.clear-btn:hover { color: var(--tech-cyan); background: rgba(var(--tech-cyan-rgb), 0.08); }
 
 .generate-area { margin-top: 18px; display: flex; flex-direction: column; align-items: center; }
 .generate-btn  { min-width: 200px; }

@@ -70,7 +70,7 @@ function go(path) { router.push(path) }
   border: none; cursor: pointer; background: transparent;
   transition: background var(--t-fast) var(--ease-smooth);
 }
-.sidenav-brand:hover { background: rgba(0, 212, 170, 0.08); }
+.sidenav-brand:hover { background: rgba(var(--tech-cyan-rgb), 0.08); }
 
 /* 导航按钮组：flex:1 撑满并垂直居中（§2.2） */
 .sidenav-nav {
@@ -94,7 +94,7 @@ function go(path) { router.push(path) }
   position: absolute; left: 0; top: 50%; transform: translateY(-50%);
   width: 3px; height: 28px; border-radius: 0 2px 2px 0;
   background: var(--tech-cyan);
-  box-shadow: 0 0 8px rgba(0, 212, 170, 0.5);
+  box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.5);
   opacity: 0;
   transition: opacity var(--t-fast) var(--ease-smooth);
 }
@@ -110,10 +110,10 @@ function go(path) { router.push(path) }
   font-family: var(--font-display);
 }
 
-.sidenav-btn:hover { background: rgba(0, 212, 170, 0.06); }
+.sidenav-btn:hover { background: rgba(var(--tech-cyan-rgb), 0.06); }
 .sidenav-btn:active { transform: scale(0.95); transition-duration: var(--t-snap); }
-.sidenav-btn.active { background: rgba(0, 212, 170, 0.1); color: var(--tech-cyan); font-weight: 600; }
-.sidenav-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.3); }
+.sidenav-btn.active { background: rgba(var(--tech-cyan-rgb), 0.1); color: var(--tech-cyan); font-weight: 600; }
+.sidenav-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.3); }
 
 /* 底部版本号 */
 .sidenav-footer { padding-bottom: 14px; text-align: center; }

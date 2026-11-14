@@ -94,8 +94,8 @@ function close() { emit('update:modelValue', false) }
 /* §5.2 图标圆 40px，电光青底 */
 .settings-icon {
   width: 40px; height: 40px; flex: none; border-radius: 50%;
-  background: rgba(0, 212, 170, 0.12);
-  border: 0.6px solid rgba(0, 212, 170, 0.3);
+  background: rgba(var(--tech-cyan-rgb), 0.12);
+  border: 0.6px solid rgba(var(--tech-cyan-rgb), 0.3);
   color: var(--tech-cyan);
   display: inline-flex; align-items: center; justify-content: center; font-size: 18px;
 }
@@ -116,9 +116,9 @@ function close() { emit('update:modelValue', false) }
   border: none; background: transparent; cursor: pointer;
   transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
-.settings-close:hover { background: rgba(0, 212, 170, 0.12); color: var(--tech-cyan); }
+.settings-close:hover { background: rgba(var(--tech-cyan-rgb), 0.12); color: var(--tech-cyan); }
 .settings-close:active { transform: scale(0.95); transition-duration: var(--t-snap); }
-.settings-close:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.3); }
+.settings-close:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.3); }
 
 /* ── §5.3/§5.4 两栏紧凑布局 ─────────────────────────────── */
 .settings-body {
@@ -154,18 +154,18 @@ function close() { emit('update:modelValue', false) }
   position: absolute; left: 0; top: 50%; transform: translateY(-50%);
   width: 3px; height: 22px; border-radius: 0 2px 2px 0;
   background: var(--tech-cyan);
-  box-shadow: 0 0 8px rgba(0, 212, 170, 0.5);
+  box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.5);
   opacity: 0;
   transition: opacity var(--t-fast) var(--ease-smooth);
 }
 .settings-nav-item.active .settings-nav-accent { opacity: 1; }
 
-.settings-nav-item:hover { background: rgba(0, 212, 170, 0.06); }
+.settings-nav-item:hover { background: rgba(var(--tech-cyan-rgb), 0.06); }
 .settings-nav-item.active {
-  background: rgba(0, 212, 170, 0.08);
+  background: rgba(var(--tech-cyan-rgb), 0.08);
   color: var(--tech-cyan); font-weight: 600;
 }
-.settings-nav-item:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.3); }
+.settings-nav-item:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.3); }
 
 /* §5.4 内容区 */
 .panel-content {

@@ -106,8 +106,8 @@ test('Nebula tokens: tech-cyan primary, Space Grotesk/JetBrains Mono fonts', asy
 test('tokens define glow + transition tokens (§1.4/§11.2)', async () => {
   const tokens = await read('./styles/tokens.css')
   // glow 两级
-  assert.match(tokens, /--glow-xs:\s*0\s*2px\s*8px\s*rgba\(0,\s*212,\s*170,\s*0\.08\)/)
-  assert.match(tokens, /--glow-sm:\s*0\s*4px\s*20px\s*rgba\(0,\s*212,\s*170,\s*0\.12\)/)
+  assert.match(tokens, /--glow-xs:\s*0\s*2px\s*8px\s*rgba\(var\(--tech-cyan-rgb\),\s*0\.08\)/)
+  assert.match(tokens, /--glow-sm:\s*0\s*4px\s*20px\s*rgba\(var\(--tech-cyan-rgb\),\s*0\.12\)/)
   // 时长 snap=80/fast=120/base=180/slow=280
   assert.match(tokens, /--t-snap:\s*80ms/)
   assert.match(tokens, /--t-fast:\s*120ms/)
@@ -122,8 +122,8 @@ test('header 64px glass + glow divider + slide indicator (§2.1/§2.3)', async (
   assert.match(header, /height:\s*64px/)
   assert.match(header, /backdrop-filter/)
   assert.match(header, /blur\(\s*16px\s*\)/)
-  // 电光青发光分割线
-  assert.match(header, /rgba\(0,212,170,0\.25\)/)
+  // 电光青发光分割线（随强调色 rgba 变体）
+  assert.match(header, /rgba\(var\(--tech-cyan-rgb\),\s*0\.25\)/)
   // 底部滑动指示器
   assert.match(header, /\.nav-indicator/)
   assert.match(header, /linear-gradient\(90deg,\s*var\(--tech-cyan\)/)
@@ -137,7 +137,7 @@ test('round buttons follow §A.4: 36×36px, hover cyan + translateY(-2px)', asyn
   assert.match(header, /scale\(0\.96\)/)
   assert.match(header, /\.nav-item:hover\s*\{[\s\S]*translateY\(-1px\)/)
   assert.match(header, /\.round-btn:hover\s*\{[\s\S]*transform\s*:\s*translateY\(-2px\)/)
-  assert.match(header, /rgba\(0,\s*212,\s*170,\s*0\.35\)/)
+  assert.match(header, /rgba\(var\(--tech-cyan-rgb\),\s*0\.35\)/)
 })
 
 test('SideNav 64px + 左侧竖条发光指示器（§2.2）', async () => {
@@ -145,14 +145,14 @@ test('SideNav 64px + 左侧竖条发光指示器（§2.2）', async () => {
   assert.match(nav, /width:\s*64px/)
   assert.match(nav, /\.sidenav-accent/)
   assert.match(nav, /width:\s*3px/)
-  assert.match(nav, /box-shadow:\s*0\s*0\s*8px\s*rgba\(0,\s*212,\s*170,\s*0\.5\)/)
+  assert.match(nav, /box-shadow:\s*0\s*0\s*8px\s*rgba\(var\(--tech-cyan-rgb\),\s*0\.5\)/)
   assert.match(nav, /width:\s*48px/)   // 按钮 48×48
 })
 
 test('upload card drag state uses tech-cyan tint（§A.7）', async () => {
   const iv = await read('./views/ImageView.vue')
-  assert.match(iv, /rgba\(0,\s*212,\s*170,\s*0\.06\)/)
-  assert.match(iv, /rgba\(0,\s*212,\s*170,\s*0\.12\)/)
+  assert.match(iv, /rgba\(var\(--tech-cyan-rgb\),\s*0\.06\)/)
+  assert.match(iv, /rgba\(var\(--tech-cyan-rgb\),\s*0\.12\)/)
 })
 
 test('remove-btn has rotate 120° on active（§A.7）', async () => {
@@ -189,7 +189,7 @@ test('AppFooter 48px + tech-cyan 链接（§2.1）', async () => {
 test('base.css: body 15px + 电光青 focus ring（§1.5/§1.6）', async () => {
   const base = await read('./styles/base.css')
   assert.match(base, /font-size:\s*15px/)
-  assert.match(base, /:focus-visible\s*\{[\s\S]*box-shadow:\s*0\s*0\s*0\s*3px\s*rgba\(0,\s*212,\s*170,\s*0\.4\)/)
+  assert.match(base, /:focus-visible\s*\{[\s\S]*box-shadow:\s*0\s*0\s*0\s*3px\s*rgba\(var\(--tech-cyan-rgb\),\s*0\.4\)/)
 })
 
 test('base.css: 统一极细滚动条 + 深色白色 thumb（§1.7）', async () => {
@@ -201,9 +201,29 @@ test('base.css: 统一极细滚动条 + 深色白色 thumb（§1.7）', async ()
 
 test('ResultView 统计卡 Nebula 配色（§4.4）', async () => {
   const result = await read('./views/ResultView.vue')
-  assert.match(result, /rgba\(0,\s*212,\s*170,\s*0\.08\)/)   // cyan
+  assert.match(result, /rgba\(var\(--tech-cyan-rgb\),\s*0\.08\)/)  // cyan（随强调色）
   assert.match(result, /rgba\(255,\s*179,\s*71,\s*0\.08\)/)  // gold
   assert.match(result, /rgba\(255,\s*77,\s*109,\s*0\.08\)/)  // coral
   // 26px 数字
   assert.match(result, /font-size:\s*26px/)
+})
+
+test('强调色传播：--tech-cyan 与 --tech-cyan-rgb 随 [data-accent] 变化', async () => {
+  const tokens = await read('./styles/tokens.css')
+  // 每个强调色块都覆写 --tech-cyan 与 --tech-cyan-rgb（light + dark）
+  for (const [accent, hex, rgb] of [
+    ['cyan',  '#00D4AA', '0, 212, 170'],
+    ['gold',  '#FFB347', '255, 179, 71'],
+    ['green', '#00A878', '0, 168, 120'],
+    ['blue',  '#4A9EFF', '74, 158, 255'],
+    ['coral', '#FF4D6D', '255, 77, 109'],
+  ]) {
+    assert.match(tokens, new RegExp(`\\[data-accent="${accent}"\\][\\s\\S]{0,200}--tech-cyan:\\s*${hex}[\\s\\S]{0,80}--tech-cyan-rgb:\\s*${rgb}`),
+      `light ${accent} 应覆写 --tech-cyan/${rgb}`)
+  }
+  // 组件使用 accent 驱动的 rgba 变体
+  const header = await read('./components/AppHeader.vue')
+  assert.match(header, /rgba\(var\(--tech-cyan-rgb\),/)
+  const typeCard = await read('./components/TypeCard.vue')
+  assert.match(typeCard, /var\(--tech-cyan\)/)   // 激活态跟随强调色
 })

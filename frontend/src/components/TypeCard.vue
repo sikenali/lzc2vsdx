@@ -39,12 +39,12 @@ defineEmits(['select'])
 }
 
 .type-card:hover {
-  border-color: rgba(0, 212, 170, 0.3);
+  border-color: rgba(var(--tech-cyan-rgb), 0.3);
   box-shadow: var(--glow-xs);
 }
 
 .type-card.active {
-  background: rgba(0, 212, 170, 0.06);
+  background: rgba(var(--tech-cyan-rgb), 0.06);
   border-color: var(--tech-cyan);
   box-shadow: var(--glow-xs);
 }
@@ -104,6 +104,6 @@ defineEmits(['select'])
   border: none;
   background: var(--tech-cyan);
   color: #0A1628;
-  box-shadow: 0 0 8px rgba(0, 212, 170, 0.4);
+  box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.4);
 }
 </style>

@@ -148,7 +148,7 @@ async function save() {
 .card-title::before {
   content: ''; width: 4px; height: 16px; border-radius: 2px;
   background: var(--tech-cyan); flex: none;
-  box-shadow: 0 0 6px rgba(0, 212, 170, 0.35);
+  box-shadow: 0 0 6px rgba(var(--tech-cyan-rgb), 0.35);
 }
 
 .header-card { padding: 16px 20px; }
@@ -167,14 +167,14 @@ async function save() {
   display: inline-flex; align-items: center; gap: 6px;
   height: 36px; padding: 0 14px;
   border-radius: var(--radius-sm);
-  border: 0.6px solid rgba(0, 212, 170, 0.3);
+  border: 0.6px solid rgba(var(--tech-cyan-rgb), 0.3);
   background: transparent; color: var(--tech-cyan);
   font-size: 12px; font-weight: 500;
   font-family: var(--font-display);
   transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
 .reset-btn i { font-size: 14px; }
-.reset-btn:hover { background: rgba(0, 212, 170, 0.1); }
+.reset-btn:hover { background: rgba(var(--tech-cyan-rgb), 0.1); }
 
 .page-title {
   font-size: 20px; font-weight: 600; letter-spacing: 0.3px;
@@ -210,7 +210,7 @@ async function save() {
 .text-input:focus {
   border-color: var(--tech-cyan);
   background: var(--bg-card);
-  box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.15);
+  box-shadow: 0 0 0 2px rgba(var(--tech-cyan-rgb), 0.15);
   outline: none;
 }
 
@@ -238,7 +238,7 @@ async function save() {
   font-size: 13px; font-weight: 600;
   font-family: var(--font-display);
   border: none; cursor: pointer;
-  box-shadow: 0 2px 12px rgba(0, 212, 170, 0.25);
+  box-shadow: 0 2px 12px rgba(var(--tech-cyan-rgb), 0.25);
   transition: transform var(--t-fast) var(--ease-spring), box-shadow var(--t-fast) ease;
 }
 .save-btn i { font-size: 15px; }

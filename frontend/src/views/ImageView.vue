@@ -155,23 +155,23 @@ async function generate() {
 
 [data-theme="dark"] .upload-card {
   background: rgba(10, 15, 24, 0.92);
-  border-color: rgba(0, 212, 170, 0.15);
+  border-color: rgba(var(--tech-cyan-rgb), 0.15);
 }
 
 /* 拖拽态：电光青边框 + 微光晕 */
 .upload-card.dragging {
   border-color: var(--tech-cyan);
-  background: rgba(0, 212, 170, 0.06);
-  box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.12), 0 4px 24px rgba(0, 0, 0, 0.08);
+  background: rgba(var(--tech-cyan-rgb), 0.06);
+  box-shadow: 0 0 0 2px rgba(var(--tech-cyan-rgb), 0.12), 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
 .upload-icon-circle {
   width: 72px; height: 72px; border-radius: 9999px;
-  background: rgba(0, 212, 170, 0.1);
-  border: 0.6px solid rgba(0, 212, 170, 0.2);
+  background: rgba(var(--tech-cyan-rgb), 0.1);
+  border: 0.6px solid rgba(var(--tech-cyan-rgb), 0.2);
   display: flex; align-items: center; justify-content: center;
   color: var(--tech-cyan); font-size: 36px;
-  box-shadow: 0 0 12px rgba(0, 212, 170, 0.2);
+  box-shadow: 0 0 12px rgba(var(--tech-cyan-rgb), 0.2);
   transition: background var(--t-fast) ease;
 }
 
@@ -192,7 +192,7 @@ async function generate() {
   font-family: var(--font-mono);
 }
 .format-badge.p { background: rgba(255, 77, 109, 0.85); color: #fff; }
-.format-badge.j { background: rgba(0, 212, 170, 0.9); }
+.format-badge.j { background: rgba(var(--tech-cyan-rgb), 0.9); }
 .format-badge.s { background: rgba(255, 179, 71, 0.9); }
 .format-badge.w { background: rgba(74, 158, 255, 0.9); }
 

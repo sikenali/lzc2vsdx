@@ -35,12 +35,12 @@ function notify(message) { toast('info', message) }
   background: rgba(244, 247, 250, 0.75);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border-top: 0.6px solid rgba(0, 212, 170, 0.12);
+  border-top: 0.6px solid rgba(var(--tech-cyan-rgb), 0.12);
 }
 
 [data-theme="dark"] .app-footer {
   background: rgba(15, 22, 35, 0.88);
-  border-top: 0.6px solid rgba(0, 245, 200, 0.08);
+  border-top: 0.6px solid rgba(var(--tech-cyan-rgb), 0.08);
 }
 
 .footer-left {
@@ -60,8 +60,8 @@ function notify(message) { toast('info', message) }
   border: none; cursor: pointer;
   transition: background-color var(--t-fast) var(--ease-spring), color var(--t-fast) var(--ease-spring);
 }
-.footer-chip:hover { background: rgba(0, 212, 170, 0.12); color: var(--tech-cyan); }
-.footer-chip:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.3); }
+.footer-chip:hover { background: rgba(var(--tech-cyan-rgb), 0.12); color: var(--tech-cyan); }
+.footer-chip:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.3); }
 
 .footer-right {
   width: 320px; text-align: right; font-size: 12px; color: var(--ink-4); flex: none;

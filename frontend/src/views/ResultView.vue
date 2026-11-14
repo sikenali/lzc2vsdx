@@ -206,7 +206,7 @@ async function saveTweak(data) {
 .status-pill {
   display: inline-flex; align-items: center; gap: 4px;
   height: 24px; padding: 0 10px; border-radius: 9999px;
-  background: rgba(0, 212, 170, 0.1); color: #008A62;
+  background: rgba(var(--tech-cyan-rgb), 0.1); color: #008A62;
   font-size: 12px; font-weight: 500; flex: none;
 }
 .status-pill .ri { color: var(--color-success); font-size: 13px; }
@@ -226,12 +226,12 @@ async function saveTweak(data) {
   transition: background var(--t-fast) ease, color var(--t-fast) ease, border-color var(--t-fast) ease;
 }
 .soft-action:hover {
-  color: var(--tech-cyan); border-color: rgba(0, 212, 170, 0.3);
-  background: rgba(0, 212, 170, 0.06);
+  color: var(--tech-cyan); border-color: rgba(var(--tech-cyan-rgb), 0.3);
+  background: rgba(var(--tech-cyan-rgb), 0.06);
 }
 .soft-action.filled { background: var(--bg-soft); border-color: transparent; }
 .soft-action.filled:hover {
-  background: rgba(0, 212, 170, 0.06); border-color: rgba(0, 212, 170, 0.3); color: var(--tech-cyan);
+  background: rgba(var(--tech-cyan-rgb), 0.06); border-color: rgba(var(--tech-cyan-rgb), 0.3); color: var(--tech-cyan);
 }
 
 .notice {
@@ -248,7 +248,7 @@ async function saveTweak(data) {
   padding: 0 16px; display: flex; align-items: center; justify-content: space-between;
   font-family: var(--font-display);
 }
-.stat-success { background: rgba(0, 212, 170, 0.08);  color: #00D4AA; }
+.stat-success { background: rgba(var(--tech-cyan-rgb), 0.08);  color: var(--tech-cyan); }
 .stat-warning { background: rgba(255, 179, 71, 0.08); color: #FFB347; }
 .stat-danger  { background: rgba(255, 77, 109, 0.08); color: #FF4D6D; }
 
@@ -271,7 +271,7 @@ async function saveTweak(data) {
   display: inline-flex; align-items: center; justify-content: center;
   transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
-.zoom-btn:hover { background: rgba(0, 212, 170, 0.08); color: var(--tech-cyan); }
+.zoom-btn:hover { background: rgba(var(--tech-cyan-rgb), 0.08); color: var(--tech-cyan); }
 
 .zoom-value {
   height: 28px; padding: 0 8px; border-radius: var(--radius-xs);

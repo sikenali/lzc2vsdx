@@ -59,7 +59,7 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 .card-title::before {
   content: ''; width: 4px; height: 16px; border-radius: 2px;
   background: var(--tech-cyan); flex: none;
-  box-shadow: 0 0 6px rgba(0, 212, 170, 0.35);
+  box-shadow: 0 0 6px rgba(var(--tech-cyan-rgb), 0.35);
 }
 
 /* ---- 品牌区 ---- */
@@ -76,8 +76,8 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 
 .about-version {
   margin-top: 8px; padding: 2px 12px; border-radius: 9999px;
-  border: 0.6px solid rgba(0, 212, 170, 0.25);
-  background: rgba(0, 212, 170, 0.08);
+  border: 0.6px solid rgba(var(--tech-cyan-rgb), 0.25);
+  background: rgba(var(--tech-cyan-rgb), 0.08);
   color: var(--tech-cyan); font-size: 12px; font-weight: 500;
   font-family: var(--font-mono);
 }

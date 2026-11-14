@@ -95,10 +95,10 @@ onBeforeUnmount(() => {
 [data-theme="dark"] .ui-modal-panel {
   /* §5.1 深空毛玻璃底（仅深色主题） */
   background: rgba(10, 22, 40, 0.95);
-  border-color: rgba(0, 245, 200, 0.12);
+  border-color: rgba(var(--tech-cyan-rgb), 0.12);
   box-shadow:
     0 8px 48px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(0, 245, 200, 0.06);
+    inset 0 1px 0 rgba(var(--tech-cyan-rgb), 0.06);
 }
 
 .ui-modal-panel:focus { outline: none; }
