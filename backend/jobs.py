@@ -552,17 +552,30 @@ class JobManager:
             job.downloadable = False
             return
 
-        if job.mode == "image":
-            import render_image
-            render_image.run(str(json_path), str(out), dry_run=False)
-        elif job.diagram_type == "flowchart" and job.layout_data is not None:
-            import generate
-            _, _, renderer_mod = generate.BUILDERS["flowchart"]
-            renderer = importlib.import_module(renderer_mod)
-            renderer.render_to_visio(job.layout_data, str(out), visible=False)
-        else:
-            import generate
-            generate.run(job.diagram_type, str(json_path), str(out), dry_run=False, visible=False)
+        # Windows 下 COM 自动化需在调用线程先初始化（否则 win32com 抛
+        # 0x800401F0「尚未调用 CoInitialize」）。render_image.run 内部已各自初始化，
+        # 此处再包一层（嵌套是安全的，refcount 计数）覆盖 generate.run / 直接 render_to_visio 路径。
+        com_ready = False
+        if sys.platform == "win32":
+            import pythoncom
+            pythoncom.CoInitialize()
+            com_ready = True
+
+        try:
+            if job.mode == "image":
+                import render_image
+                render_image.run(str(json_path), str(out), dry_run=False)
+            elif job.diagram_type == "flowchart" and job.layout_data is not None:
+                import generate
+                _, _, renderer_mod = generate.BUILDERS["flowchart"]
+                renderer = importlib.import_module(renderer_mod)
+                renderer.render_to_visio(job.layout_data, str(out), visible=False)
+            else:
+                import generate
+                generate.run(job.diagram_type, str(json_path), str(out), dry_run=False, visible=False)
+        finally:
+            if com_ready:
+                pythoncom.CoUninitialize()
 
         job.file_path = out
         job.downloadable = True

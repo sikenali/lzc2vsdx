@@ -90,6 +90,17 @@ function registerModelConfigIpc() {
   ipcMain.handle('model-config:write', (_event, cfg) => writeModelConfig(cfg))
 }
 
+// ---- #1 无边框窗口控制（自定义标题栏：最小化/最大化切换/关闭）----
+function registerWindowIpc() {
+  ipcMain.on('window:minimize', () => mainWindow?.minimize())
+  ipcMain.on('window:maximize-toggle', () => {
+    if (!mainWindow) return
+    if (mainWindow.isMaximized()) mainWindow.unmaximize()
+    else mainWindow.maximize()
+  })
+  ipcMain.on('window:close', () => mainWindow?.close())
+}
+
 function startBackend(port) {
   const exe = backendExecutable()
   if (!fs.existsSync(exe)) {
@@ -176,8 +187,9 @@ async function createWindow() {
     minWidth: 1100,
     minHeight: 760,
     title: 'C2VSDX',
-    backgroundColor: '#FAF7F2',
+    backgroundColor: '#F4F7FA',
     autoHideMenuBar: true,
+    frame: false,                       // #1 无边框（自定义标题栏）
     show: false,
     webPreferences: {
       contextIsolation: true,
@@ -188,6 +200,9 @@ async function createWindow() {
   })
 
   mainWindow.once('ready-to-show', () => mainWindow.show())
+  // #1 通知渲染进程最大化状态（切换 最大化/还原 图标）
+  mainWindow.on('maximize', () => mainWindow?.webContents.send('window:maximize-changed', true))
+  mainWindow.on('unmaximize', () => mainWindow?.webContents.send('window:maximize-changed', false))
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)
     return { action: 'deny' }
@@ -202,6 +217,7 @@ if (!gotLock) {
   app.quit()
 } else {
   registerModelConfigIpc()
+  registerWindowIpc()
 
   app.on('second-instance', () => {
     if (mainWindow) {

@@ -47,6 +47,8 @@ ul, ol { list-style: none; }
   display: flex; flex-direction: column;
   background: var(--bg);
 }
+/* #1 桌面端无边框：侧边栏避开固定标题栏的 36px */
+.app-shell.desktop-frame .sidenav { padding-top: 36px; }
 .app-main {
   flex: 1; display: flex; justify-content: center;
   padding: 24px 24px 32px;

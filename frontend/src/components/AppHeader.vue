@@ -29,10 +29,11 @@
     </div>
 
     <div class="header-actions">
-      <button class="round-btn" title="返回" @click="back" aria-label="返回上一页">
+      <!-- 首页不显示返回按钮（#2）；设置按钮仅在纯 Web 显示，桌面端移至自定义标题栏 -->
+      <button v-if="!isHome" class="round-btn" title="返回" @click="back" aria-label="返回上一页">
         <i :class="backIcon"></i>
       </button>
-      <button class="round-btn" title="设置" @click="settings" aria-label="打开设置中心">
+      <button v-if="!isDesktop" class="round-btn" title="设置" @click="settings" aria-label="打开设置中心">
         <i class="ri-settings-3-line"></i>
       </button>
     </div>
@@ -60,6 +61,10 @@ const active    = computed(() => route.meta.tab || 'text')
 const subtitle  = computed(() => route.meta.subtitle || '文本生成 Visio 图')
 const isSidebar = computed(() => theme.layout === 'sidebar')
 const backIcon  = computed(() => (route.name === 'result' ? 'ri-arrow-go-back-line' : 'ri-arrow-left-line'))
+// #2 首页（文本/图片生成主路由）不显示返回按钮
+const isHome    = computed(() => route.name === 'text' || route.name === 'image')
+// #1 桌面端（Electron + preload 暴露 window.c2vsdx）设置按钮移至自定义标题栏
+const isDesktop = computed(() => !!(typeof window !== 'undefined' && window.c2vsdx?.minimize))
 
 // §2.3 底部滑动指示器
 const tabRefs = ref([])
@@ -101,7 +106,7 @@ function settings() { emit('open-settings') }
   background: rgba(244, 247, 250, 0.82);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
-  position: sticky; top: 0; z-index: 100;
+  position: sticky; top: var(--titlebar-h, 0px); z-index: 100;
   border-bottom: 0.6px solid transparent;
   /* 电光青微发光分割线 */
   border-image: linear-gradient(90deg, transparent, rgba(var(--tech-cyan-rgb),0.25) 50%, transparent) 1;

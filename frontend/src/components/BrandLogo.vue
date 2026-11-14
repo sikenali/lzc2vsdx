@@ -22,8 +22,9 @@ defineProps({
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary-fill);
-  color: var(--primary-on);
+  /* 去掉色块背景，仅保留强调色图标（随主题/强调色） */
+  background: transparent;
+  color: var(--primary);
   flex: none;
 }
 </style>

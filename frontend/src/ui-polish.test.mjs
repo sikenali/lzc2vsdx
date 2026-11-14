@@ -227,3 +227,43 @@ test('强调色传播：--tech-cyan 与 --tech-cyan-rgb 随 [data-accent] 变化
   const typeCard = await read('./components/TypeCard.vue')
   assert.match(typeCard, /var\(--tech-cyan\)/)   // 激活态跟随强调色
 })
+test('无边框：Electron main 设置 frame:false + 窗口控制 IPC（#1）', async () => {
+  const main = await read('../../electron/main.js')
+  const preload = await read('../../electron/preload.js')
+  assert.match(main, /frame:\s*false/)
+  assert.match(main, /ipcMain\.on\('window:minimize'/)
+  assert.match(main, /ipcMain\.on\('window:maximize-toggle'/)
+  assert.match(main, /ipcMain\.on\('window:close'/)
+  assert.match(main, /window:maximize-changed/)
+  assert.match(preload, /minimize:\s*\(\)\s*=>\s*ipcRenderer\.send\('window:minimize'\)/)
+  assert.match(preload, /onMaximizeChange/)
+  // 前端标题栏组件
+  const tb = await read('./components/WindowTitleBar.vue')
+  assert.match(tb, /-webkit-app-region:\s*drag/)
+  assert.match(tb, /no-drag/)
+  assert.match(tb, /ri-settings-3-line/)
+  assert.match(tb, /ri-subtract-line/)
+  assert.match(tb, /ri-square-line|ri-restore-line/)
+  assert.match(tb, /ri-close-line/)
+  // App 仅在桌面渲染标题栏，并为它预留 36px
+  const app = await read('./App.vue')
+  assert.match(app, /WindowTitleBar/)
+  assert.match(app, /desktop-frame/)
+  assert.match(app, /--titlebar-h:\s*36px/)
+})
+
+test('首页隐藏返回按钮 + 桌面端设置移到标题栏（#2/#1）', async () => {
+  const header = await read('./components/AppHeader.vue')
+  assert.match(header, /v-if="!isHome"/)          // 返回按钮首页隐藏
+  assert.match(header, /v-if="!isDesktop"/)       // 设置按钮仅 Web 显示
+  assert.match(header, /isHome\s*=\s*computed\(/) // 首页判断
+  assert.match(header, /isDesktop\s*=\s*computed\(/)
+})
+
+test('BrandLogo 去背景：透明底 + 强调色图标（#3）', async () => {
+  const logo = await read('./components/BrandLogo.vue')
+  assert.match(logo, /background:\s*transparent/)
+  assert.match(logo, /color:\s*var\(--primary\)/)
+  assert.doesNotMatch(logo, /--primary-fill/)
+  assert.doesNotMatch(logo, /--primary-on/)
+})

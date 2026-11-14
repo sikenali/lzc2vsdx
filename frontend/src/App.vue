@@ -1,7 +1,9 @@
 <template>
-  <div class="app-shell" :class="{ 'layout-sidebar': isSidebar }">
+  <div class="app-shell" :class="{ 'layout-sidebar': isSidebar, 'desktop-frame': isDesktop }">
     <SideNav v-if="isSidebar" />
     <div class="main-col">
+      <!-- #1 无边框：桌面端显示自定义标题栏（设置/最小化/最大化/关闭） -->
+      <WindowTitleBar v-if="isDesktop" @open-settings="showSettings = true" />
       <AppHeader @open-settings="showSettings = true" />
       <main class="app-main">
         <div class="app-container" :class="{ wide: isWide }">
@@ -35,12 +37,15 @@ import AppHeader from './components/AppHeader.vue'
 import AppFooter from './components/AppFooter.vue'
 import SettingsModal from './components/SettingsModal.vue'
 import SideNav from './components/SideNav.vue'
+import WindowTitleBar from './components/WindowTitleBar.vue'
 import { useTheme } from './stores/theme.js'
 
 const route = useRoute()
 const { theme } = useTheme()
 const isWide    = computed(() => route.name === 'result')
 const isSidebar = computed(() => theme.layout === 'sidebar')
+// #1 桌面端（Electron）渲染自定义标题栏
+const isDesktop = computed(() => !!(typeof window !== 'undefined' && window.c2vsdx?.minimize))
 const showSettings = ref(false)
 const toast     = ref({ type: 'info', message: '' })
 let timer       = null
@@ -71,6 +76,10 @@ onBeforeUnmount(() => {
 .app-shell.layout-sidebar .app-main { justify-content: stretch; padding-left: 0; padding-right: 0; }
 .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .app-container.wide { width: 100%; max-width: none; }
+
+/* #1 桌面端：为固定标题栏预留 36px，并让内容避开（顶栏 sticky 用 --titlebar-h 对齐） */
+.app-shell.desktop-frame { --titlebar-h: 36px; }
+.app-shell.desktop-frame .main-col { padding-top: var(--titlebar-h); }
 
 /* ── §9 Toast 规范（Nebula 科技风）───────────────────────── */
 .toast {
