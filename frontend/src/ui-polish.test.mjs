@@ -130,14 +130,15 @@ test('header 64px glass + glow divider + slide indicator (§2.1/§2.3)', async (
   assert.match(header, /\.nav-item\.active\s*\{[\s\S]*color:\s*var\(--tech-cyan\)/)
 })
 
-test('round buttons follow §A.4: 36×36px, hover cyan + translateY(-2px)', async () => {
+test('nav items follow §2.3 spec: cyan hover/focus lift (round-btn removed with back/settings)', async () => {
   const header = await read('./components/AppHeader.vue')
-  assert.match(header, /width:\s*36px/)
-  assert.match(header, /height:\s*36px/)
-  assert.match(header, /scale\(0\.96\)/)
+  // 导航项 hover 微上浮 + 顶部微光条
   assert.match(header, /\.nav-item:hover\s*\{[\s\S]*translateY\(-1px\)/)
-  assert.match(header, /\.round-btn:hover\s*\{[\s\S]*transform\s*:\s*translateY\(-2px\)/)
-  assert.match(header, /rgba\(var\(--tech-cyan-rgb\),\s*0\.35\)/)
+  assert.match(header, /\.nav-item:hover::before\s*\{[\s\S]*opacity:\s*1/)
+  assert.match(header, /\.nav-item:active\s*\{[\s\S]*scale\(0\.97\)/)
+  assert.match(header, /\.nav-item:focus-visible\s*\{[\s\S]*rgba\(var\(--tech-cyan-rgb\),\s*0\.3\)/)
+  // 返回/设置圆形按钮已从头部移除
+  assert.doesNotMatch(header, /\.round-btn/)
 })
 
 test('SideNav 64px + 左侧竖条发光指示器（§2.2）', async () => {
@@ -256,12 +257,18 @@ test('无边框：Electron main 设置 frame:false + 窗口控制 IPC（#1）', 
   assert.match(app, /--titlebar-h:\s*36px/)
 })
 
-test('首页隐藏返回按钮 + 桌面端设置移到标题栏（#2/#1）', async () => {
+test('AppHeader 不再显示返回/设置按钮（返回由页面内导航承担，设置移至标题栏）', async () => {
   const header = await read('./components/AppHeader.vue')
-  assert.match(header, /v-if="!isHome"/)          // 返回按钮首页隐藏
-  assert.match(header, /v-if="!isDesktop"/)       // 设置按钮仅 Web 显示
-  assert.match(header, /isHome\s*=\s*computed\(/) // 首页判断
-  assert.match(header, /isDesktop\s*=\s*computed\(/)
+  // 模板中不得再出现返回/设置按钮（round-btn），也不再依赖 isHome/isDesktop 判断
+  assert.doesNotMatch(header, /round-btn/)
+  assert.doesNotMatch(header, /ri-arrow-go-back-line|ri-arrow-left-line/)
+  assert.doesNotMatch(header, /ri-settings-3-line/)
+  assert.doesNotMatch(header, /isHome\s*=\s*computed\(/)
+  assert.doesNotMatch(header, /isDesktop\s*=\s*computed\(/)
+  assert.doesNotMatch(header, /function\s+back\s*\(/)
+  assert.doesNotMatch(header, /function\s+settings\s*\(/)
+  // 保留空占位保证标签居中
+  assert.match(header, /header-actions/)
 })
 
 test('BrandLogo 去背景：透明底 + 强调色图标（#3）', async () => {

@@ -28,15 +28,8 @@
       </nav>
     </div>
 
-    <div class="header-actions">
-      <!-- 首页不显示返回按钮（#2）；设置按钮仅在纯 Web 显示，桌面端移至自定义标题栏 -->
-      <button v-if="!isHome" class="round-btn" title="返回" @click="back" aria-label="返回上一页">
-        <i :class="backIcon"></i>
-      </button>
-      <button v-if="!isDesktop" class="round-btn" title="设置" @click="settings" aria-label="打开设置中心">
-        <i class="ri-settings-3-line"></i>
-      </button>
-    </div>
+    <!-- 返回/设置按钮已移除：设置移至自定义标题栏（桌面），返回由页面内导航承担 -->
+    <div class="header-actions" aria-hidden="true"></div>
   </header>
 </template>
 
@@ -49,7 +42,6 @@ import { useTheme } from '../stores/theme.js'
 const route = useRoute()
 const router = useRouter()
 const { theme } = useTheme()
-const emit = defineEmits(['open-settings'])
 
 // TABS 注册表（C2VSDX 两种模式，配色对应 §2.3.2 brand 色板）
 const TABS = [
@@ -60,17 +52,8 @@ const TABS = [
 const active    = computed(() => route.meta.tab || 'text')
 const subtitle  = computed(() => route.meta.subtitle || '文本生成 Visio 图')
 const isSidebar = computed(() => theme.layout === 'sidebar')
-const backIcon  = computed(() => (route.name === 'result' ? 'ri-arrow-go-back-line' : 'ri-arrow-left-line'))
-// #2 首页（文本/图片生成主路由）不显示返回按钮
-const isHome    = computed(() => route.name === 'text' || route.name === 'image')
-// #1 桌面端（Electron）设置按钮移至自定义标题栏：preload 检测 + UA 兜底
-const isDesktop = computed(() => {
-  if (typeof window === 'undefined') return false
-  if (window.c2vsdx?.minimize) return true
-  return /Electron/.test(navigator.userAgent)
-})
 
-// §2.3 底部滑动指示器
+// §2.3 底部滑动指示器（发光条跟随激活标签）
 const tabRefs = ref([])
 const indicator = ref({ x: 0, w: 0 })
 const indicatorStyle = computed(() => ({
@@ -95,9 +78,7 @@ onMounted(async () => {
   setIndicator(TABS.findIndex(t => t.key === active.value))
 })
 
-function go(path)   { router.push(path) }
-function back()     { if (window.history.length > 1) window.history.back(); else router.push('/') }
-function settings() { emit('open-settings') }
+function go(path) { router.push(path) }
 </script>
 
 <style scoped>
@@ -198,7 +179,7 @@ function settings() { emit('open-settings') }
 .nav-item:active { transform: scale(0.97); transition-duration: var(--t-snap); }
 .nav-item:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb),0.3); }
 
-/* 激活态：无背景填充，文字变电光青 + 滑条到位 */
+/* 激活态：文字变电光青 */
 .nav-item.active { color: var(--tech-cyan); font-weight: 600; }
 
 .nav-icon  { font-size: 16px; flex-shrink: 0; line-height: 1; }
@@ -210,31 +191,11 @@ function settings() { emit('open-settings') }
 .nav-item.active.color-gold .nav-icon { color: var(--tech-cyan); }
 .nav-item.active.color-blue .nav-icon { color: var(--tech-cyan); }
 
-/* ── §2.3.4 右侧圆形按钮 36×36px ─────────────────────────── */
+/* ── §2.3.4 右侧空占位（与左侧 brand 等宽，保持标签居中）──── */
 .header-actions {
-  width: 160px; display: flex; justify-content: flex-end; align-items: center; gap: 6px;
+  width: 280px; display: flex; justify-content: flex-end; align-items: center; gap: 6px;
   flex: none;
 }
-
-.round-btn {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: transparent;
-  display: inline-flex; align-items: center; justify-content: center;
-  color: var(--ink-3); font-size: 17px; border: none;
-  transition:
-    background-color var(--t-fast) var(--ease-spring),
-    color             var(--t-fast) var(--ease-spring),
-    transform         var(--t-fast) var(--ease-spring),
-    box-shadow        var(--t-fast) var(--ease-spring);
-}
-.round-btn:hover {
-  background: var(--tech-cyan);
-  color: #0A1628;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(var(--tech-cyan-rgb), 0.35);
-}
-.round-btn:active { transform: scale(0.96); transition-duration: var(--t-snap); box-shadow: none; }
-.round-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb),0.35); }
 
 @media (max-width: 1100px) {
   .header-brand, .header-actions { width: auto; }
