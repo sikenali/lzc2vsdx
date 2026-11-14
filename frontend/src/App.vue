@@ -44,8 +44,13 @@ const route = useRoute()
 const { theme } = useTheme()
 const isWide    = computed(() => route.name === 'result')
 const isSidebar = computed(() => theme.layout === 'sidebar')
-// #1 桌面端（Electron）渲染自定义标题栏
-const isDesktop = computed(() => !!(typeof window !== 'undefined' && window.c2vsdx?.minimize))
+// #1 桌面端（Electron）渲染自定义标题栏：优先 preload 暴露的 window.c2vsdx，
+// 兜底用 UA 检测 Electron（即使 preload 未加载也渲染，避免整条消失）
+const isDesktop = computed(() => {
+  if (typeof window === 'undefined') return false
+  if (window.c2vsdx?.minimize) return true
+  return /Electron/.test(navigator.userAgent)
+})
 const showSettings = ref(false)
 const toast     = ref({ type: 'info', message: '' })
 let timer       = null

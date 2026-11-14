@@ -63,8 +63,12 @@ const isSidebar = computed(() => theme.layout === 'sidebar')
 const backIcon  = computed(() => (route.name === 'result' ? 'ri-arrow-go-back-line' : 'ri-arrow-left-line'))
 // #2 首页（文本/图片生成主路由）不显示返回按钮
 const isHome    = computed(() => route.name === 'text' || route.name === 'image')
-// #1 桌面端（Electron + preload 暴露 window.c2vsdx）设置按钮移至自定义标题栏
-const isDesktop = computed(() => !!(typeof window !== 'undefined' && window.c2vsdx?.minimize))
+// #1 桌面端（Electron）设置按钮移至自定义标题栏：preload 检测 + UA 兜底
+const isDesktop = computed(() => {
+  if (typeof window === 'undefined') return false
+  if (window.c2vsdx?.minimize) return true
+  return /Electron/.test(navigator.userAgent)
+})
 
 // §2.3 底部滑动指示器
 const tabRefs = ref([])
