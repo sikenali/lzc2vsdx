@@ -237,6 +237,10 @@ test('无边框：Electron main 设置 frame:false + 窗口控制 IPC（#1）', 
   assert.match(main, /window:maximize-changed/)
   assert.match(preload, /minimize:\s*\(\)\s*=>\s*ipcRenderer\.send\('window:minimize'\)/)
   assert.match(preload, /onMaximizeChange/)
+  // preload.js 必须被打包进 asar（否则 window.c2vsdx 未暴露 → 标题栏不渲染）
+  const pkg = JSON.parse(await read('../../electron/package.json'))
+  assert.ok(pkg.build.files.includes('preload.js'), 'build.files 必须包含 preload.js')
+  assert.ok(pkg.build.files.includes('main.js'))
   // 前端标题栏组件
   const tb = await read('./components/WindowTitleBar.vue')
   assert.match(tb, /-webkit-app-region:\s*drag/)

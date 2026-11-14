@@ -94,16 +94,15 @@ onBeforeUnmount(() => {
   padding: 10px 12px 10px 14px;
   border: 0.6px solid var(--line);
   border-radius: var(--radius-sm);    /* sm = 8px */
-  background: rgba(15, 25, 40, 0.96); /* §9 深空底 */
+  background: var(--bg-card);            /* §9 跟随主题：浅色→浅卡，深色→深卡 */
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  font-size: 13px; color: #E8EEF5;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), var(--glow-xs);
+  font-size: 13px; color: var(--ink);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), var(--glow-xs);
   font-family: var(--font-display);
 }
 
 [data-theme="dark"] .toast {
-  background: rgba(10, 15, 24, 0.96);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), var(--glow-sm);
 }
 
