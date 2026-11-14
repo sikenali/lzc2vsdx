@@ -15,6 +15,7 @@
       <AppFooter />
     </div>
     <SettingsModal v-model="showSettings" />
+    <!-- §9 Toast：顶部 16px，深空毛玻璃底 -->
     <transition name="toast">
       <div v-if="toast.message" class="toast" :class="'toast-' + toast.type" role="status">
         <span class="toast-bar" :class="'toast-bar-' + toast.type"></span>
@@ -38,15 +39,16 @@ import { useTheme } from './stores/theme.js'
 
 const route = useRoute()
 const { theme } = useTheme()
-const isWide = computed(() => route.name === 'result')
+const isWide    = computed(() => route.name === 'result')
 const isSidebar = computed(() => theme.layout === 'sidebar')
 const showSettings = ref(false)
-const toast = ref({ type: 'info', message: '' })
-let timer = null
+const toast     = ref({ type: 'info', message: '' })
+let timer       = null
 
 function onToast(event) {
   const { type = 'info', message = '' } = event.detail || {}
   toast.value = { type, message }
+  /* §9 停留：success/error/warning 2.5s；info 2.0s */
   const duration = type === 'info' ? 2000 : 2500
   clearTimeout(timer)
   timer = setTimeout(() => (toast.value = { type: 'info', message: '' }), duration)
@@ -65,97 +67,59 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.app-shell.layout-sidebar {
-  flex-direction: row;
-}
+.app-shell.layout-sidebar { flex-direction: row; }
+.app-shell.layout-sidebar .app-main { justify-content: stretch; padding-left: 0; padding-right: 0; }
+.main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.app-container.wide { width: 100%; max-width: none; }
 
-.main-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.app-container.wide {
-  width: 100%;
-  max-width: none;
-}
-
+/* ── §9 Toast 规范（Nebula 科技风）───────────────────────── */
 .toast {
   position: fixed;
-  top: 20px;
+  top: 16px;                          /* §9 距顶 16px */
   left: 50%;
   transform: translateX(-50%);
   z-index: 10000;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: min(420px, 90vw);
-  min-width: 200px;
-  padding: 12px 16px 12px 18px;
-  border: 0.7px solid var(--line);
-  border-radius: 10px;
-  background: var(--bg-card);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-  font-size: 13px;
-  color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+  width: min(380px, 90vw);
+  min-width: 180px;
+  padding: 10px 12px 10px 14px;
+  border: 0.6px solid var(--line);
+  border-radius: var(--radius-sm);    /* sm = 8px */
+  background: rgba(15, 25, 40, 0.96); /* §9 深空底 */
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  font-size: 13px; color: #E8EEF5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), var(--glow-xs);
+  font-family: var(--font-display);
 }
 
-.toast-bar {
-  width: 3px;
-  height: 20px;
-  border-radius: 2px;
-  flex: none;
+[data-theme="dark"] .toast {
+  background: rgba(10, 15, 24, 0.96);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), var(--glow-sm);
 }
 
-.toast-bar-success {
-  background: var(--green);
-}
+.toast-bar { width: 3px; height: 18px; border-radius: 2px; flex: none; }
+.toast-bar-success { background: #00D4AA; }
+.toast-bar-error   { background: #FF4D6D; }
+.toast-bar-warning { background: #FFB347; }
+.toast-bar-info    { background: #4A9EFF; }
 
-.toast-bar-error {
-  background: var(--red);
-}
-
-.toast-bar-warning {
-  background: var(--orange);
-}
-
-.toast-bar-info {
-  background: var(--blue);
-}
-
-.toast-text {
-  flex: 1;
-  min-width: 0;
-}
+.toast-text { flex: 1; min-width: 0; }
 
 .toast-close {
-  width: 20px;
-  height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink-4);
-  font-size: 15px;
-  flex: none;
+  width: 26px; height: 26px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: rgba(232, 238, 245, 0.5); font-size: 14px;
+  border-radius: 50%; flex: none;
+  transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
+.toast-close:hover { color: #E8EEF5; background: rgba(255, 255, 255, 0.1); }
+.toast-close:active { transform: scale(0.93); transition-duration: var(--t-snap); }
 
-.toast-close:hover {
-  color: var(--ink);
+/* §9 入场/离场：translateY(-8px)→0 / translateY(-6px)，200ms */
+.toast-enter-active, .toast-leave-active {
+  transition: opacity var(--t-base), transform var(--t-base);
 }
-
-.toast-enter-active,
-.toast-leave-active {
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.toast-enter-from,
-.toast-leave-to {
-  opacity: 0;
-  transform: translate(-50%, -8px);
-}
-
-.toast-enter-from {
-  transform: translate(-50%, -12px);
-}
+.toast-enter-from { opacity: 0; transform: translate(-50%, -8px); }
+.toast-leave-to   { opacity: 0; transform: translate(-50%, -6px); }
 </style>

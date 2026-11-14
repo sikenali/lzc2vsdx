@@ -40,118 +40,80 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 </script>
 
 <style scoped>
-.about-view {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+.about-view { display: flex; flex-direction: column; gap: 14px; }
 
-/* ---- 通用卡片 ---- */
+/* ---- 通用卡片（深空玻璃底适配） ---- */
 .about-card {
-  background: var(--bg-card);
-  border: 0.7px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.6px solid rgba(0, 212, 170, 0.12);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
 }
 
 .card-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 600;
+  color: #E8EEF5; margin-bottom: 14px;
+  font-family: var(--font-display);
 }
-
 .card-title::before {
-  content: '';
-  width: 5px;
-  height: 18px;
-  border-radius: 2px;
-  background: var(--primary);
-  flex: none;
+  content: ''; width: 4px; height: 16px; border-radius: 2px;
+  background: var(--tech-cyan); flex: none;
+  box-shadow: 0 0 6px rgba(0, 212, 170, 0.35);
 }
 
 /* ---- 品牌区 ---- */
 .about-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 36px 24px 28px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 28px 20px 22px;
 }
 
 .about-name {
-  font-size: 30px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--ink);
-  margin-top: 18px;
+  font-size: 24px; font-weight: 700; letter-spacing: 0.02em;
+  color: #E8EEF5; margin-top: 14px;
+  font-family: var(--font-display);
 }
 
 .about-version {
-  margin-top: 8px;
-  padding: 3px 12px;
-  border-radius: 9999px;
-  border: 0.7px solid var(--line);
-  background: var(--bg-soft);
-  color: var(--ink-3);
-  font-size: 13px;
-  font-weight: 500;
+  margin-top: 8px; padding: 2px 12px; border-radius: 9999px;
+  border: 0.6px solid rgba(0, 212, 170, 0.25);
+  background: rgba(0, 212, 170, 0.08);
+  color: var(--tech-cyan); font-size: 12px; font-weight: 500;
+  font-family: var(--font-mono);
 }
 
 .about-desc {
-  margin-top: 14px;
-  font-size: 15px;
-  color: var(--ink-3);
-  line-height: 1.6;
+  margin-top: 12px; font-size: 13px;
+  color: rgba(232, 238, 245, 0.6); line-height: 1.6;
 }
 
 /* ---- 技术栈 ---- */
-.about-tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+.about-tech { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .tech-chip {
-  display: inline-flex;
-  align-items: center;
-  height: 32px;
-  padding: 0 14px;
-  border-radius: var(--radius-btn);
-  border: 0.7px solid var(--line);
-  background: var(--bg-soft);
-  color: var(--ink-2);
-  font-size: 13px;
-  font-weight: 500;
+  display: inline-flex; align-items: center; height: 30px;
+  padding: 0 12px; border-radius: var(--radius-sm);
+  border: 0.6px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(232, 238, 245, 0.75);
+  font-size: 12px; font-weight: 500;
+  font-family: var(--font-mono);
 }
 
 /* ---- 仓库链接 ---- */
 .about-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--primary);
-  font-size: 14px;
-  font-weight: 500;
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--tech-cyan); font-size: 13px; font-weight: 500;
+  font-family: var(--font-display);
   text-decoration: none;
-  transition: opacity 0.15s ease;
+  transition: opacity var(--t-fast) ease;
 }
-
-.about-link:hover {
-  opacity: 0.8;
-}
-
-.about-link i {
-  font-size: 16px;
-}
+.about-link:hover { opacity: 0.75; }
+.about-link i { font-size: 15px; }
 
 /* ---- 版权行 ---- */
 .about-copyright {
-  text-align: center;
-  font-size: 13px;
-  color: var(--ink-5);
+  text-align: center; font-size: 12px;
+  color: rgba(232, 238, 245, 0.35);
 }
 </style>

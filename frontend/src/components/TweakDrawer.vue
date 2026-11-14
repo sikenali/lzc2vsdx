@@ -5,7 +5,7 @@
         <p class="drawer-title">在线微调</p>
         <p class="drawer-sub">修改节点文字与连线，保存后重新布局</p>
       </div>
-      <button class="close-btn" @click="$emit('close')"><i class="ri-close-line"></i></button>
+      <button class="close-btn" @click="$emit('close')" aria-label="关闭"><i class="ri-close-line"></i></button>
     </div>
 
     <div class="drawer-body">
@@ -20,7 +20,9 @@
           <option value="diamond">菱形</option>
           <option value="stadium">胶囊</option>
         </select>
-        <button class="icon-btn danger" @click="removeNode(index)"><i class="ri-delete-bin-line"></i></button>
+        <button class="icon-btn danger" @click="removeNode(index)" aria-label="删除节点">
+          <i class="ri-delete-bin-line"></i>
+        </button>
       </div>
 
       <div class="group-head edge-head">
@@ -29,19 +31,22 @@
       </div>
       <div class="edge-row" v-for="(edge, index) in edges" :key="index">
         <select v-model="edge.source" class="mini-select">
-          <option v-for="node in nodes" :key="node.id" :value="node.id">{{ node.label || node.id }}</option>
+          <option v-for="n in nodes" :key="n.id" :value="n.id">{{ n.label || n.id }}</option>
         </select>
         <span class="arrow">→</span>
         <select v-model="edge.target" class="mini-select">
-          <option v-for="node in nodes" :key="node.id" :value="node.id">{{ node.label || node.id }}</option>
+          <option v-for="n in nodes" :key="n.id" :value="n.id">{{ n.label || n.id }}</option>
         </select>
         <input v-model="edge.label" class="mini-input edge-label-input" maxlength="8" placeholder="标签" />
-        <button class="icon-btn danger" @click="removeEdge(index)"><i class="ri-delete-bin-line"></i></button>
+        <button class="icon-btn danger" @click="removeEdge(index)" aria-label="删除连线">
+          <i class="ri-delete-bin-line"></i>
+        </button>
       </div>
     </div>
 
     <div class="drawer-footer">
       <button class="btn-ghost" @click="$emit('close')">取消</button>
+      <!-- A.11: handler 内守卫，不灰置 -->
       <button class="btn-primary save-btn" @click="save">
         <i class="ri-refresh-line"></i>
         <span>{{ saving ? '保存中…' : '保存并重新生成' }}</span>
@@ -54,181 +59,121 @@
 import { ref } from 'vue'
 import { toast } from '../utils/toast'
 
-const props = defineProps({
-  data: { type: Object, required: true },
-  saving: { type: Boolean, default: false },
-})
-const emit = defineEmits(['close', 'save'])
+const props = defineProps({ data: Object, saving: { type: Boolean, default: false } })
+const emit  = defineEmits(['close', 'save'])
 
-const nodes = ref((props.data.nodes || []).map((n) => ({ ...n })))
-const edges = ref((props.data.edges || []).map((e) => ({ ...e })))
+const nodes = ref((props.data.nodes || []).map(n => ({ ...n })))
+const edges = ref((props.data.edges || []).map(e => ({ ...e })))
 let customSeq = 0
 
 function addNode() {
   customSeq += 1
-  nodes.value.push({
-    id: `custom${Date.now()}_${customSeq}`,
-    label: '新节点',
-    shape: 'rectangle',
-  })
+  nodes.value.push({ id: `custom${Date.now()}_${customSeq}`, label: '新节点', shape: 'rectangle' })
 }
-
-function removeNode(index) {
-  const [removed] = nodes.value.splice(index, 1)
-  edges.value = edges.value.filter((e) => e.source !== removed.id && e.target !== removed.id)
+function removeNode(i) {
+  const [r] = nodes.value.splice(i, 1)
+  edges.value = edges.value.filter(e => e.source !== r.id && e.target !== r.id)
 }
-
 function addEdge() {
   if (nodes.value.length < 2) return
   edges.value.push({ source: nodes.value[0].id, target: nodes.value[1].id, label: '' })
 }
-
-function removeEdge(index) {
-  edges.value.splice(index, 1)
-}
-
+function removeEdge(i) { edges.value.splice(i, 1) }
 function save() {
-  if (props.saving) {
-    toast('info', '进行中请稍候')
-    return
-  }
+  if (props.saving) { toast('info', '进行中请稍候'); return }
   emit('save', { nodes: nodes.value, edges: edges.value })
 }
 </script>
 
 <style scoped>
 .drawer {
-  position: fixed;
-  top: 72px;
-  right: 0;
-  bottom: 58px;
-  width: 460px;
-  max-width: 92vw;
-  background: #fff;
-  border-left: 0.7px solid var(--line);
-  box-shadow: -12px 0 32px rgba(31, 29, 26, 0.08);
-  z-index: 40;
-  display: flex;
-  flex-direction: column;
+  position: fixed; top: 64px; right: 0; bottom: 48px;
+  width: 420px; max-width: 92vw;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  border-left: 0.6px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  z-index: 40; display: flex; flex-direction: column;
+}
+
+[data-theme="dark"] .drawer {
+  background: rgba(15, 22, 35, 0.95);
+  border-left-color: rgba(0, 212, 170, 0.12);
 }
 
 .drawer-header {
-  padding: 20px 24px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 16px 20px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  border-bottom: 0.6px solid var(--line);
 }
 
 .drawer-title {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px; font-weight: 600; color: var(--ink);
+  font-family: var(--font-display);
 }
-
-.drawer-sub {
-  margin-top: 4px;
-  font-size: 12px;
-  color: var(--ink-4);
-}
+.drawer-sub { margin-top: 3px; font-size: 12px; color: var(--ink-4); }
 
 .close-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 9999px;
-  background: var(--bg-soft);
-  color: var(--ink-3);
-  font-size: 16px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg-soft); color: var(--ink-3); font-size: 15px;
+  border: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--t-fast) var(--ease-spring), color var(--t-fast) ease;
 }
+.close-btn:hover { background: rgba(0, 212, 170, 0.12); color: var(--tech-cyan); }
 
-.drawer-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 18px 24px;
-}
+.drawer-body { flex: 1; overflow-y: auto; padding: 14px 20px; }
 
 .group-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-2);
-  margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px;
+  font-family: var(--font-display);
 }
-
-.edge-head {
-  margin-top: 22px;
-}
+.edge-head { margin-top: 18px; }
 
 .mini-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: var(--red);
+  display: inline-flex; align-items: center; gap: 4px; font-size: 11px;
+  color: var(--tech-cyan); border: none; background: transparent; cursor: pointer;
+  transition: opacity var(--t-fast) ease;
+}
+.mini-btn:hover { opacity: 0.75; }
+
+.node-row, .edge-row {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
 }
 
-.node-row,
-.edge-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+.mini-input, .mini-select {
+  height: 32px; border-radius: var(--radius-sm);
+  border: 0.6px solid var(--line); background: var(--bg-soft);
+  padding: 0 8px; font-size: 12px; min-width: 0; color: var(--ink-2);
+  transition: border-color var(--t-fast) ease, box-shadow var(--t-fast) ease;
 }
+.mini-input:focus, .mini-select:focus {
+  border-color: var(--tech-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.15);
+  outline: none;
+}
+.mini-input { flex: 1; }
+.mini-select { width: 80px; }
+.edge-label-input { flex: none; width: 68px; }
 
-.mini-input,
-.mini-select {
-  height: 34px;
-  border-radius: 8px;
-  border: 0.7px solid var(--line);
-  background: var(--bg-footer);
-  padding: 0 10px;
-  font-size: 13px;
-  min-width: 0;
-}
-
-.mini-input {
-  flex: 1;
-}
-
-.mini-select {
-  width: 86px;
-}
-
-.edge-label-input {
-  flex: none;
-  width: 74px;
-}
-
-.arrow {
-  color: var(--ink-4);
-  font-size: 13px;
-}
+.arrow { color: var(--ink-4); font-size: 12px; }
 
 .icon-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: var(--bg-soft);
-  color: var(--ink-4);
-  flex: none;
+  width: 28px; height: 28px; border-radius: var(--radius-sm);
+  background: var(--bg-soft); color: var(--ink-4); border: none;
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
-
-.icon-btn.danger:hover {
-  color: var(--red);
-}
+.icon-btn.danger:hover { background: rgba(255, 77, 109, 0.1); color: var(--tech-coral); }
 
 .drawer-footer {
-  padding: 14px 24px;
-  border-top: 1px solid var(--line-soft);
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  padding: 12px 20px;
+  border-top: 0.6px solid var(--line);
+  display: flex; justify-content: flex-end; gap: 8px;
 }
 
-.save-btn {
-  height: 44px;
-  padding: 0 20px;
-  font-size: 14px;
-}
+.save-btn { height: 38px; padding: 0 18px; font-size: 13px; }
 </style>

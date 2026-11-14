@@ -1,150 +1,263 @@
+/* =====================================================================
+   tokens.css — DESIGN-1 Nebula（星云科技风）令牌
+   ---------------------------------------------------------------------
+   §1  电光青 #00D4AA 主强调 / 霓虹珊瑚 / 赛博金 / 琉璃蓝
+   §1  圆角体系：xs=4 / sm=8 / md=12 / lg=16 / xl=20 / full=9999
+   §1.4 glow 阴影 + 常规阴影
+   §11.2 snap=80ms / fast=120ms / base=180ms / slow=280ms
+   ===================================================================== */
+
 :root {
-  --bg: #faf7f2;
-  --bg-card: #ffffff;
-  --bg-soft: #f7f3ea;
-  --bg-footer: #fcfbf8;
-  --ink: #1f1d1a;
-  --ink-2: #3a3a3a;
-  --ink-3: #6e6a60;
-  --ink-4: #8a8578;
-  --ink-5: #a7a296;
-  --ink-6: #c9c2b4;
-  --line: #e5dfd3;
-  --line-soft: #ede9e0;
+  /* ── §7 Light（Parchment 兼容层 + 科技点缀）────────────────── */
+  --tech-cyan:      #00D4AA;
+  --tech-blue:      #4A9EFF;
+  --tech-coral:     #FF4D6D;
+  --tech-gold:      #FFB347;
 
-  /* Accent primary (default: 朱红 red). Driven by [data-accent] below. */
-  --primary: #c0392b;
-  --primary-soft: #fbe9e7;
-  --primary-deep: #a33a2e;
-  --btn-shadow: rgba(192, 57, 43, 0.24);
-  /* Solid-fill pair: --primary-fill is the background of solid buttons/badges,
-     --primary-on is the text/icon on top of it. Light: fill = primary, on = white.
-     Dark overrides below deepen the fill so --primary-on stays ≥4.5:1. */
-  --primary-fill: var(--primary);
-  --primary-on: #FFFFFF;
+  --color-primary:       var(--tech-cyan);
+  --color-primary-deep:  #0A6B5A;
+  --color-primary-soft:  #E8FFF8;
+  --color-on-primary:    #0A1628;
 
-  --green: #4e9b7a;
-  --green-ink: #3e8a6b;
-  --green-soft: #e4f0ea;
-  --orange: #f39c12;
-  --orange-soft: #fef5e7;
-  --gold: #d3a93f;
-  --gold-soft: #f7eee0;
-  --blue: #4a72a8;
-  --blue-soft: #e8f0f8;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-  --radius-card: 14px;
-  --radius-item: 14px;
-  --radius-btn: 12px;
-  --font: "Noto Sans SC", "Source Han Sans SC", "Source Han Sans", "PingFang SC",
-    "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --primary:      var(--tech-cyan);
+  --primary-soft: #E8FFF8;
+  --primary-deep: #0A6B5A;
+  --btn-shadow:   rgba(0, 212, 170, 0.28);
+  --primary-fill: var(--tech-cyan);
+  --primary-on:   #0A1628;
 
-  /* Accent aliases: --red* track the active accent (--primary*). */
-  --red: var(--primary);
+  --color-bg-main:        #F4F7FA;
+  --color-bg-secondary:   #EEF2F7;
+  --color-bg-card:        #FFFFFF;
+  --color-bg-white:       #FFFFFF;
+  --color-bg-footer:      rgba(244, 247, 250, 0.85);
+  --bg-rgb:               244, 247, 250;
+
+  --color-text-primary:   #0D1B2A;
+  --color-text-body:      #1A2A3A;
+  --color-text-secondary: #4A5568;
+  --color-text-muted:     #718096;
+  --color-text-faint:     #A0AEC0;
+
+  --color-border:         #D4DEEB;
+  --color-border-soft:    #E8EDF4;
+  --color-border-hover:   #B8C5D6;
+
+  --color-success:        #00A878;
+  --color-success-soft:   #E6FFF4;
+  --color-info:           #4A9EFF;
+  --color-info-soft:      #EBF4FF;
+  --color-warning:        #E8960C;
+  --color-warning-soft:   #FFF8E6;
+  --color-error:          #FF4D6D;
+  --color-error-soft:     #FFF0F3;
+
+  /* brand 色板（§2.3.2）*/
+  --brand-red:     #FF4D6D;
+  --brand-gold:    #FFB347;
+  --brand-green:   #00A878;
+  --brand-blue:    #4A9EFF;
+
+  /* §1.4 常规阴影 */
+  --shadow-xs:   0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md:   0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-xl:   0 12px 40px rgba(0, 0, 0, 0.12);
+
+  /* §1.4 glow 阴影（电光青） */
+  --glow-xs:   0 2px 8px rgba(0, 212, 170, 0.08);
+  --glow-sm:   0 4px 20px rgba(0, 212, 170, 0.12);
+  --glow-md:   0 8px 32px rgba(0, 212, 170, 0.18);
+  --glow-lg:   0 12px 48px rgba(0, 212, 170, 0.25);
+
+  /* ── §11.2 动效变量 ─────────────────────────────────────── */
+  --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-snap:  80ms;
+  --t-fast:  120ms;
+  --t-base:  180ms;
+  --t-slow:  280ms;
+  --t-modal: 200ms;
+
+  /* ── 字体族 ─────────────────────────────────────────────── */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-cn: 'SourceHanSans SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-family-en: var(--font-body);
+  --font: var(--font-body);
+
+  /* ── 语义别名 ───────────────────────────────────────────── */
+  --bg:        var(--color-bg-main);
+  --bg-card:   var(--color-bg-card);
+  --bg-soft:   var(--color-bg-secondary);
+  --bg-footer: var(--color-bg-footer);
+
+  --ink:    var(--color-text-primary);
+  --ink-2:  var(--color-text-body);
+  --ink-3:  var(--color-text-secondary);
+  --ink-4:  var(--color-text-muted);
+  --ink-5:  var(--color-text-faint);
+  --ink-6:  var(--color-border-hover);
+
+  --line:      var(--color-border);
+  --line-soft: var(--color-border-soft);
+
+  --green:      var(--color-success);
+  --green-ink:  #008A62;
+  --green-soft: var(--color-success-soft);
+  --orange:     var(--tech-gold);
+  --orange-soft:var(--color-warning-soft);
+  --gold:       var(--tech-gold);
+  --gold-soft:  #FFF8E6;
+  --blue:       var(--tech-blue);
+  --blue-soft:  #EBF4FF;
+
+  /* 兼容别名：旧代码 --red 引用主强调色 */
+  --red:      var(--primary);
   --red-soft: var(--primary-soft);
-  --red-2: var(--primary-deep);
-  --shadow-btn: 0 8px 20px var(--btn-shadow);
+
+  /* ── §1 圆角体系 ─────────────────────────────────────────── */
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-full: 9999px;
+
+  /* 兼容别名 */
+  --radius-card: var(--radius-md);
+  --radius-item: var(--radius-md);
+  --radius-btn:  var(--radius-sm);
 }
 
-/* Accent palettes (DESIGN §6.3): swap --primary* + --btn-shadow per accent. */
+/* ── §6.3 Accent palettes（Nebula 五色）────────────────────── */
+[data-accent="cyan"] {
+  --primary: #00D4AA; --primary-soft: #E8FFF8; --primary-deep: #0A6B5A;
+  --btn-shadow: rgba(0,212,170,0.28); --primary-fill: #00D4AA; --primary-on: #0A1628;
+}
 [data-accent="gold"] {
-  --primary: #d3a93f;
-  --primary-soft: #f7eee0;
-  --primary-deep: #a8842c;
-  --btn-shadow: rgba(211, 169, 63, 0.24);
-  --primary-on: #1F1D1A;
+  --primary: #FFB347; --primary-soft: #FFF8E6; --primary-deep: #C67A10;
+  --btn-shadow: rgba(255,179,71,0.28); --primary-fill: #FFB347; --primary-on: #0A1628;
 }
-
 [data-accent="green"] {
-  --primary: #3e8c6e;
-  --primary-soft: #e4f0ea;
-  --primary-deep: #2f6e54;
-  --btn-shadow: rgba(62, 140, 110, 0.24);
+  --primary: #00A878; --primary-soft: #E6FFF4; --primary-deep: #008A62;
+  --btn-shadow: rgba(0,168,120,0.28); --primary-fill: #00A878; --primary-on: #0A1628;
 }
-
 [data-accent="blue"] {
-  --primary: #4a72a8;
-  --primary-soft: #e8f0f8;
-  --primary-deep: #3a5c96;
-  --btn-shadow: rgba(74, 114, 168, 0.24);
+  --primary: #4A9EFF; --primary-soft: #EBF4FF; --primary-deep: #2D7FD9;
+  --btn-shadow: rgba(74,158,255,0.28); --primary-fill: #4A9EFF; --primary-on: #0A1628;
+}
+[data-accent="coral"] {
+  --primary: #FF4D6D; --primary-soft: #FFF0F3; --primary-deep: #D13A56;
+  --btn-shadow: rgba(255,77,109,0.28); --primary-fill: #FF4D6D; --primary-on: #0A1628;
 }
 
-[data-accent="ink"] {
-  --primary: #2f3640;
-  --primary-soft: #e9ebee;
-  --primary-deep: #1c2128;
-  --btn-shadow: rgba(47, 54, 64, 0.24);
-}
-
-/* Dark (墨夜) palette — DESIGN §7, verbatim. Overrides bg/ink/line + soft variants. */
+/* ── §7 Dark（TechDark 深空科技风）─────────────────────────── */
 [data-theme="dark"] {
-  --bg: #17171A;
-  --bg-card: #232324;
-  --bg-soft: #1C1C1F;
-  --bg-footer: #232324;
-  --ink: #F2F3F5;
-  --ink-2: #DDE0E6;
-  --ink-3: #C9CDD4;
-  --ink-4: #A7AEB9;
-  --ink-5: #86909C;
-  --ink-6: #3A3B3F;
-  --line: #2A2B2E;
-  --line-soft: #2A2B2E;
+  --tech-cyan:  #00F5C8;
+  --tech-blue:  #6BB3FF;
+  --tech-coral: #FF6B85;
+  --tech-gold:  #FFCC66;
 
-  /* Soft backgrounds darken so they stay legible on #17171A (DESIGN §7). */
-  --primary-soft: #3A2323;
-  --green-soft: #1A3A2A;
-  --orange-soft: #3A2A1A;
-  --gold-soft: #3A3018;
-  --blue-soft: #1A2A3A;
+  --color-primary:       var(--tech-cyan);
+  --color-primary-deep:  #00B89A;
+  --color-primary-soft:  #0A2A25;
+  --color-on-primary:    #0A1628;
 
-  /* Solid fills deepen in dark so --primary-on (white) stays ≥4.5:1.
-     --primary itself stays bright for surface-emphasis text. */
-  --primary-fill: #C0392B;
-  --primary-on: #FFFFFF;
+  --primary:      var(--tech-cyan);
+  --primary-soft: #0A2A25;
+  --primary-deep: #00B89A;
+  --btn-shadow:   rgba(0, 245, 200, 0.32);
+  --primary-fill: var(--tech-cyan);
+  --primary-on:   #0A1628;
+
+  --color-bg-main:        #0A0F18;
+  --color-bg-secondary:   #0F1623;
+  --color-bg-card:        #151D2C;
+  --color-bg-white:       #151D2C;
+  --color-bg-footer:      rgba(15, 22, 35, 0.92);
+  --bg-rgb:               15, 22, 35;
+
+  --color-text-primary:   #E8EEF5;
+  --color-text-body:      #C8D3E0;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted:     #64748B;
+  --color-text-faint:     #475569;
+
+  --color-border:         #1E2A3A;
+  --color-border-soft:    #162030;
+  --color-border-hover:   #2A3A50;
+
+  --color-success:        #00D4AA;
+  --color-success-soft:   #0A2A22;
+  --color-info:           #6BB3FF;
+  --color-info-soft:      #0C1A2E;
+  --color-warning:        #FFB347;
+  --color-warning-soft:   #1E1508;
+  --color-error:          #FF6B85;
+  --color-error-soft:     #1E0C12;
+
+  --brand-red:     #FF6B85;
+  --brand-gold:    #FFCC66;
+  --brand-green:   #00D4AA;
+  --brand-blue:    #6BB3FF;
+
+  --shadow-xs:  0 1px 3px rgba(0, 0, 0, 0.50);
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.50);
+  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.60);
+  --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.70);
+  --shadow-xl:  0 12px 40px rgba(0, 0, 0, 0.80);
+
+  --glow-xs:  0 2px 8px rgba(0, 245, 200, 0.12);
+  --glow-sm:  0 4px 20px rgba(0, 245, 200, 0.18);
+  --glow-md:  0 8px 32px rgba(0, 245, 200, 0.25);
+  --glow-lg:  0 12px 48px rgba(0, 245, 200, 0.35);
+
+  --bg:        var(--color-bg-main);
+  --bg-card:   var(--color-bg-card);
+  --bg-soft:   var(--color-bg-secondary);
+  --bg-footer: var(--color-bg-footer);
+
+  --ink:    var(--color-text-primary);
+  --ink-2:  var(--color-text-body);
+  --ink-3:  var(--color-text-secondary);
+  --ink-4:  var(--color-text-muted);
+  --ink-5:  var(--color-text-faint);
+  --ink-6:  var(--color-border-hover);
+
+  --line:      var(--color-border);
+  --line-soft: var(--color-border-soft);
+
+  --green-soft:  var(--color-success-soft);
+  --orange-soft: var(--color-warning-soft);
+  --gold-soft:   #1E1508;
+  --blue-soft:   #0C1A2E;
+
+  --red:      var(--primary);
+  --red-soft: var(--primary-soft);
 }
 
-/* Dark-mode accent overrides (DESIGN §7 / §2.3.2): brighten each accent so
-   text/icon contrast stays ≥4.5:1 on the #17171A dark background. Placed
-   AFTER both [data-theme="dark"] and the per-accent light blocks so the
-   dark+accent combination wins the cascade. `--primary-deep` maps to the
-   bright accent so `--red-2` stays ≥4.5:1 on dark. */
-[data-theme="dark"][data-accent="red"] {
-  --primary: #E05050;
-  --primary-soft: #3A2323;
-  --primary-deep: #E05050;
-  --btn-shadow: rgba(224, 80, 80, 0.24);
+/* ── §7 Dark 强调色覆写 ────────────────────────────────────── */
+[data-theme="dark"][data-accent="cyan"] {
+  --primary: #00F5C8; --primary-soft: #0A2A25; --primary-deep: #00B89A;
+  --btn-shadow: rgba(0,245,200,0.32); --primary-fill: #00F5C8; --primary-on: #0A1628;
 }
-
 [data-theme="dark"][data-accent="gold"] {
-  --primary: #E0B84A;
-  --primary-soft: #3A3018;
-  --primary-deep: #E0B84A;
-  --btn-shadow: rgba(224, 184, 74, 0.24);
-  --primary-fill: #D3A93F;
-  --primary-on: #1F1D1A;
+  --primary: #FFCC66; --primary-soft: #1E1508; --primary-deep: #FFCC66;
+  --btn-shadow: rgba(255,204,102,0.32); --primary-fill: #FFCC66; --primary-on: #0A1628;
 }
-
 [data-theme="dark"][data-accent="green"] {
-  --primary: #5CB98C;
-  --primary-soft: #1A3A2A;
-  --primary-deep: #5CB98C;
-  --btn-shadow: rgba(92, 185, 140, 0.24);
-  --primary-fill: #3E8C6E;
+  --primary: #00D4AA; --primary-soft: #0A2A22; --primary-deep: #00D4AA;
+  --btn-shadow: rgba(0,212,170,0.28); --primary-fill: #00D4AA; --primary-on: #0A1628;
 }
-
 [data-theme="dark"][data-accent="blue"] {
-  --primary: #82AEDD;
-  --primary-soft: #1A2A3A;
-  --primary-deep: #82AEDD;
-  --btn-shadow: rgba(130, 174, 221, 0.24);
-  --primary-fill: #4A72A8;
+  --primary: #6BB3FF; --primary-soft: #0C1A2E; --primary-deep: #6BB3FF;
+  --btn-shadow: rgba(107,179,255,0.32); --primary-fill: #6BB3FF; --primary-on: #0A1628;
 }
-
-[data-theme="dark"][data-accent="ink"] {
-  --primary: #C9CDD4;
-  --primary-soft: #2A2B2E;
-  --primary-deep: #C9CDD4;
-  --btn-shadow: rgba(201, 205, 212, 0.24);
-  --primary-fill: #3A3B3F;
+[data-theme="dark"][data-accent="coral"] {
+  --primary: #FF6B85; --primary-soft: #1E0C12; --primary-deep: #FF6B85;
+  --btn-shadow: rgba(255,107,133,0.32); --primary-fill: #FF6B85; --primary-on: #0A1628;
 }

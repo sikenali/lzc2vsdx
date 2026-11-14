@@ -12,7 +12,8 @@ test('normalizeTheme 回退非法输入到默认', () => {
 
 test('ACCENTS 含 5 色且字段齐全', () => {
   const keys = Object.keys(ACCENTS)
-  assert.deepEqual(keys, ['red', 'gold', 'green', 'blue', 'ink'])
+  // DESIGN-1 §6.3：电光青/赛博金/玉绿/琉璃蓝/霓虹珊瑚
+  assert.deepEqual(keys, ['cyan', 'gold', 'green', 'blue', 'coral'])
   for (const k of keys) for (const f of ['name', 'color', 'soft', 'on', 'deep'])
     assert.ok(ACCENTS[k][f], `${k}.${f} 缺失`)
 })
@@ -40,7 +41,8 @@ test('setMode 持久化并应用到 DOM，非法值回退默认', () => {
     const { setMode } = useTheme()
     setMode('dark')
     assert.equal(attrs['data-theme'], 'dark')
-    assert.equal(attrs['data-accent'], 'red')
+    // Nebula 默认强调色为 cyan
+    assert.equal(attrs['data-accent'], 'cyan')
     assert.equal(JSON.parse(persisted['c2vsdx:theme']).mode, 'dark')
 
     setMode('banana')
@@ -55,8 +57,10 @@ test('setMode 持久化并应用到 DOM，非法值回退默认', () => {
 test('tokens 提供深色与强调色变量', async () => {
   const css = await (await import('node:fs/promises')).readFile(new URL('./styles/tokens.css', import.meta.url), 'utf8')
   assert.match(css, /\[data-theme="dark"\]/)
-  assert.match(css, /\[data-accent="gold"\]/)
-  assert.match(css, /--red:\s*var\(--primary\)/)
+  assert.match(css, /\[data-accent="cyan"\]/)
+  // DESIGN-1：tech-cyan 主强调（深色更亮 #00F5C8）
+  assert.match(css, /--tech-cyan:\s*#00D4AA/)
+  assert.match(css, /\[data-theme="dark"\][\s\S]*--tech-cyan:\s*#00F5C8/)
 })
 
 test('模块初始化时按持久化主题应用 data-theme/data-accent（boot 路径）', async () => {
