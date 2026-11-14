@@ -171,10 +171,11 @@ test('SettingsModal 88vw/86vh/max 1100 + 40px 图标圆（§A.10/§5.2）', asyn
   assert.match(sm, /\.settings-nav-accent/)
 })
 
-test('UiModal 深空毛玻璃底 + scale 入场（§8.1）', async () => {
+test('UiModal 深空毛玻璃底（仅 dark）+ scale 入场（§8.1）', async () => {
   const modal = await read('./components/UiModal.vue')
-  assert.match(modal, /rgba\(10,\s*22,\s*40,\s*0\.92\)/)
-  assert.match(modal, /inset\s*0\s*1px\s*0\s*rgba\(0,\s*212,\s*170,\s*0\.08\)/)
+  // 浅色主题：浅色表面（修复规范矛盾）；深色主题：深空玻璃底
+  assert.match(modal, /background:\s*var\(--bg-card\)/)
+  assert.match(modal, /\[data-theme="dark"\][\s\S]*rgba\(10,\s*22,\s*40,\s*0\.9[0-9]\)/)
   assert.match(modal, /scale\(0\.97\)/)
   assert.match(modal, /default:\s*14/)       // radius 14px
 })

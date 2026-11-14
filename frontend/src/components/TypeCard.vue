@@ -1,7 +1,7 @@
 <template>
   <button class="type-card" :class="{ active }" @click="$emit('select', item.key)">
-    <span class="type-icon" :style="{ background: active ? '#fff' : item.iconBg }">
-      <i :class="item.icon" :style="{ color: item.iconColor }"></i>
+    <span class="type-icon" :style="{ background: active ? 'var(--primary)' : item.iconBg }">
+      <i :class="item.icon" :style="{ color: active ? 'var(--primary-on)' : item.iconColor }"></i>
     </span>
     <span class="type-texts">
       <span class="type-title">{{ item.title }}</span>
@@ -22,32 +22,37 @@ defineEmits(['select'])
 </script>
 
 <style scoped>
+/* DESIGN-1 §A.7 邻近组件规范：12px 圆角、0.6px 边框、token 驱动 */
 .type-card {
   width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px;
-  border-radius: 14px;
-  background: #fff;
-  border: 0.7px solid var(--line);
+  padding: 14px;
+  border-radius: var(--radius-md);       /* md = 12px */
+  background: var(--bg-card);
+  border: 0.6px solid var(--line);
   text-align: left;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background var(--t-fast) var(--ease-smooth),
+              border-color var(--t-fast) var(--ease-smooth),
+              box-shadow var(--t-fast) var(--ease-smooth);
 }
 
 .type-card:hover {
-  border-color: #d9d2c2;
+  border-color: rgba(0, 212, 170, 0.3);
+  box-shadow: var(--glow-xs);
 }
 
 .type-card.active {
-  background: var(--red-soft);
-  border-color: var(--red);
+  background: rgba(0, 212, 170, 0.06);
+  border-color: var(--tech-cyan);
+  box-shadow: var(--glow-xs);
 }
 
 .type-icon {
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -64,13 +69,14 @@ defineEmits(['select'])
 }
 
 .type-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--ink);
+  font-family: var(--font-display);
 }
 
 .type-card.active .type-title {
-  color: var(--red);
+  color: var(--tech-cyan);
   font-weight: 600;
 }
 
@@ -84,17 +90,20 @@ defineEmits(['select'])
   height: 18px;
   border-radius: 9999px;
   border: 1.3px solid var(--line);
-  background: var(--bg-card);
-  color: var(--primary-on);
+  background: transparent;
+  color: transparent;
   font-size: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: none;
+  transition: background var(--t-fast) ease, border-color var(--t-fast) ease;
 }
 
 .check-badge.active {
   border: none;
-  background: var(--primary-fill);
+  background: var(--tech-cyan);
+  color: #0A1628;
+  box-shadow: 0 0 8px rgba(0, 212, 170, 0.4);
 }
 </style>

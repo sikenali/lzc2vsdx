@@ -77,7 +77,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .ui-modal-overlay {
-  position: fixed; inset: 0; z-index: 90;
+  position: fixed; inset: 0; z-index: 1000;   /* 高于顶栏(100)，低于 Toast(10000) */
   display: flex; align-items: center; justify-content: center;
   background: rgba(0, 0, 0, 0.55);          /* §8.1 深色遮罩 */
   backdrop-filter: blur(4px);
@@ -87,17 +87,15 @@ onBeforeUnmount(() => {
 
 .ui-modal-panel {
   display: flex; flex-direction: column; overflow: hidden;
-  background: rgba(10, 22, 40, 0.92);        /* §5.1 深空毛玻璃底 */
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border: 0.6px solid rgba(0, 212, 170, 0.12);
-  /* §8.1 微弱电光青内发光边框 */
-  box-shadow:
-    0 8px 48px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(0, 212, 170, 0.08);
+  /* §5.1 浅色主题：浅色表面（修复规范矛盾：深空底仅 dark 生效） */
+  background: var(--bg-card);
+  border: 0.6px solid var(--line);
+  box-shadow: var(--shadow-xl);
 }
 [data-theme="dark"] .ui-modal-panel {
+  /* §5.1 深空毛玻璃底（仅深色主题） */
   background: rgba(10, 22, 40, 0.95);
+  border-color: rgba(0, 245, 200, 0.12);
   box-shadow:
     0 8px 48px rgba(0, 0, 0, 0.7),
     inset 0 1px 0 rgba(0, 245, 200, 0.06);

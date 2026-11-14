@@ -72,10 +72,11 @@ function go(path) { router.push(path) }
 }
 .sidenav-brand:hover { background: rgba(0, 212, 170, 0.08); }
 
-/* 导航按钮组 */
+/* 导航按钮组：flex:1 撑满并垂直居中（§2.2） */
 .sidenav-nav {
   display: flex; flex-direction: column; align-items: center;
-  gap: 12px; margin-top: 12px; flex: 1; padding: 0 8px;
+  justify-content: center;
+  gap: 12px; flex: 1; padding: 0 8px;
 }
 
 .sidenav-btn {

@@ -44,8 +44,8 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 
 /* ---- 通用卡片（深空玻璃底适配） ---- */
 .about-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 0.6px solid rgba(0, 212, 170, 0.12);
+  background: var(--bg-card);
+  border: 0.6px solid var(--line);
   border-radius: var(--radius-md);
   padding: 16px 20px;
 }
@@ -53,7 +53,7 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 .card-title {
   display: flex; align-items: center; gap: 8px;
   font-size: 15px; font-weight: 600;
-  color: #E8EEF5; margin-bottom: 14px;
+  color: var(--ink); margin-bottom: 14px;
   font-family: var(--font-display);
 }
 .card-title::before {
@@ -70,7 +70,7 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 
 .about-name {
   font-size: 24px; font-weight: 700; letter-spacing: 0.02em;
-  color: #E8EEF5; margin-top: 14px;
+  color: var(--ink); margin-top: 14px;
   font-family: var(--font-display);
 }
 
@@ -84,7 +84,7 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 
 .about-desc {
   margin-top: 12px; font-size: 13px;
-  color: rgba(232, 238, 245, 0.6); line-height: 1.6;
+  color: var(--ink-3); line-height: 1.6;
 }
 
 /* ---- 技术栈 ---- */
@@ -93,9 +93,9 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 .tech-chip {
   display: inline-flex; align-items: center; height: 30px;
   padding: 0 12px; border-radius: var(--radius-sm);
-  border: 0.6px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(232, 238, 245, 0.75);
+  border: 0.6px solid var(--line);
+  background: var(--bg-soft);
+  color: var(--ink-2);
   font-size: 12px; font-weight: 500;
   font-family: var(--font-mono);
 }
@@ -114,6 +114,6 @@ const TECH = ['Vue 3', 'Flask', 'Electron', 'Graphviz', 'Visio COM']
 /* ---- 版权行 ---- */
 .about-copyright {
   text-align: center; font-size: 12px;
-  color: rgba(232, 238, 245, 0.35);
+  color: var(--ink-5);
 }
 </style>

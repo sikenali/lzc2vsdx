@@ -86,9 +86,7 @@ function close() { emit('update:modelValue', false) }
 .settings-header {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; flex: none; margin-bottom: 16px; padding: 0 4px; height: 52px;
-  background: rgba(255, 255, 255, 0.04);
-  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-  border-bottom: 0.6px solid rgba(0, 212, 170, 0.12);
+  border-bottom: 0.6px solid var(--line-soft);
 }
 
 .settings-head { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -96,7 +94,7 @@ function close() { emit('update:modelValue', false) }
 /* §5.2 图标圆 40px，电光青底 */
 .settings-icon {
   width: 40px; height: 40px; flex: none; border-radius: 50%;
-  background: rgba(0, 212, 170, 0.15);
+  background: rgba(0, 212, 170, 0.12);
   border: 0.6px solid rgba(0, 212, 170, 0.3);
   color: var(--tech-cyan);
   display: inline-flex; align-items: center; justify-content: center; font-size: 18px;
@@ -104,17 +102,17 @@ function close() { emit('update:modelValue', false) }
 
 .settings-title {
   font-size: 18px; font-weight: 600; letter-spacing: 0.3px;
-  line-height: 1.2; color: #E8EEF5;
+  line-height: 1.2; color: var(--ink);
   font-family: var(--font-display);
 }
 .settings-subtitle {
-  margin-top: 1px; font-size: 12px; color: rgba(232, 238, 245, 0.5); letter-spacing: 0.5px;
+  margin-top: 1px; font-size: 12px; color: var(--ink-4); letter-spacing: 0.5px;
 }
 
 .settings-close {
   width: 32px; height: 32px; flex: none; border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
-  font-size: 16px; color: rgba(232, 238, 245, 0.5);
+  font-size: 16px; color: var(--ink-4);
   border: none; background: transparent; cursor: pointer;
   transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
@@ -127,14 +125,14 @@ function close() { emit('update:modelValue', false) }
   flex: 1; min-height: 0; display: flex; gap: 16px;
 }
 
-/* §5.3 导航侧栏 200px，深空半透明底 */
+/* §5.3 导航侧栏 200px（跟随主题的次级面） */
 .settings-nav {
   width: 200px; flex: none;
   display: flex; flex-direction: column; gap: 2px;
   padding: 12px 10px;
   border-radius: var(--radius-md);
-  background: rgba(0, 0, 0, 0.25);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  background: var(--bg-soft);
+  border: 0.6px solid var(--line-soft);
   overflow-y: auto;
 }
 
@@ -145,7 +143,7 @@ function close() { emit('update:modelValue', false) }
   border-radius: var(--radius-sm);
   border: none; background: transparent; cursor: pointer;
   text-align: left; font-size: 13px; letter-spacing: 0.2px;
-  color: rgba(232, 238, 245, 0.65);
+  color: var(--ink-3);
   font-family: var(--font-display);
   transition: background var(--t-fast) var(--ease-smooth), color var(--t-fast) var(--ease-smooth);
 }

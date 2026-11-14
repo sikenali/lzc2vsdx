@@ -150,8 +150,8 @@ function switchLayout(layout) {
 
 /* ---- 通用卡片（深空玻璃底适配） ---- */
 .theme-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 0.6px solid rgba(0, 212, 170, 0.12);
+  background: var(--bg-card);
+  border: 0.6px solid var(--line);
   border-radius: var(--radius-md);
   padding: 16px 20px;
 }
@@ -159,7 +159,7 @@ function switchLayout(layout) {
 .card-title {
   display: flex; align-items: center; gap: 8px;
   font-size: 15px; font-weight: 600;
-  color: #E8EEF5; margin-bottom: 14px;
+  color: var(--ink); margin-bottom: 14px;
   font-family: var(--font-display);
 }
 
@@ -177,10 +177,10 @@ function switchLayout(layout) {
 }
 .breadcrumb {
   display: flex; align-items: center; gap: 6px;
-  font-size: 12px; color: rgba(232, 238, 245, 0.35);
+  font-size: 12px; color: var(--ink-5);
 }
-.crumb-sep { color: rgba(232, 238, 245, 0.25); }
-.crumb.current { color: rgba(232, 238, 245, 0.6); }
+.crumb-sep { color: var(--ink-5); }
+.crumb.current { color: var(--ink-3); }
 
 /* §6.1 恢复默认按钮：36px outline */
 .reset-btn {
@@ -198,10 +198,10 @@ function switchLayout(layout) {
 
 .page-title {
   font-size: 20px; font-weight: 600; letter-spacing: 0.3px;
-  color: #E8EEF5; margin-bottom: 4px;
+  color: var(--ink); margin-bottom: 4px;
   font-family: var(--font-display);
 }
-.page-desc { font-size: 13px; color: rgba(232, 238, 245, 0.5); }
+.page-desc { font-size: 13px; color: var(--ink-4); }
 
 /* ---- §6.2 外观主题卡 ---- */
 .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -209,9 +209,9 @@ function switchLayout(layout) {
 .mode-card {
   position: relative; display: flex; flex-direction: column; align-items: stretch;
   text-align: left; padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-soft);
   cursor: pointer;
   transition: background var(--t-fast) ease, border-color var(--t-fast) ease;
 }
@@ -249,18 +249,18 @@ function switchLayout(layout) {
 /* 浅色·Parchment 预览 */
 .thumb-light { background: #F4F7FA; }
 .thumb-light .thumb-bar { background: rgba(0, 0, 0, 0.05); }
-.thumb-light .thumb-content { background: rgba(255, 255, 255, 0.9); }
+.thumb-light .thumb-content { background: #FFFFFF; }
 
 /* 深色·TechDark 预览 */
 .thumb-dark { background: #0A0F18; }
-.thumb-dark .thumb-bar { background: rgba(255, 255, 255, 0.06); }
-.thumb-dark .thumb-content { background: rgba(255, 255, 255, 0.1); }
+.thumb-dark .thumb-bar { background: var(--bg-soft); }
+.thumb-dark .thumb-content { background: var(--bg-soft); }
 
 .mode-name {
-  font-size: 15px; font-weight: 600; color: #E8EEF5; margin-bottom: 3px;
+  font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px;
   font-family: var(--font-display);
 }
-.mode-desc { font-size: 12px; color: rgba(232, 238, 245, 0.5); }
+.mode-desc { font-size: 12px; color: var(--ink-4); }
 
 /* ---- §6.3 强调色卡（64px 色盘，电光青光晕选中） ---- */
 .accent-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 32px; }
@@ -282,8 +282,8 @@ function switchLayout(layout) {
 }
 .accent-check { font-size: 20px; line-height: 1; }
 
-.accent-name { font-size: 13px; font-weight: 400; color: rgba(232, 238, 245, 0.65); }
-.accent-name.active { font-weight: 700; color: #E8EEF5; }
+.accent-name { font-size: 13px; font-weight: 400; color: var(--ink-2); }
+.accent-name.active { font-weight: 700; color: var(--ink); }
 
 /* ---- §6.4 布局切换卡 ---- */
 .layout-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -291,9 +291,9 @@ function switchLayout(layout) {
 .layout-card {
   position: relative; display: flex; flex-direction: column; align-items: stretch;
   text-align: left; padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-soft);
   cursor: pointer;
   transition: background var(--t-fast) ease, border-color var(--t-fast) ease;
 }
@@ -307,8 +307,8 @@ function switchLayout(layout) {
 .mockup {
   display: flex; height: 150px;
   border-radius: var(--radius-sm);
-  border: 0.6px solid rgba(255, 255, 255, 0.1);
-  overflow: hidden; background: rgba(0, 0, 0, 0.25); margin-bottom: 10px;
+  border: 0.6px solid var(--line);
+  overflow: hidden; background: var(--bg-soft); margin-bottom: 10px;
 }
 
 /* 顶栏模式 */
@@ -316,11 +316,11 @@ function switchLayout(layout) {
 .mock-topbar-bar {
   display: flex; align-items: center; justify-content: center; gap: 5px;
   height: 22px; flex: none;
-  background: rgba(255, 255, 255, 0.06);
-  border-bottom: 0.6px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-soft);
+  border-bottom: 0.6px solid var(--line-soft);
   position: relative; padding: 0 8px;
 }
-.nav-dot { width: 10px; height: 5px; border-radius: 3px; background: rgba(232, 238, 245, 0.3); }
+.nav-dot { width: 10px; height: 5px; border-radius: 3px; background: var(--ink-5); }
 .actions-dot { width: 7px; height: 7px; border-radius: 9999px; background: var(--tech-cyan); margin-left: 5px; }
 
 .mock-topbar-content { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; }
@@ -330,22 +330,22 @@ function switchLayout(layout) {
 .mock-sidebar-rail {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   width: 28px; flex: none;
-  background: rgba(255, 255, 255, 0.06);
-  border-right: 0.6px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-soft);
+  border-right: 0.6px solid var(--line-soft);
   padding-top: 10px;
 }
-.rail-dot { width: 14px; height: 5px; border-radius: 3px; background: rgba(232, 238, 245, 0.3); }
+.rail-dot { width: 14px; height: 5px; border-radius: 3px; background: var(--ink-5); }
 .rail-dot:first-child { background: var(--tech-cyan); height: 7px; }
 
 .mock-sidebar-main { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; }
 
 .main-title { width: 38px; height: 7px; border-radius: 4px; background: var(--tech-cyan); margin-bottom: 2px; }
-.block { width: 60%; height: 7px; border-radius: 4px; background: rgba(255, 255, 255, 0.12); }
-.block-wide { width: 100%; background: rgba(255, 255, 255, 0.07); }
+.block { width: 60%; height: 7px; border-radius: 4px; background: var(--line); }
+.block-wide { width: 100%; background: var(--line-soft); }
 
 .layout-name {
-  font-size: 15px; font-weight: 600; color: #E8EEF5; margin-bottom: 3px;
+  font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px;
   font-family: var(--font-display);
 }
-.layout-desc { font-size: 12px; color: rgba(232, 238, 245, 0.5); }
+.layout-desc { font-size: 12px; color: var(--ink-4); }
 </style>

@@ -133,8 +133,8 @@ async function save() {
 .settings-view { display: flex; flex-direction: column; gap: 14px; }
 
 .theme-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 0.6px solid rgba(0, 212, 170, 0.12);
+  background: var(--bg-card);
+  border: 0.6px solid var(--line);
   border-radius: var(--radius-md);
   padding: 16px 20px;
 }
@@ -142,7 +142,7 @@ async function save() {
 .card-title {
   display: flex; align-items: center; gap: 8px;
   font-size: 15px; font-weight: 600;
-  color: #E8EEF5; margin-bottom: 6px;
+  color: var(--ink); margin-bottom: 6px;
   font-family: var(--font-display);
 }
 .card-title::before {
@@ -158,10 +158,10 @@ async function save() {
 }
 .breadcrumb {
   display: flex; align-items: center; gap: 6px;
-  font-size: 12px; color: rgba(232, 238, 245, 0.35);
+  font-size: 12px; color: var(--ink-5);
 }
-.crumb-sep { color: rgba(232, 238, 245, 0.25); }
-.crumb.current { color: rgba(232, 238, 245, 0.6); }
+.crumb-sep { color: var(--ink-5); }
+.crumb.current { color: var(--ink-3); }
 
 .reset-btn {
   display: inline-flex; align-items: center; gap: 6px;
@@ -178,12 +178,12 @@ async function save() {
 
 .page-title {
   font-size: 20px; font-weight: 600; letter-spacing: 0.3px;
-  color: #E8EEF5; margin-bottom: 4px;
+  color: var(--ink); margin-bottom: 4px;
   font-family: var(--font-display);
 }
-.page-desc { font-size: 13px; color: rgba(232, 238, 245, 0.5); }
+.page-desc { font-size: 13px; color: var(--ink-4); }
 
-.field-note { font-size: 12px; color: rgba(232, 238, 245, 0.5); margin-bottom: 12px; }
+.field-note { font-size: 12px; color: var(--ink-4); margin-bottom: 12px; }
 
 .field-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
@@ -191,25 +191,25 @@ async function save() {
 }
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field-label {
-  font-size: 12px; font-weight: 500; color: rgba(232, 238, 245, 0.65);
+  font-size: 12px; font-weight: 500; color: var(--ink-2);
   font-family: var(--font-mono);
 }
 
 /* §8.2 UiInput：38px 高，8px 圆角，focus 电光青边框 + 外发光 */
 .text-input {
   height: 38px; padding: 0 12px;
-  border: 0.6px solid rgba(255, 255, 255, 0.15);
+  border: 0.6px solid var(--line);
   border-radius: var(--radius-sm);
-  background: rgba(0, 0, 0, 0.25);
-  color: #E8EEF5;
+  background: var(--bg-soft);
+  color: var(--ink);
   font-size: 13px;
   font-family: var(--font-mono);
   transition: border-color var(--t-fast) ease, box-shadow var(--t-fast) ease, background var(--t-fast) ease;
 }
-.text-input::placeholder { color: rgba(232, 238, 245, 0.3); }
+.text-input::placeholder { color: var(--ink-5); }
 .text-input:focus {
   border-color: var(--tech-cyan);
-  background: rgba(10, 22, 40, 0.6);
+  background: var(--bg-card);
   box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.15);
   outline: none;
 }
@@ -222,10 +222,10 @@ async function save() {
   width: 28px; height: 28px;
   display: inline-flex; align-items: center; justify-content: center;
   border-radius: var(--radius-xs);
-  color: rgba(232, 238, 245, 0.5); font-size: 14px;
+  color: var(--ink-4); font-size: 14px;
   border: none; background: transparent; cursor: pointer;
 }
-.key-toggle:hover { color: #E8EEF5; background: rgba(255, 255, 255, 0.08); }
+.key-toggle:hover { color: var(--ink); background: var(--bg-soft); }
 
 .card-actions { display: flex; justify-content: flex-end; margin-top: 14px; }
 
