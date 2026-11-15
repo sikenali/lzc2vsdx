@@ -352,31 +352,30 @@ test('设置页去掉恢复默认按钮；模型管理改二级标签（视觉�
   assert.match(model, /SUB_TABS/)
 })
 
-test('关于页：懒猫 hero+分区 风格，版本取自 electron/package.json，仓库地址正确', async () => {
+test('关于页：bid-maker 风格（页面头部卡 + 居中品牌信息卡），版本取自 electron/package.json，仓库地址正确', async () => {
   const about = await read('./components/settings/AboutView.vue')
   // 版本来源：electron/package.json（根目录无 package.json）
   assert.match(about, /electron\/package\.json/)
-  // hero + 分区结构
-  assert.match(about, /about-hero/)
-  assert.match(about, /产品简介/)
-  assert.match(about, /核心能力/)
-  assert.match(about, /技术栈/)
-  assert.match(about, /链接/)
-  // 核心能力：4 项（文本生成/图片生成/在线微调/本地优先）
-  assert.match(about, /文本生成/)
-  assert.match(about, /图片生成/)
-  assert.match(about, /在线微调/)
-  assert.match(about, /本地优先/)
-  assert.match(about, /feature-grid/)
+  // 页面头部卡片：面包屑 + 标题/副标题（bid-maker 风格）
+  assert.match(about, /page-header-card/)
+  assert.match(about, /面包屑/)
+  assert.match(about, /设置中心/)
+  assert.match(about, /当前|current/)
+  assert.match(about, /版本信息、开源仓库与版权声明/)
+  // 品牌信息卡：圆形徽章（BrandLogo 而非回选标的）+ 名称 + 标语 + 版本 + GitHub + 版权
+  assert.match(about, /about-card/)
+  assert.match(about, /about-badge/)
+  assert.match(about, /BrandLogo/)
+  assert.doesNotMatch(about, /ri-target-line/)
+  assert.match(about, /about-name/)
+  assert.match(about, /C2VSDX/)
+  assert.match(about, /about-slogan/)
+  assert.match(about, /版本: v/)
+  assert.match(about, /about-repo/)
+  assert.match(about, /ri-github-line/)
+  assert.match(about, /about-copy/)
+  assert.match(about, /LightOS/)
   // 仓库地址正确（不再指向 yyjuan97/openvs.github.io）
   assert.match(about, /sikenali\/lzc2vsdx/)
   assert.doesNotMatch(about, /yyjuan97/)
-  // 链接 + 版权
-  assert.match(about, /查看源代码/)
-  assert.match(about, /ri-github-line/)
-  assert.match(about, /LightOS/)
-  assert.match(about, /about-copyright/)
-  // 技术栈 chips
-  assert.match(about, /tech-chip/)
-  assert.match(about, /Visio COM/)
 })
