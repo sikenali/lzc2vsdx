@@ -352,16 +352,14 @@ test('设置页去掉恢复默认按钮；模型管理改二级标签（视觉�
   assert.match(model, /SUB_TABS/)
 })
 
-test('关于页：bid-maker 风格（页面头部卡 + 居中品牌信息卡），版本取自 electron/package.json，仓库地址正确', async () => {
+test('关于页：bid-maker 风格（居中品牌信息卡，无自身头部），版本取自 electron/package.json，仓库地址正确', async () => {
   const about = await read('./components/settings/AboutView.vue')
   // 版本来源：electron/package.json（根目录无 package.json）
   assert.match(about, /electron\/package\.json/)
-  // 页面头部卡片：面包屑 + 标题/副标题（bid-maker 风格）
-  assert.match(about, /page-header-card/)
-  assert.match(about, /面包屑/)
-  assert.match(about, /设置中心/)
-  assert.match(about, /当前|current/)
-  assert.match(about, /版本信息、开源仓库与版权声明/)
+  // 设置中心已有全局头部 → 关于页不再显示自身头部（面包屑/标题/副标题）
+  assert.doesNotMatch(about, /page-header-card/)
+  assert.doesNotMatch(about, /面包屑/)
+  assert.doesNotMatch(about, /版本信息、开源仓库与版权声明/)
   // 品牌信息卡：圆形徽章（BrandLogo 而非回选标的）+ 名称 + 标语 + 版本 + GitHub + 版权
   assert.match(about, /about-card/)
   assert.match(about, /about-badge/)
@@ -378,4 +376,26 @@ test('关于页：bid-maker 风格（页面头部卡 + 居中品牌信息卡）�
   // 仓库地址正确（不再指向 yyjuan97/openvs.github.io）
   assert.match(about, /sikenali\/lzc2vsdx/)
   assert.doesNotMatch(about, /yyjuan97/)
+})
+
+test('设置中心三页不再显示各自头部（面包屑/标题/描述）；模型管理保留二级标签', async () => {
+  const theme = await read('./components/settings/ThemeSettingsView.vue')
+  const model = await read('./components/settings/ModelSettingsView.vue')
+  const about = await read('./components/settings/AboutView.vue')
+  // 三页均无自身头部组件
+  for (const [name, src] of [['theme', theme], ['model', model], ['about', about]]) {
+    assert.doesNotMatch(src, /header-card/, `${name} 不应有 header-card`)
+    assert.doesNotMatch(src, /page-title/, `${name} 不应有 page-title`)
+    assert.doesNotMatch(src, /breadcrumb/, `${name} 不应有面包屑`)
+    assert.doesNotMatch(src, /crumb-sep/, `${name} 不应有面包屑分隔符`)
+  }
+  // 主题管理页保留其设置卡
+  assert.match(theme, /外观主题/)
+  assert.match(theme, /强调色/)
+  assert.match(theme, /布局/)
+  // 模型管理保留二级标签（视觉模型/文本解析）
+  assert.match(model, /sub-tabs/)
+  assert.match(model, /视觉模型/)
+  assert.match(model, /文本解析/)
+  assert.match(model, /v-if="tab === 'vision'"/)
 })

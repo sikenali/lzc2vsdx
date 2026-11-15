@@ -1,20 +1,5 @@
 <template>
   <div class="settings-view">
-    <!-- §6.1 页面头部 Card -->
-    <section class="theme-card header-card">
-      <div class="header-top">
-        <nav class="breadcrumb" aria-label="面包屑">
-          <span class="crumb">首页</span>
-          <span class="crumb-sep">/</span>
-          <span class="crumb">设置中心</span>
-          <span class="crumb-sep">/</span>
-          <span class="crumb current">主题管理</span>
-        </nav>
-      </div>
-      <h2 class="page-title">主题管理</h2>
-      <p class="page-desc">统一切换外观底色、强调色与导航布局模式，修改即时生效</p>
-    </section>
-
     <!-- §6.2 外观主题 Card -->
     <section class="theme-card">
       <h3 class="card-title">外观主题</h3>
@@ -164,26 +149,6 @@ function switchLayout(layout) {
   background: var(--tech-cyan); flex: none;
   box-shadow: 0 0 6px rgba(var(--tech-cyan-rgb), 0.35);
 }
-
-/* ---- §6.1 页头卡 ---- */
-.header-card { padding: 16px 20px; }
-.header-top {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; margin-bottom: 12px;
-}
-.breadcrumb {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 12px; color: var(--ink-5);
-}
-.crumb-sep { color: var(--ink-5); }
-.crumb.current { color: var(--ink-3); }
-
-.page-title {
-  font-size: 20px; font-weight: 600; letter-spacing: 0.3px;
-  color: var(--ink); margin-bottom: 4px;
-  font-family: var(--font-display);
-}
-.page-desc { font-size: 13px; color: var(--ink-4); }
 
 /* ---- §6.2 外观主题卡 ---- */
 .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }

@@ -1,19 +1,6 @@
 <template>
   <div class="about-view">
-    <!-- ① 页面头部卡片（面包屑 + 标题/副标题） -->
-    <section class="page-header-card">
-      <nav class="breadcrumb" aria-label="面包屑">
-        <span>首页</span>
-        <span class="sep">/</span>
-        <span>设置中心</span>
-        <span class="sep">/</span>
-        <span class="current">关于</span>
-      </nav>
-      <h1 class="header-title">关于</h1>
-      <p class="header-sub">版本信息、开源仓库与版权声明</p>
-    </section>
-
-    <!-- ② 品牌信息卡片（居中） -->
+    <!-- 品牌信息卡片（居中） -->
     <section class="about-card">
       <div class="about-badge">
         <BrandLogo :size="56" :icon="30" :radius="14" />
@@ -57,29 +44,7 @@ const YEAR = new Date().getFullYear()
   display: flex; flex-direction: column; gap: 14px;
 }
 
-/* ═══ ① 页面头部卡片 ═══ */
-.page-header-card {
-  background: var(--bg-card);
-  border: 0.6px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: 18px 22px;
-}
-.breadcrumb {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 12px; color: var(--ink-5);
-}
-.breadcrumb .sep { color: var(--ink-5); }
-.breadcrumb .current { color: var(--ink-3); font-weight: 500; }
-.header-title {
-  margin: 10px 0 0; font-size: 22px; font-weight: 700;
-  color: var(--ink); letter-spacing: 0.02em;
-  font-family: var(--font-display);
-}
-.header-sub {
-  margin: 6px 0 0; font-size: 13px; color: var(--ink-4);
-}
-
-/* ═══ ② 品牌信息卡片（居中） ═══ */
+/* ═══ 品牌信息卡片（居中） ═══ */
 .about-card {
   background: var(--bg-card);
   border: 0.6px solid var(--line);

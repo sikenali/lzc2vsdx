@@ -1,36 +1,21 @@
 <template>
   <div class="settings-view">
-    <!-- 页头卡 -->
-    <section class="theme-card header-card">
-      <div class="header-top">
-        <nav class="breadcrumb" aria-label="面包屑">
-          <span class="crumb">首页</span>
-          <span class="crumb-sep">/</span>
-          <span class="crumb">设置中心</span>
-          <span class="crumb-sep">/</span>
-          <span class="crumb current">模型管理</span>
-        </nav>
-      </div>
-      <h2 class="page-title">模型管理</h2>
-      <p class="page-desc">配置 OpenAI 兼容模型；未配置时图片走演示数据、文本用内置规则解析</p>
-
-      <!-- 二级标签：点击显示对应设置项 -->
-      <div class="sub-tabs" role="tablist" aria-label="模型类型">
-        <button
-          v-for="t in SUB_TABS"
-          :key="t.key"
-          type="button"
-          class="sub-tab"
-          :class="{ active: tab === t.key }"
-          role="tab"
-          :aria-selected="tab === t.key"
-          @click="tab = t.key"
-        >
-          <i :class="t.icon"></i>
-          <span>{{ t.label }}</span>
-        </button>
-      </div>
-    </section>
+    <!-- 二级标签：点击显示对应设置项 -->
+    <div class="sub-tabs" role="tablist" aria-label="模型类型">
+      <button
+        v-for="t in SUB_TABS"
+        :key="t.key"
+        type="button"
+        class="sub-tab"
+        :class="{ active: tab === t.key }"
+        role="tab"
+        :aria-selected="tab === t.key"
+        @click="tab = t.key"
+      >
+        <i :class="t.icon"></i>
+        <span>{{ t.label }}</span>
+      </button>
+    </div>
 
     <!-- 视觉模型卡（图片识别） -->
     <section v-if="tab === 'vision'" class="theme-card">
@@ -166,21 +151,9 @@ async function save() {
   box-shadow: 0 0 6px rgba(var(--tech-cyan-rgb), 0.35);
 }
 
-.header-card { padding: 16px 20px; }
-.header-top {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; margin-bottom: 12px;
-}
-.breadcrumb {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 12px; color: var(--ink-5);
-}
-.crumb-sep { color: var(--ink-5); }
-.crumb.current { color: var(--ink-3); }
-
 /* 二级标签：视觉模型 / 文本解析 */
 .sub-tabs {
-  display: inline-flex; gap: 4px; margin-top: 14px;
+  display: inline-flex; gap: 4px;
   padding: 3px; border-radius: var(--radius-sm);
   background: var(--bg-soft); border: 0.6px solid var(--line-soft);
 }
@@ -199,13 +172,6 @@ async function save() {
   background: var(--bg-card); color: var(--tech-cyan); font-weight: 600;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), var(--glow-xs);
 }
-
-.page-title {
-  font-size: 20px; font-weight: 600; letter-spacing: 0.3px;
-  color: var(--ink); margin-bottom: 4px;
-  font-family: var(--font-display);
-}
-.page-desc { font-size: 13px; color: var(--ink-4); }
 
 .field-note { font-size: 12px; color: var(--ink-4); margin-bottom: 12px; }
 
