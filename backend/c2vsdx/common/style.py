@@ -54,11 +54,16 @@ SHADOW_COLOR = 0xC0C0C0
 
 
 def apply_font(shape, size=SIZE_NODE, color=TEXT, bold=False, font=FONT):
-    """设置形状文字：字体/字号/颜色/粗细。"""
+    """设置形状文字：字体/字号/颜色/粗细。
+
+    注意：加粗用 Char.Bold（布尔 cell），勿用 Char.Style —— Char.Style 在
+    Visio 中应经 ResultIU + 索引设置，直接设 FormulaU 会触发
+    "Unexpected end of file"（意外的文件尾）导致保存失败。
+    """
     shape.Cells("Char.Font").FormulaU = f'"{font}"'
     shape.Cells("Char.Size").FormulaU = f"{size} pt"
     shape.Cells("Char.Color").FormulaU = rgb_to_visio(color)
-    shape.Cells("Char.Style").FormulaU = "1" if bold else "0"
+    shape.Cells("Char.Bold").FormulaU = "1" if bold else "0"
 
 
 def apply_fill(shape, fill=FILL_NODE, border=BORDER_NODE, weight=WEIGHT_MAIN):

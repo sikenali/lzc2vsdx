@@ -1,6 +1,6 @@
 {
   "name": "c2vsdx-desktop",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "C2VSDX desktop shell (Electron + bundled Flask backend)",
   "main": "main.js",
