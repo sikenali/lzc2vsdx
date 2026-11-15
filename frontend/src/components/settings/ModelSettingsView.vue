@@ -234,7 +234,7 @@ async function save() {
   height: 36px; padding: 0 18px;
   border-radius: var(--radius-sm);
   background: linear-gradient(135deg, #00D4AA, #00A878);
-  color: #0A1628;
+  color: var(--primary-on);
   font-size: 13px; font-weight: 600;
   font-family: var(--font-display);
   border: none; cursor: pointer;

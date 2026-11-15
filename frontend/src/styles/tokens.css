@@ -132,6 +132,28 @@
   --radius-card: var(--radius-md);
   --radius-item: var(--radius-md);
   --radius-btn:  var(--radius-sm);
+
+  /* ── §7 Diagram 预览（SVG 线条/填充，随浅色主题）─────────── */
+  --diagram-line:        #C9C2B4;  /* 连接线 / 箭头 */
+  --diagram-line-soft:   #E5DFD3;  /* 虚线连接 / 生命线 / 泳道边界 */
+  --diagram-fill:        #FFFFFF;  /* 默认节点填充 */
+  --diagram-fill-soft:   #F7F3EA;  /* layer/lane/骨架填充 */
+  --diagram-fill-ok:     #E4F0EA;  /* 成功节点 */
+  --diagram-fill-warn:   #FBE9E7;  /* 决策菱形 */
+  --diagram-fill-danger: #FEF5E7;  /* 失败节点 */
+  --diagram-border:      #D9D2C2;  /* 默认节点边框 */
+  --diagram-border-ok:   #4E9B7A;
+  --diagram-border-warn: #C0392B;
+  --diagram-border-danger:#F39C12;
+  --diagram-text:        #3A3A3A;  /* 节点标签 */
+  --diagram-text-dim:    #8A8578;  /* 边/泳道标签 */
+  --diagram-text-ok:     #2F6E55;
+  --diagram-text-warn:   #9A6B10;
+  --diagram-shimmer:     #E8E2D6;  /* 骨架微光 */
+  --diagram-shimmer-2:   #F3CFCA;
+  --diagram-skel-label:  #C9C2B4;
+  --diagram-skel-active: #C08C86;
+  --diagram-skel-note:   #B6C0CE;
 }
 
 /* ── §6.3 Accent palettes（Nebula 五色）────────────────────── */
@@ -245,6 +267,28 @@
 
   --red:      var(--primary);
   --red-soft: var(--primary-soft);
+
+  /* ── §7 Diagram 预览（深色：可见线条 + 卡片填充）─────────── */
+  --diagram-line:        #4A5568;
+  --diagram-line-soft:   #2E3A4C;
+  --diagram-fill:        #1C2534;
+  --diagram-fill-soft:   #1A222E;
+  --diagram-fill-ok:     #12261F;
+  --diagram-fill-warn:   #2A1A20;
+  --diagram-fill-danger: #241B10;
+  --diagram-border:      #3A4658;
+  --diagram-border-ok:   #2F6E55;
+  --diagram-border-warn: #E05050;
+  --diagram-border-danger:#C67A10;
+  --diagram-text:        #C8D3E0;
+  --diagram-text-dim:    #7A8698;
+  --diagram-text-ok:     #5CB98C;
+  --diagram-text-warn:   #E0B84A;
+  --diagram-shimmer:     #2A3548;
+  --diagram-shimmer-2:   #3A2A30;
+  --diagram-skel-label:  #5A6470;
+  --diagram-skel-active: #7A4A4A;
+  --diagram-skel-note:   #64748B;
 }
 
 /* ── §7 Dark 强调色覆写 ────────────────────────────────────── */

@@ -206,7 +206,7 @@ async function saveTweak(data) {
 .status-pill {
   display: inline-flex; align-items: center; gap: 4px;
   height: 24px; padding: 0 10px; border-radius: 9999px;
-  background: rgba(var(--tech-cyan-rgb), 0.1); color: #008A62;
+  background: rgba(var(--tech-cyan-rgb), 0.1); color: var(--green-ink);
   font-size: 12px; font-weight: 500; flex: none;
 }
 .status-pill .ri { color: var(--color-success); font-size: 13px; }
@@ -249,8 +249,8 @@ async function saveTweak(data) {
   font-family: var(--font-display);
 }
 .stat-success { background: rgba(var(--tech-cyan-rgb), 0.08);  color: var(--tech-cyan); }
-.stat-warning { background: rgba(255, 179, 71, 0.08); color: #FFB347; }
-.stat-danger  { background: rgba(255, 77, 109, 0.08); color: #FF4D6D; }
+.stat-warning { background: rgba(255, 179, 71, 0.08); color: var(--color-warning); }
+.stat-danger  { background: rgba(255, 77, 109, 0.08); color: var(--color-error); }
 
 .stat-texts { display: flex; flex-direction: column; gap: 1px; }
 .stat-texts strong { font-size: 26px; font-weight: 700; line-height: 1.1; color: currentColor; }

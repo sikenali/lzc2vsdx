@@ -103,7 +103,7 @@ defineEmits(['select'])
 .check-badge.active {
   border: none;
   background: var(--tech-cyan);
-  color: #0A1628;
+  color: var(--primary-on);
   box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.4);
 }
 </style>

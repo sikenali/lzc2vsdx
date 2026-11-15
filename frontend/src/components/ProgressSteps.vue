@@ -57,7 +57,7 @@ function detail(stage) {
 
 .step-circle.done {
   background: var(--green);
-  color: #fff;
+  color: var(--primary-on);   /* 深色下 --green 变亮，用深色勾保证对比 */
   font-size: 16px;
 }
 

@@ -16,7 +16,7 @@
     >
       <defs>
         <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#B0A79A" />
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--diagram-line)" />
         </marker>
       </defs>
 
@@ -28,7 +28,7 @@
           :y1="line.y1"
           :x2="line.x"
           :y2="line.y2"
-          stroke="#D9D2C2"
+          stroke="var(--diagram-line-soft)"
           stroke-width="0.03"
           stroke-dasharray="0.12 0.1"
         />
@@ -41,7 +41,7 @@
           :width="frag.x2 - frag.x1"
           :height="frag.y2 - frag.y1"
           fill="none"
-          stroke="#D9D2C2"
+          stroke="var(--diagram-line-soft)"
           stroke-width="0.04"
           stroke-dasharray="0.14 0.12"
         />
@@ -52,7 +52,7 @@
         <polyline
           :points="(edge.points || []).map((p) => p.join(',')).join(' ')"
           fill="none"
-          :stroke="edge.color || (edge.dashed ? '#C9C2B4' : '#B0A79A')"
+          :stroke="edge.color || (edge.dashed ? 'var(--diagram-line-soft)' : 'var(--diagram-line)')"
           :stroke-width="edge.width ? edge.width / 72 : 0.04"
           :stroke-dasharray="edge.dashed ? '0.14 0.12' : ''"
           marker-end="url(#arrow)"
@@ -76,32 +76,32 @@
             :cy="node.y"
             :rx="node.w / 2"
             :ry="node.h / 2"
-            :fill="node.fill || '#FFFFFF'"
-            :stroke="node.border || '#D9D2C2'"
+            :fill="node.fill || 'var(--diagram-fill)'"
+            :stroke="node.border || 'var(--diagram-border)'"
             stroke-width="0.05"
           />
         </template>
         <template v-else-if="node.shape === 'hexagon'">
           <polygon
             :points="hexPoints(node)"
-            :fill="node.fill || '#FFFFFF'"
-            :stroke="node.border || '#D9D2C2'"
+            :fill="node.fill || 'var(--diagram-fill)'"
+            :stroke="node.border || 'var(--diagram-border)'"
             stroke-width="0.05"
           />
         </template>
         <template v-else-if="node.shape === 'parallelogram'">
           <polygon
             :points="parallelogramPoints(node)"
-            :fill="node.fill || '#FFFFFF'"
-            :stroke="node.border || '#D9D2C2'"
+            :fill="node.fill || 'var(--diagram-fill)'"
+            :stroke="node.border || 'var(--diagram-border)'"
             stroke-width="0.05"
           />
         </template>
         <template v-else-if="node.shape === 'document'">
           <path
             :d="documentPath(node)"
-            :fill="node.fill || '#FFFFFF'"
-            :stroke="node.border || '#D9D2C2'"
+            :fill="node.fill || 'var(--diagram-fill)'"
+            :stroke="node.border || 'var(--diagram-border)'"
             stroke-width="0.05"
           />
         </template>
@@ -112,16 +112,16 @@
             :width="node.w"
             :height="node.h"
             :rx="node.w * 0.12"
-            :fill="node.fill || '#FFFFFF'"
-            :stroke="node.border || '#D9D2C2'"
+            :fill="node.fill || 'var(--diagram-fill)'"
+            :stroke="node.border || 'var(--diagram-border)'"
             stroke-width="0.05"
           />
         </template>
         <template v-else-if="node.shape === 'diamond'">
           <polygon
             :points="diamondPoints(node)"
-            :fill="node.fill || '#FBE9E7'"
-            :stroke="node.border || '#C0392B'"
+            :fill="node.fill || 'var(--diagram-fill-warn)'"
+            :stroke="node.border || 'var(--diagram-border-warn)'"
             stroke-width="0.05"
           />
         </template>
@@ -132,8 +132,8 @@
             :width="node.w"
             :height="node.h"
             :rx="Math.min(node.h / 2, 0.3)"
-            :fill="node.fill || '#FFFFFF'"
-            :stroke="node.border || '#D9D2C2'"
+            :fill="node.fill || 'var(--diagram-fill)'"
+            :stroke="node.border || 'var(--diagram-border)'"
             stroke-width="0.05"
           />
         </template>
@@ -282,26 +282,25 @@ function textOffset(node) {
 
 function fillFor(node) {
   const label = node.label || ''
-  if (label.includes('成功')) return '#E4F0EA'
-  if (label.includes('错误') || label.includes('失败')) return '#FEF5E7'
-  if (node.shape === 'layer') return '#F7F3EA'
-  if (node.shape === 'lane') return '#FCFBF8'
-  return '#FFFFFF'
+  if (label.includes('成功')) return 'var(--diagram-fill-ok)'
+  if (label.includes('错误') || label.includes('失败')) return 'var(--diagram-fill-danger)'
+  if (node.shape === 'layer' || node.shape === 'lane') return 'var(--diagram-fill-soft)'
+  return 'var(--diagram-fill)'
 }
 
 function borderFor(node) {
   const label = node.label || ''
-  if (label.includes('成功')) return '#4E9B7A'
-  if (label.includes('错误') || label.includes('失败')) return '#F39C12'
-  if (node.shape === 'layer') return '#E5DFD3'
-  return '#D9D2C2'
+  if (label.includes('成功')) return 'var(--diagram-border-ok)'
+  if (label.includes('错误') || label.includes('失败')) return 'var(--diagram-border-danger)'
+  if (node.shape === 'layer') return 'var(--diagram-line-soft)'
+  return 'var(--diagram-border)'
 }
 
 function textFor(node) {
   const label = node.label || ''
-  if (label.includes('成功')) return '#2F6E55'
-  if (label.includes('错误') || label.includes('失败')) return '#9A6B10'
-  return '#3A3A3A'
+  if (label.includes('成功')) return 'var(--diagram-text-ok)'
+  if (label.includes('错误') || label.includes('失败')) return 'var(--diagram-text-warn)'
+  return 'var(--diagram-text)'
 }
 </script>
 
@@ -336,12 +335,12 @@ function textFor(node) {
 .edge-label {
   font-family: var(--font);
   font-size: 0.16px;
-  fill: #8a8578;
+  fill: var(--diagram-text-dim);
 }
 
 .frag-label {
   font-family: var(--font);
   font-size: 0.15px;
-  fill: #8a8578;
+  fill: var(--diagram-text-dim);
 }
 </style>

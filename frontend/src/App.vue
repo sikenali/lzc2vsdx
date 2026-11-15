@@ -112,21 +112,21 @@ onBeforeUnmount(() => {
 }
 
 .toast-bar { width: 3px; height: 18px; border-radius: 2px; flex: none; }
-.toast-bar-success { background: #00D4AA; }
-.toast-bar-error   { background: #FF4D6D; }
-.toast-bar-warning { background: #FFB347; }
-.toast-bar-info    { background: #4A9EFF; }
+.toast-bar-success { background: var(--color-success); }
+.toast-bar-error   { background: var(--color-error); }
+.toast-bar-warning { background: var(--color-warning); }
+.toast-bar-info    { background: var(--color-info); }
 
 .toast-text { flex: 1; min-width: 0; }
 
 .toast-close {
   width: 26px; height: 26px;
   display: inline-flex; align-items: center; justify-content: center;
-  color: rgba(232, 238, 245, 0.5); font-size: 14px;
+  color: var(--ink-4); font-size: 14px;
   border-radius: 50%; flex: none;
   transition: background var(--t-fast) ease, color var(--t-fast) ease;
 }
-.toast-close:hover { color: #E8EEF5; background: rgba(255, 255, 255, 0.1); }
+.toast-close:hover { color: var(--ink); background: var(--bg-soft); }
 .toast-close:active { transform: scale(0.93); transition-duration: var(--t-snap); }
 
 /* §9 入场/离场：translateY(-8px)→0 / translateY(-6px)，200ms */

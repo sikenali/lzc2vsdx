@@ -278,3 +278,39 @@ test('BrandLogo 去背景：透明底 + 强调色图标（#3）', async () => {
   assert.doesNotMatch(logo, /--primary-fill/)
   assert.doesNotMatch(logo, /--primary-on/)
 })
+
+test('Diagram 预览/骨架 深色适配：无硬编码暖色，全部用 --diagram-* 令牌', async () => {
+  const preview = await read('./components/DiagramPreview.vue')
+  const skeleton = await read('./components/SkeletonDiagram.vue')
+  const tokens = await read('./styles/tokens.css')
+  // SVG 线条/填充全部改为主题令牌，不允许残留硬编码暖色
+  assert.doesNotMatch(preview, /#[0-9A-Fa-f]{3,6}/)
+  assert.doesNotMatch(skeleton, /#[0-9A-Fa-f]{3,6}/)
+  // 浅/深主题都定义了 --diagram-* 令牌
+  assert.match(tokens, /--diagram-line:\s*#C9C2B4/)       // light
+  assert.match(tokens, /--diagram-border:\s*#D9D2C2/)
+  assert.match(tokens, /\[data-theme="dark"\][\s\S]*--diagram-line:\s*#4A5568/)  // dark
+  assert.match(tokens, /\[data-theme="dark"\][\s\S]*--diagram-border:\s*#3A4658/)
+})
+
+test('Toast 类型色条 + 关闭按钮跟随主题令牌（深色适配）', async () => {
+  const app = await read('./App.vue')
+  assert.match(app, /\.toast-bar-success\s*\{\s*background:\s*var\(--color-success\)/)
+  assert.match(app, /\.toast-bar-error\s*\{\s*background:\s*var\(--color-error\)/)
+  assert.match(app, /\.toast-bar-warning\s*\{\s*background:\s*var\(--color-warning\)/)
+  assert.match(app, /\.toast-bar-info\s*\{\s*background:\s*var\(--color-info\)/)
+  // 关闭按钮：浅色下不可用近白色（会隐形），改用主题令牌
+  assert.match(app, /\.toast-close\s*\{[\s\S]*color:\s*var\(--ink-4\)/)
+  assert.match(app, /\.toast-close:hover\s*\{[\s\S]*color:\s*var\(--ink\)/)
+})
+
+test('结果页统计/状态 + TypeCard/Model 按钮 on-primary 令牌化（深色适配）', async () => {
+  const result = await read('./views/ResultView.vue')
+  assert.doesNotMatch(result, /#008A62|#FFB347|#FF4D6D/)
+  assert.match(result, /\.stat-warning\s*\{[\s\S]*color:\s*var\(--color-warning\)/)
+  assert.match(result, /\.stat-danger\s*\{[\s\S]*color:\s*var\(--color-error\)/)
+  const typeCard = await read('./components/TypeCard.vue')
+  assert.doesNotMatch(typeCard, /#0A1628/)
+  const model = await read('./components/settings/ModelSettingsView.vue')
+  assert.doesNotMatch(model, /#0A1628/)
+})
