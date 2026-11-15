@@ -1,22 +1,13 @@
 import os
 
 from common.visio_utils import start_visio, open_stencils, close_visio, rgb_to_visio
+from common import style
 from swimlane.layout_engine import (
     LANE_WIDTH, LANE_LABEL_HEIGHT,
     MARGIN_TOP, MARGIN_RIGHT, MARGIN_BOTTOM, MARGIN_LEFT,
     NODE_ACTIVITY_H,
 )
 from swimlane.models import NodeShape, SwimlaneData
-
-DEFAULT_FONT = "Microsoft YaHei"
-FONT_SIZE_TITLE = 10       # lane label
-FONT_SIZE_NODE = 9         # node text
-FONT_SIZE_LABEL = 7        # edge label
-DEFAULT_LINE_COLOR = 0     # Black
-START_END_COLOR = 4980736  # #4CAF50 green for start/end nodes
-DIAMOND_COLOR = 16763904   # #FFC107 yellow for decision nodes
-HEADER_BG_COLOR = 5973191  # deep blue for lane header
-HEADER_TEXT_COLOR = 16777215  # white
 
 MASTER_MAP = {
     NodeShape.RECTANGLE: "Rectangle",
@@ -112,21 +103,26 @@ def _draw_lane_borders(page, data: SwimlaneData, page_height: float, vy):
     right = (last_lane.x or 0) + LANE_WIDTH
 
     # Draw left and right outer borders
-    page.DrawLine(left, vy(top), left, vy(bottom))
-    page.DrawLine(right, vy(top), right, vy(bottom))
+    for x in (left, right):
+        line = page.DrawLine(x, vy(top), x, vy(bottom))
+        line.Cells("LineColor").FormulaU = rgb_to_visio(style.LINE_MUTED)
+        line.Cells("LineWeight").FormulaU = style.WEIGHT_THIN
 
     # Draw horizontal borders at top and bottom of header area
     header_bottom = MARGIN_TOP + LANE_LABEL_HEIGHT
-    page.DrawLine(left, vy(top), right, vy(top))
-    page.DrawLine(left, vy(header_bottom), right, vy(header_bottom))
+    for y in (top, header_bottom):
+        line = page.DrawLine(left, vy(y), right, vy(y))
+        line.Cells("LineColor").FormulaU = rgb_to_visio(style.LINE_MUTED)
+        line.Cells("LineWeight").FormulaU = style.WEIGHT_THIN
 
-    # Draw vertical separators between lanes
+    # Draw vertical separators between lanes (dashed)
     for i in range(1, len(data.lanes)):
         lane = data.lanes[i]
         sep_x = lane.x or 0
         line = page.DrawLine(sep_x, vy(header_bottom), sep_x, vy(bottom))
-        # Dashed separator between lanes
         line.Cells("LinePattern").FormulaU = "2"
+        line.Cells("LineColor").FormulaU = rgb_to_visio(style.LINE_MUTED)
+        line.Cells("LineWeight").FormulaU = style.WEIGHT_THIN
 
 
 def _draw_lane_header(page, lane, master, vy):
@@ -138,12 +134,9 @@ def _draw_lane_header(page, lane, master, vy):
     shape.Cells("Width").FormulaU = f"{LANE_WIDTH:.4f} in"
     shape.Cells("Height").FormulaU = f"{LANE_LABEL_HEIGHT:.4f} in"
     shape.Text = lane.label
-    shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-    shape.Cells("Char.Size").FormulaU = f"{FONT_SIZE_TITLE} pt"
-    shape.Cells("Char.Color").FormulaU = rgb_to_visio(HEADER_TEXT_COLOR)
+    style.apply_font(shape, style.SIZE_HEADER, style.TEXT_LIGHT, bold=True)
     shape.Cells("Para.HorzAlign").FormulaU = "1"
-    shape.Cells("FillForegnd").FormulaU = rgb_to_visio(HEADER_BG_COLOR)
-    shape.Cells("LineColor").FormulaU = rgb_to_visio(10066329)  # #999999
+    style.apply_fill(shape, style.FILL_HEADER, style.BORDER_HEADER)
 
 
 def _draw_node(page, node, masters: dict, vy):
@@ -156,31 +149,24 @@ def _draw_node(page, node, masters: dict, vy):
         shape.Cells("Height").FormulaU = f"{node.height:.4f} in"
 
     shape.Text = node.label
-    shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-    shape.Cells("Char.Size").FormulaU = f"{FONT_SIZE_NODE} pt"
+    style.apply_font(shape, style.SIZE_NODE_SMALL, style.TEXT)
     shape.Cells("Para.HorzAlign").FormulaU = "1"
 
-    fill_color, text_color = _node_colors(node.shape)
-    shape.Cells("FillForegnd").FormulaU = rgb_to_visio(fill_color)
-    shape.Cells("Char.Color").FormulaU = rgb_to_visio(text_color)
-
-    if node.shape == NodeShape.STADIUM:
-        shape.Cells("LineColor").FormulaU = rgb_to_visio(START_END_COLOR)
-        shape.Cells("LineWeight").FormulaU = "0 pt"
-    elif node.shape == NodeShape.DIAMOND:
-        shape.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
-    else:
-        shape.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
+    fill_color, border_color = _node_colors(node.shape)
+    style.apply_fill(shape, fill_color, border_color)
+    if node.shape != NodeShape.STADIUM:
+        style.apply_shadow(shape)
 
     return shape
 
 
 def _node_colors(shape: NodeShape) -> tuple[int, int]:
+    """Return (fill_color, border_color) per role — light fills, unified theme."""
     if shape == NodeShape.STADIUM:
-        return START_END_COLOR, 16777215  # Green fill, white text
+        return style.FILL_STARTEND, style.BORDER_STARTEND
     if shape == NodeShape.DIAMOND:
-        return DIAMOND_COLOR, 0  # Yellow fill, black text
-    return 16777215, 0  # White fill, black text
+        return style.FILL_DECISION, style.BORDER_DECISION
+    return style.FILL_PROCESS, style.BORDER_NODE
 
 
 def _draw_edge(page, src_shape, tgt_shape, label: str, conn_master):
@@ -206,15 +192,5 @@ def _draw_edge(page, src_shape, tgt_shape, label: str, conn_master):
             connector.Cells("EndX").FormulaU = f"{tgt_x}"
             connector.Cells("EndY").FormulaU = f"{tgt_y}"
 
-    connector.Cells("LinePattern").FormulaU = "1"
-    connector.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
-    connector.Cells("EndArrow").FormulaU = "4"
-
-    connector.Cells("LineWeight").FormulaU = "1.5 pt"
-
-    if label:
-        connector.Text = label
-        connector.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-        connector.Cells("Char.Size").FormulaU = f"{FONT_SIZE_LABEL} pt"
-        connector.Cells("Char.Color").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
-        connector.Cells("Para.HorzAlign").FormulaU = "1"
+    style.style_edge(connector, style.ARROW_SOLID, style.LINE_DARK,
+                     style.WEIGHT_MAIN, label, style.SIZE_EDGE)

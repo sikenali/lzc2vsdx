@@ -1,14 +1,9 @@
 import os
 
-from common.visio_utils import start_visio, open_stencils, close_visio, rgb_to_visio
+from common.visio_utils import start_visio, open_stencils, close_visio
+from common import style
 from composition.layout_engine import MARGIN_LEFT, MARGIN_TOP, LEVEL_HEIGHT
 from composition.models import CompositionData
-
-DEFAULT_FONT = "Microsoft YaHei"
-DEFAULT_FONT_SIZE = 10  # pt
-DEFAULT_FONT_SIZE_SMALL = 9  # pt for non-root nodes
-DEFAULT_LINE_COLOR = 0  # Black
-NODE_FILL_COLOR = 16777215  # White
 
 
 def render_to_visio(data: CompositionData, output_path: str, visible: bool = False):
@@ -57,19 +52,18 @@ def render_to_visio(data: CompositionData, output_path: str, visible: bool = Fal
             shape.Cells("Height").FormulaU = f"{node.height:.4f} in"
 
             if is_root:
-                # Root: horizontal text
+                # Root: horizontal text, header styling
                 shape.Text = node.label
-                shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-                shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE} pt"
+                style.apply_font(shape, style.SIZE_HEADER, style.TEXT_LIGHT, bold=True)
+                style.apply_fill(shape, style.FILL_HEADER, style.BORDER_HEADER)
             else:
-                # Non-root: vertical text (one char per line via line breaks)
+                # Non-root: vertical text (one char per line via line breaks), process styling
                 shape.Text = "\n".join(node.label)
-                shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-                shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE_SMALL} pt"
+                style.apply_font(shape, style.SIZE_NODE_SMALL, style.TEXT)
+                style.apply_fill(shape, style.FILL_PROCESS, style.BORDER_NODE)
 
+            style.apply_shadow(shape)
             shape.Cells("Para.HorzAlign").FormulaU = "1"
-            shape.Cells("FillForegnd").FormulaU = rgb_to_visio(NODE_FILL_COLOR)
-            shape.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
 
             shapes[node.id] = shape
 
@@ -116,4 +110,4 @@ def _draw_connectors_with_shapes(data: CompositionData, shapes: dict, conn_maste
                 connector.Cells("EndX").FormulaU = f"{tgt_x}"
                 connector.Cells("EndY").FormulaU = f"{tgt_y}"
 
-        connector.Cells("EndArrow").FormulaU = "0"
+        style.style_edge(connector, style.ARROW_OPEN, style.LINE_DARK, style.WEIGHT_THIN)

@@ -1,15 +1,9 @@
 import os
 
-from common.visio_utils import start_visio, open_stencils, close_visio, rgb_to_visio
+from common.visio_utils import start_visio, open_stencils, close_visio
+from common import style
 from architecture.models import ArchData
 from architecture.layout_engine import LAYER_LABEL_WIDTH, MARGIN_LEFT
-
-DEFAULT_FONT = "Microsoft YaHei"
-DEFAULT_FONT_SIZE = 14  # pt — layer labels
-DEFAULT_FONT_SIZE_SMALL = 12  # pt — component labels
-DEFAULT_LINE_COLOR = 0  # Black
-LAYER_BORDER_COLOR = 6710886  # #666666
-LABEL_TEXT_COLOR = 0  # Black
 
 
 def render_to_visio(data: ArchData, output_path: str, visible: bool = False):
@@ -39,15 +33,17 @@ def render_to_visio(data: ArchData, output_path: str, visible: bool = False):
         def vy(layout_y: float) -> float:
             return page_height - layout_y
 
-        # Draw layer bands (no fill, just border)
+        # Draw layer bands (soft fill, muted dashed border)
         for i, layer in enumerate(data.layers):
             layer_shape = page.DrawRectangle(
                 MARGIN_LEFT, vy(layer.y + layer.height),
                 page_width - 0.3, vy(layer.y)
             )
-            layer_shape.Cells("FillPattern").FormulaU = "0"  # No fill
-            layer_shape.Cells("LineColor").FormulaU = rgb_to_visio(LAYER_BORDER_COLOR)
-            layer_shape.Cells("LineWeight").FormulaU = "1 pt"
+            layer_shape.Cells("FillPattern").FormulaU = "1"
+            layer_shape.Cells("FillForegnd").FormulaU = style.rgb_to_visio(style.FILL_SOFT)
+            layer_shape.Cells("LineColor").FormulaU = style.rgb_to_visio(style.LINE_MUTED)
+            layer_shape.Cells("LinePattern").FormulaU = "2"  # Dashed
+            layer_shape.Cells("LineWeight").FormulaU = style.WEIGHT_THIN
 
             # Layer label — centered vertically, no background
             label_y = vy(layer.y + layer.height / 2)
@@ -57,9 +53,7 @@ def render_to_visio(data: ArchData, output_path: str, visible: bool = False):
                 MARGIN_LEFT + LAYER_LABEL_WIDTH - 0.1, label_y - 0.22
             )
             label_shape.Text = layer.label
-            label_shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-            label_shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE} pt"
-            label_shape.Cells("Char.Color").FormulaU = rgb_to_visio(LABEL_TEXT_COLOR)
+            style.apply_font(label_shape, style.SIZE_HEADER, style.TEXT_MUTED, bold=True)
             label_shape.Cells("FillPattern").FormulaU = "0"  # No fill
             label_shape.Cells("LinePattern").FormulaU = "0"  # No border
             label_shape.Cells("Para.HorzAlign").FormulaU = "1"
@@ -74,11 +68,10 @@ def render_to_visio(data: ArchData, output_path: str, visible: bool = False):
             shape.Cells("Height").FormulaU = f"{comp.height:.4f} in"
 
             shape.Text = comp.label
-            shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-            shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE_SMALL} pt"
+            style.apply_font(shape, style.SIZE_NODE_SMALL, style.TEXT)
+            style.apply_fill(shape, style.FILL_PROCESS, style.BORDER_NODE)
+            style.apply_shadow(shape)
             shape.Cells("Para.HorzAlign").FormulaU = "1"
-            shape.Cells("FillPattern").FormulaU = "0"  # No fill
-            shape.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
 
         abs_path = os.path.abspath(output_path)
         doc.SaveAs(abs_path)

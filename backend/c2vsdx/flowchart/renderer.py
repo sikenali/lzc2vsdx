@@ -1,18 +1,9 @@
 import math
 import os
 
-from common.visio_utils import start_visio, open_stencils, close_visio, rgb_to_visio
+from common.visio_utils import start_visio, open_stencils, close_visio
+from common import style
 from flowchart.models import FlowchartData, NodeShape
-
-# Default style settings
-DEFAULT_FONT = "Microsoft YaHei"
-DEFAULT_FONT_SIZE = 10  # pt
-DEFAULT_FILL_COLOR = 16777215  # White
-DEFAULT_LINE_COLOR = 0  # Black
-DIAMOND_FILL_COLOR = 15790320  # Light gray
-STADIUM_FILL_COLOR = 14408667  # Light blue
-
-SCALE = 1.0
 
 # Master shape NameU in basic_u.vss
 MASTER_MAP = {
@@ -130,24 +121,30 @@ def _draw_node(page, node, masters: dict, size: tuple[float, float]):
     """Draw a node using cached Visio stencil masters."""
     master = masters.get(node.shape) or masters.get(NodeShape.RECTANGLE)
 
-    x = node.x * SCALE
-    y = node.y * SCALE
-    shape = page.Drop(master, x, y)
+    shape = page.Drop(master, node.x, node.y)
 
     w, h = size
     shape.Cells("Width").FormulaU = f"{w:.4f} in"
     shape.Cells("Height").FormulaU = f"{h:.4f} in"
 
     shape.Text = node.label
-    shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-    shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE} pt"
-
-    fill_color = _get_fill_color(node.shape)
-    shape.Cells("FillForegnd").FormulaU = rgb_to_visio(fill_color)
-    shape.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
+    style.apply_font(shape, style.SIZE_NODE, style.TEXT)
     shape.Cells("Para.HorzAlign").FormulaU = "1"
 
+    fill, border = _node_theme(node.shape)
+    style.apply_fill(shape, fill, border)
+    style.apply_shadow(shape)
+
     return shape
+
+
+def _node_theme(shape: NodeShape) -> tuple[int, int]:
+    """按节点角色返回 (填充色, 边框色)。"""
+    if shape == NodeShape.DIAMOND:
+        return style.FILL_DECISION, style.BORDER_DECISION
+    if shape in (NodeShape.ROUNDED, NodeShape.STADIUM):
+        return style.FILL_STARTEND, style.BORDER_STARTEND
+    return style.FILL_PROCESS, style.BORDER_NODE
 
 
 def _draw_edge(page, src_shape, tgt_shape, label: str, conn_master):
@@ -167,18 +164,5 @@ def _draw_edge(page, src_shape, tgt_shape, label: str, conn_master):
         connector.Cells("EndX").FormulaU = f"{tgt_x}"
         connector.Cells("EndY").FormulaU = f"{tgt_y}"
 
-    connector.Cells("EndArrow").FormulaU = "4"
-
-    if label:
-        connector.Text = label
-        connector.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-        connector.Cells("Char.Size").FormulaU = "8 pt"
-        connector.Cells("Para.HorzAlign").FormulaU = "1"
-
-
-def _get_fill_color(shape: NodeShape) -> int:
-    if shape == NodeShape.DIAMOND:
-        return DIAMOND_FILL_COLOR
-    if shape in (NodeShape.ROUNDED, NodeShape.STADIUM):
-        return STADIUM_FILL_COLOR
-    return DEFAULT_FILL_COLOR
+    style.style_edge(connector, style.ARROW_SOLID, style.LINE_DARK,
+                     style.WEIGHT_MAIN, label, style.SIZE_EDGE)

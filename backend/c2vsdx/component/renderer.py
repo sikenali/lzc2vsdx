@@ -1,16 +1,8 @@
 import os
 
 from common.visio_utils import start_visio, open_stencils, close_visio, rgb_to_visio
+from common import style
 from component.models import ComponentData, InterfaceType
-
-DEFAULT_FONT = "Microsoft YaHei"
-DEFAULT_FONT_SIZE = 10  # pt
-DEFAULT_FONT_SIZE_SMALL = 8  # pt for interfaces and tag
-DEFAULT_LINE_COLOR = 0  # Black
-TAG_COLOR = 8421504  # Gray RGB(128,128,128)
-PROVIDED_COLOR = 32768  # Green RGB(0,128,0)
-REQUIRED_COLOR = 8388608  # Dark red RGB(0,0,128)
-DEP_LINE_COLOR = 8421504  # Gray for dependency lines
 
 
 def render_to_visio(data: ComponentData, output_path: str, visible: bool = False):
@@ -27,17 +19,8 @@ def render_to_visio(data: ComponentData, output_path: str, visible: bool = False
         # Setup page dimensions
         _setup_page(page, data)
 
-        # Draw dependency connectors first (behind components)
-        shapes = {}
-        for dep in data.dependencies:
-            src = data.get_component(dep.from_id)
-            tgt = data.get_component(dep.to_id)
-            if not src or not tgt or src.x is None or tgt.x is None:
-                continue
-            # We need shapes for glue, so draw components first then connectors
-            # Actually, let's draw components first, then connectors with glue
-
         # Draw component boxes
+        shapes = {}
         for comp in data.components:
             if comp.x is None or comp.y is None:
                 continue
@@ -101,10 +84,9 @@ def _draw_component(page, comp, data: ComponentData, master) -> object:
             text_parts.append(iface.label)
 
     shape.Text = "\n".join(text_parts)
-    shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-    shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE} pt"
-    shape.Cells("FillForegnd").FormulaU = rgb_to_visio(16777215)  # White
-    shape.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
+    style.apply_font(shape, style.SIZE_NODE, style.TEXT)
+    style.apply_fill(shape, style.FILL_PROCESS, style.BORDER_NODE)
+    style.apply_shadow(shape)
     shape.Cells("Para.HorzAlign").FormulaU = "1"
 
     return shape
@@ -128,11 +110,5 @@ def _draw_dependency(page, src_shape, tgt_shape, label: str, conn_master):
         connector.Cells("EndY").FormulaU = f"{tgt_y}"
 
     connector.Cells("LinePattern").FormulaU = "2"  # Dashed
-    connector.Cells("EndArrow").FormulaU = "2"  # Open arrow
-    connector.Cells("LineColor").FormulaU = rgb_to_visio(DEP_LINE_COLOR)
-
-    if label:
-        connector.Text = label
-        connector.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-        connector.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE_SMALL} pt"
-        connector.Cells("Para.HorzAlign").FormulaU = "1"
+    style.style_edge(connector, style.ARROW_OPEN, style.LINE_MUTED,
+                     style.WEIGHT_THIN, label, style.SIZE_EDGE)

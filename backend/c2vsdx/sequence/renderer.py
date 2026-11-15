@@ -1,17 +1,11 @@
 import os
 
 from common.visio_utils import start_visio, open_stencils, close_visio, rgb_to_visio
+from common import style
 from sequence.layout_engine import MARGIN_LEFT, MARGIN_TOP, PARTICIPANT_BOX_HEIGHT, PARTICIPANT_BOX_WIDTH, PARTICIPANT_SPACING, MESSAGE_SPACING
 from sequence.models import FragmentType, MessageType, SequenceData
 
-DEFAULT_FONT = "Microsoft YaHei"
-DEFAULT_FONT_SIZE = 10  # pt
-DEFAULT_FONT_SIZE_SMALL = 9  # pt
-DEFAULT_LINE_COLOR = 0  # Black
-LIFELINE_COLOR = 8421504  # Gray RGB(128,128,128)
 ACTIVATION_WIDTH = 0.15  # Narrow activation bar width (inches)
-ACTIVATION_COLOR = 16777215  # White fill
-FRAGMENT_BORDER_COLOR = 0  # Black
 
 
 def render_to_visio(data: SequenceData, output_path: str, visible: bool = False):
@@ -106,7 +100,8 @@ def _draw_lifeline(page, x: float, top_vy: float, bottom_vy: float):
     """Draw a dashed vertical lifeline. All coordinates already in Visio space."""
     line = page.DrawLine(x, top_vy, x, bottom_vy)
     line.Cells("LinePattern").FormulaU = "2"  # Dashed
-    line.Cells("LineColor").FormulaU = rgb_to_visio(LIFELINE_COLOR)
+    line.Cells("LineColor").FormulaU = rgb_to_visio(style.LINE_MUTED)
+    line.Cells("LineWeight").FormulaU = style.WEIGHT_THIN
     line.Cells("EndArrow").FormulaU = "0"
 
 
@@ -118,8 +113,9 @@ def _draw_activation_bar(page, act: dict, master):
     half_w = ACTIVATION_WIDTH / 2
 
     shape = page.DrawRectangle(x - half_w, bottom, x + half_w, top)
-    shape.Cells("FillForegnd").FormulaU = rgb_to_visio(ACTIVATION_COLOR)
-    shape.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
+    shape.Cells("FillForegnd").FormulaU = rgb_to_visio(style.FILL_SOFT)
+    shape.Cells("LineColor").FormulaU = rgb_to_visio(style.LINE_MUTED)
+    shape.Cells("LineWeight").FormulaU = style.WEIGHT_THIN
 
 
 def _draw_participant_box(page, participant, master, visio_y: float):
@@ -130,11 +126,10 @@ def _draw_participant_box(page, participant, master, visio_y: float):
     shape.Cells("Width").FormulaU = f"{PARTICIPANT_BOX_WIDTH:.4f} in"
     shape.Cells("Height").FormulaU = f"{PARTICIPANT_BOX_HEIGHT:.4f} in"
     shape.Text = participant.label
-    shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-    shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE} pt"
-    shape.Cells("FillForegnd").FormulaU = rgb_to_visio(14408667)  # Light blue
-    shape.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
+    style.apply_font(shape, style.SIZE_HEADER, style.TEXT_LIGHT, bold=True)
     shape.Cells("Para.HorzAlign").FormulaU = "1"
+    style.apply_fill(shape, style.FILL_HEADER, style.BORDER_HEADER)
+    style.apply_shadow(shape)
 
 
 def _draw_message(page, from_x: float, to_x: float, y: float, label: str, msg_type: MessageType):
@@ -153,16 +148,17 @@ def _draw_message(page, from_x: float, to_x: float, y: float, label: str, msg_ty
     line = page.DrawLine(start_x, y, end_x, y)
 
     if msg_type == MessageType.SYNC:
-        line.Cells("EndArrow").FormulaU = "4"  # Filled arrow
+        line.Cells("EndArrow").FormulaU = style.ARROW_SOLID  # Filled arrow
         line.Cells("LinePattern").FormulaU = "1"  # Solid
     elif msg_type == MessageType.ASYNC:
-        line.Cells("EndArrow").FormulaU = "2"  # Open arrow
+        line.Cells("EndArrow").FormulaU = style.ARROW_OPEN  # Open arrow
         line.Cells("LinePattern").FormulaU = "1"  # Solid
     elif msg_type == MessageType.RETURN:
-        line.Cells("EndArrow").FormulaU = "2"  # Open arrow
+        line.Cells("EndArrow").FormulaU = style.ARROW_OPEN  # Open arrow
         line.Cells("LinePattern").FormulaU = "2"  # Dashed
 
-    line.Cells("LineColor").FormulaU = rgb_to_visio(DEFAULT_LINE_COLOR)
+    line.Cells("LineColor").FormulaU = rgb_to_visio(style.LINE_DARK)
+    line.Cells("LineWeight").FormulaU = style.WEIGHT_MAIN
 
     # Message label above the line (in Visio space, "above" = larger Y)
     if label:
@@ -173,8 +169,9 @@ def _draw_message(page, from_x: float, to_x: float, y: float, label: str, msg_ty
             mid_x + 1.0, y + label_offset + 0.35
         )
         text_shape.Text = label
-        text_shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-        text_shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE_SMALL} pt"
+        text_shape.Cells("Char.Font").FormulaU = f'"{style.FONT}"'
+        text_shape.Cells("Char.Size").FormulaU = f"{style.SIZE_EDGE} pt"
+        text_shape.Cells("Char.Color").FormulaU = rgb_to_visio(style.TEXT_MUTED)
         text_shape.Cells("LinePattern").FormulaU = "0"  # No border
         text_shape.Cells("FillPattern").FormulaU = "0"  # Transparent background
         text_shape.Cells("Para.HorzAlign").FormulaU = "1"
@@ -190,7 +187,9 @@ def _draw_self_message(page, x: float, y: float, label: str):
     page.DrawLine(start_x, y, start_x + offset_x, y)
     page.DrawLine(start_x + offset_x, y, start_x + offset_x, y - offset_y)
     line3 = page.DrawLine(start_x + offset_x, y - offset_y, start_x, y - offset_y)
-    line3.Cells("EndArrow").FormulaU = "4"
+    line3.Cells("EndArrow").FormulaU = style.ARROW_SOLID
+    line3.Cells("LineColor").FormulaU = rgb_to_visio(style.LINE_DARK)
+    line3.Cells("LineWeight").FormulaU = style.WEIGHT_MAIN
 
     if label:
         text_shape = page.DrawRectangle(
@@ -198,8 +197,9 @@ def _draw_self_message(page, x: float, y: float, label: str):
             start_x + offset_x + 1.0, y - offset_y - 0.05
         )
         text_shape.Text = label
-        text_shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-        text_shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE_SMALL} pt"
+        text_shape.Cells("Char.Font").FormulaU = f'"{style.FONT}"'
+        text_shape.Cells("Char.Size").FormulaU = f"{style.SIZE_EDGE} pt"
+        text_shape.Cells("Char.Color").FormulaU = rgb_to_visio(style.TEXT_MUTED)
         text_shape.Cells("LinePattern").FormulaU = "0"
         text_shape.Cells("FillPattern").FormulaU = "0"  # Transparent background
         text_shape.Cells("Para.HorzAlign").FormulaU = "0"
@@ -231,11 +231,12 @@ def _draw_fragment(page, fragment, data: SequenceData, master, vy):
     top_vy = vy(fragment.start_y)
     bottom_vy = vy(fragment.end_y)
 
-    # Draw fragment box
+    # Draw fragment box (dashed muted border, transparent fill)
     frag_shape = page.DrawRectangle(left, bottom_vy, right, top_vy)
     frag_shape.Cells("LinePattern").FormulaU = "2"  # Dashed
-    frag_shape.Cells("LineColor").FormulaU = rgb_to_visio(FRAGMENT_BORDER_COLOR)
-    frag_shape.Cells("FillForegnd").FormulaU = rgb_to_visio(16777215)  # White
+    frag_shape.Cells("LineColor").FormulaU = rgb_to_visio(style.LINE_MUTED)
+    frag_shape.Cells("LineWeight").FormulaU = style.WEIGHT_THIN
+    frag_shape.Cells("FillForegnd").FormulaU = rgb_to_visio(style.FILL_SOFT)
     frag_shape.Cells("FillPattern").FormulaU = "0"  # No fill (transparent)
 
     # Draw label tab in top-left corner (top_vy is the upper edge)
@@ -243,10 +244,8 @@ def _draw_fragment(page, fragment, data: SequenceData, master, vy):
     tab_height = 0.25
     tab_shape = page.DrawRectangle(left, top_vy - tab_height, left + tab_width, top_vy)
     tab_shape.Text = fragment.frag_type.value.upper()
-    tab_shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-    tab_shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE_SMALL} pt"
-    tab_shape.Cells("FillForegnd").FormulaU = rgb_to_visio(15790320)  # Light gray
-    tab_shape.Cells("LineColor").FormulaU = rgb_to_visio(FRAGMENT_BORDER_COLOR)
+    style.apply_font(tab_shape, style.SIZE_NODE_SMALL, style.TEXT_MUTED, bold=True)
+    style.apply_fill(tab_shape, style.FILL_SOFT, style.LINE_MUTED, style.WEIGHT_THIN)
     tab_shape.Cells("Para.HorzAlign").FormulaU = "1"
 
     # Fragment label
@@ -256,8 +255,7 @@ def _draw_fragment(page, fragment, data: SequenceData, master, vy):
             left + tab_width + 1.2, top_vy
         )
         label_shape.Text = fragment.label
-        label_shape.Cells("Char.Font").FormulaU = f'"{DEFAULT_FONT}"'
-        label_shape.Cells("Char.Size").FormulaU = f"{DEFAULT_FONT_SIZE_SMALL} pt"
+        style.apply_font(label_shape, style.SIZE_NODE_SMALL, style.TEXT_MUTED)
         label_shape.Cells("LinePattern").FormulaU = "0"
         label_shape.Cells("FillPattern").FormulaU = "0"  # Transparent background
         label_shape.Cells("Para.HorzAlign").FormulaU = "0"
