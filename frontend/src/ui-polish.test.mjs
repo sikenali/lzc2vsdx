@@ -351,3 +351,32 @@ test('设置页去掉恢复默认按钮；模型管理改二级标签（视觉�
   assert.match(model, /const tab = ref\('vision'\)/)
   assert.match(model, /SUB_TABS/)
 })
+
+test('关于页：懒猫 hero+分区 风格，版本取自 electron/package.json，仓库地址正确', async () => {
+  const about = await read('./components/settings/AboutView.vue')
+  // 版本来源：electron/package.json（根目录无 package.json）
+  assert.match(about, /electron\/package\.json/)
+  // hero + 分区结构
+  assert.match(about, /about-hero/)
+  assert.match(about, /产品简介/)
+  assert.match(about, /核心能力/)
+  assert.match(about, /技术栈/)
+  assert.match(about, /链接/)
+  // 核心能力：4 项（文本生成/图片生成/在线微调/本地优先）
+  assert.match(about, /文本生成/)
+  assert.match(about, /图片生成/)
+  assert.match(about, /在线微调/)
+  assert.match(about, /本地优先/)
+  assert.match(about, /feature-grid/)
+  // 仓库地址正确（不再指向 yyjuan97/openvs.github.io）
+  assert.match(about, /sikenali\/lzc2vsdx/)
+  assert.doesNotMatch(about, /yyjuan97/)
+  // 链接 + 版权
+  assert.match(about, /查看源代码/)
+  assert.match(about, /ri-github-line/)
+  assert.match(about, /LightOS/)
+  assert.match(about, /about-copyright/)
+  // 技术栈 chips
+  assert.match(about, /tech-chip/)
+  assert.match(about, /Visio COM/)
+})
