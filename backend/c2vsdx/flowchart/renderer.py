@@ -46,7 +46,7 @@ def _estimate_node_size(label: str, shape: NodeShape) -> tuple[float, float]:
 
 def render_to_visio(data: FlowchartData, output_path: str, visible: bool = False):
     """Render FlowchartData to a Visio document and save to output_path."""
-    visio = start_visio()
+    visio = start_visio(visible)
     basic_stencil, connector_stencil, stencil_masters, conn_master = open_stencils(visio)
 
     try:

@@ -8,7 +8,7 @@ from composition.models import CompositionData
 
 def render_to_visio(data: CompositionData, output_path: str, visible: bool = False):
     """Render CompositionData to a Visio document as a tree-structured composition diagram."""
-    visio = start_visio()
+    visio = start_visio(visible)
     basic_stencil, connector_stencil, stencil_masters, conn_master = open_stencils(visio)
 
     try:

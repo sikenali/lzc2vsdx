@@ -6,9 +6,18 @@ BASIC_STENCIL = "basic_u.vss"
 CONNECTOR_STENCIL = "connec_u.vss"
 
 
-def start_visio():
-    """Start a new Visio application instance."""
-    return win32com.client.DispatchEx("Visio.Application")
+def start_visio(visible=False):
+    """Start a new Visio application instance, hidden unless visible=True.
+
+    DispatchEx 创建的新实例默认会显示窗口；设为 Visible=False 让生成过程
+    不弹出 Visio（后台静默生成 .vsdx）。
+    """
+    visio = win32com.client.DispatchEx("Visio.Application")
+    try:
+        visio.Visible = bool(visible)
+    except Exception:
+        pass
+    return visio
 
 
 def open_stencils(visio):

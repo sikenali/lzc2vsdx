@@ -18,7 +18,7 @@ MASTER_MAP = {
 
 
 def render_to_visio(data: SwimlaneData, output_path: str, visible: bool = False):
-    visio = start_visio()
+    visio = start_visio(visible)
     basic_stencil, connector_stencil, stencil_masters, conn_master = open_stencils(visio)
 
     try:

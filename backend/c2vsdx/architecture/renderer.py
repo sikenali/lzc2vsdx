@@ -8,7 +8,7 @@ from architecture.layout_engine import LAYER_LABEL_WIDTH, MARGIN_LEFT
 
 def render_to_visio(data: ArchData, output_path: str, visible: bool = False):
     """Render ArchData to a Visio document as a layered architecture diagram."""
-    visio = start_visio()
+    visio = start_visio(visible)
     basic_stencil, connector_stencil, stencil_masters, conn_master = open_stencils(visio)
 
     try:

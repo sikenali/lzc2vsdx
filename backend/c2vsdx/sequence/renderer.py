@@ -10,7 +10,7 @@ ACTIVATION_WIDTH = 0.15  # Narrow activation bar width (inches)
 
 def render_to_visio(data: SequenceData, output_path: str, visible: bool = False):
     """Render SequenceData to a Visio document following UML sequence diagram conventions."""
-    visio = start_visio()
+    visio = start_visio(visible)
     basic_stencil, connector_stencil, stencil_masters, conn_master = open_stencils(visio)
 
     try:

@@ -7,7 +7,7 @@ from component.models import ComponentData, InterfaceType
 
 def render_to_visio(data: ComponentData, output_path: str, visible: bool = False):
     """Render ComponentData to a Visio document as a component diagram."""
-    visio = start_visio()
+    visio = start_visio(visible)
     basic_stencil, connector_stencil, stencil_masters, conn_master = open_stencils(visio)
 
     try:
