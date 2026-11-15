@@ -1,7 +1,7 @@
 <template>
   <aside class="sidenav" role="navigation" aria-label="侧边导航">
     <button type="button" class="sidenav-brand" title="返回首页" aria-label="返回首页" @click="go('/')">
-      <i class="ri-target-line"></i>
+      <BrandLogo :size="30" :icon="19" :radius="8" />
     </button>
 
     <nav class="sidenav-nav" aria-label="工具导航">
@@ -13,8 +13,6 @@
         :class="{ active: active === item.key }"
         @click="go(item.path)"
       >
-        <!-- §2.2 激活态左侧竖条指示器 -->
-        <span class="sidenav-accent"></span>
         <i :class="item.icon + ' sidenav-icon'"></i>
         <span class="sidenav-label">{{ item.label }}</span>
       </button>
@@ -29,6 +27,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import BrandLogo from './BrandLogo.vue'
 import pkg from '../../package.json'
 
 const route = useRoute()
@@ -61,12 +60,11 @@ function go(path) { router.push(path) }
   border-right: 0.6px solid var(--line);
 }
 
-/* Brand icon — RiTargetLine，电光青 */
+/* Brand — 项目 C2VSDX 徽标（BrandLogo，电光青） */
 .sidenav-brand {
   width: 48px; height: 36px; margin-top: 14px; flex: none;
   border-radius: var(--radius-sm);
   display: inline-flex; align-items: center; justify-content: center;
-  color: var(--tech-cyan); font-size: 22px;
   border: none; cursor: pointer; background: transparent;
   transition: background var(--t-fast) var(--ease-smooth);
 }
@@ -88,17 +86,6 @@ function go(path) { router.push(path) }
   position: relative;
   transition: background var(--t-fast) var(--ease-smooth), color var(--t-fast) var(--ease-smooth);
 }
-
-/* §2.2 左侧竖条指示器：3×28px 电光青发光 */
-.sidenav-accent {
-  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-  width: 3px; height: 28px; border-radius: 0 2px 2px 0;
-  background: var(--tech-cyan);
-  box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.5);
-  opacity: 0;
-  transition: opacity var(--t-fast) var(--ease-smooth);
-}
-.sidenav-btn.active .sidenav-accent { opacity: 1; }
 
 .sidenav-icon { font-size: 19px; line-height: 1; flex-shrink: 0; }
 .sidenav-btn .ri-file-text-line { color: #FFB347; }

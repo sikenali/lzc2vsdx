@@ -4,14 +4,6 @@
       <BrandLogo :size="18" :icon="12" :radius="6" />
       <span class="footer-brand-text">自动化 visio 图生成器</span>
     </div>
-    <div class="footer-center">
-      <button class="footer-chip" title="企业信用" @click="notify('企业信用信息')">
-        <i class="ri-home-4-line"></i>
-      </button>
-      <button class="footer-chip" title="招标网站" @click="notify('招标网站链接')">
-        <i class="ri-link"></i>
-      </button>
-    </div>
     <div class="footer-right">
       © 2026 C2VSDX · Powered by
       <a href="https://lazycat.cloud/" target="_blank" rel="noopener noreferrer">LightOS</a>
@@ -21,8 +13,6 @@
 
 <script setup>
 import BrandLogo from './BrandLogo.vue'
-import { toast } from '../utils/toast'
-function notify(message) { toast('info', message) }
 </script>
 
 <style scoped>
@@ -30,7 +20,7 @@ function notify(message) { toast('info', message) }
   /* §2.1 PageFooter height: 48px，左右 padding: 24px */
   height: 48px;
   flex: none;
-  display: flex; align-items: center;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 0 24px;
   background: rgba(244, 247, 250, 0.75);
   -webkit-backdrop-filter: blur(12px);
@@ -51,18 +41,6 @@ function notify(message) { toast('info', message) }
   font-family: var(--font-display);
 }
 
-.footer-center { flex: 1; display: flex; justify-content: center; align-items: center; gap: 10px; }
-
-.footer-chip {
-  width: 26px; height: 26px; border-radius: 9999px;
-  background: var(--bg-soft); color: var(--ink-3); font-size: 13px;
-  display: inline-flex; align-items: center; justify-content: center;
-  border: none; cursor: pointer;
-  transition: background-color var(--t-fast) var(--ease-spring), color var(--t-fast) var(--ease-spring);
-}
-.footer-chip:hover { background: rgba(var(--tech-cyan-rgb), 0.12); color: var(--tech-cyan); }
-.footer-chip:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb), 0.3); }
-
 .footer-right {
   width: 320px; text-align: right; font-size: 12px; color: var(--ink-4); flex: none;
 }
@@ -77,5 +55,4 @@ function notify(message) { toast('info', message) }
   .footer-left, .footer-right { width: auto; }
   .footer-right { font-size: 11px; }
 }
-@media (max-width: 640px) { .footer-center { display: none; } }
 </style>

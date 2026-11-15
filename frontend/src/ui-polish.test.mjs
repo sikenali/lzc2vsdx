@@ -28,7 +28,6 @@ test('各调用点使用统一 toast 助手并传类型', async () => {
     './views/TextView.vue',
     './views/ImageView.vue',
     './views/ResultView.vue',
-    './components/AppFooter.vue',
     './components/settings/ThemeSettingsView.vue',
   ]) {
     const src = await read(f)
@@ -140,12 +139,11 @@ test('nav items follow §2.3 spec: cyan hover/focus lift + 右侧 round-btn 恢�
   assert.match(header, /\.round-btn/)
 })
 
-test('SideNav 64px + 左侧竖条发光指示器（§2.2）', async () => {
+test('SideNav 64px + 品牌 Logo + 激活态无竖条（§2.2）', async () => {
   const nav = await read('./components/SideNav.vue')
   assert.match(nav, /width:\s*64px/)
-  assert.match(nav, /\.sidenav-accent/)
-  assert.match(nav, /width:\s*3px/)
-  assert.match(nav, /box-shadow:\s*0\s*0\s*8px\s*rgba\(var\(--tech-cyan-rgb\),\s*0\.5\)/)
+  assert.doesNotMatch(nav, /\.sidenav-accent/)
+  assert.match(nav, /BrandLogo/)
   assert.match(nav, /width:\s*48px/)   // 按钮 48×48
 })
 
@@ -247,7 +245,8 @@ test('无边框：Electron main 设置 frame:false + 窗口控制 IPC（#1）', 
   assert.match(tb, /no-drag/)
   assert.doesNotMatch(tb, /ri-settings-3-line/)
   assert.match(tb, /ri-subtract-line/)
-  assert.match(tb, /ri-square-line|ri-restore-line/)
+  assert.match(tb, /ri-square-line/)
+  assert.match(tb, /tb-glyph/)          // 还原态用内联 SVG（ri-restore-line 不存在）
   assert.match(tb, /ri-close-line/)
   // App 仅在桌面渲染标题栏，并为它预留 36px
   const app = await read('./App.vue')
@@ -315,4 +314,22 @@ test('结果页统计/状态 + TypeCard/Model 按钮 on-primary 令牌化（深�
   assert.doesNotMatch(typeCard, /#0A1628/)
   const model = await read('./components/settings/ModelSettingsView.vue')
   assert.doesNotMatch(model, /#0A1628/)
+})
+
+test('页脚移除企业信用/招标网站图标（仅品牌 + LightOS 链接）', async () => {
+  const footer = await read('./components/AppFooter.vue')
+  assert.doesNotMatch(footer, /footer-center/)
+  assert.doesNotMatch(footer, /footer-chip/)
+  assert.doesNotMatch(footer, /企业信用/)
+  assert.doesNotMatch(footer, /招标网站/)
+  assert.match(footer, /BrandLogo/)
+  assert.match(footer, /lazycat\.cloud/)
+})
+
+test('侧边栏：品牌用项目 Logo（BrandLogo），激活态无竖条', async () => {
+  const nav = await read('./components/SideNav.vue')
+  assert.match(nav, /BrandLogo/)
+  assert.doesNotMatch(nav, /ri-target-line/)
+  assert.doesNotMatch(nav, /sidenav-accent/)
+  assert.doesNotMatch(nav, /ri-home-4-line/)
 })

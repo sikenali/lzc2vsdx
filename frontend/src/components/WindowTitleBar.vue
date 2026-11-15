@@ -10,7 +10,11 @@
         <i class="ri-subtract-line"></i>
       </button>
       <button class="tb-btn" :title="maximized ? '还原' : '最大化'" :aria-label="maximized ? '还原' : '最大化'" @click="win('maximizeToggle')">
-        <i :class="maximized ? 'ri-restore-line' : 'ri-square-line'"></i>
+        <svg v-if="maximized" class="tb-glyph" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <rect x="1.2" y="3.6" width="7.2" height="7.2" rx="1" stroke="currentColor" stroke-width="1.2" />
+          <path d="M3.4 1.2 H9.4 A1.4 1.4 0 0 1 10.8 2.6 V9.4" stroke="currentColor" stroke-width="1.2" fill="none" />
+        </svg>
+        <i v-else class="ri-square-line"></i>
       </button>
       <button class="tb-btn tb-close" title="关闭" aria-label="关闭" @click="win('close')">
         <i class="ri-close-line"></i>
@@ -81,4 +85,7 @@ onBeforeUnmount(() => offMax?.())
 
 .tb-close:hover { background: #e81123; color: #fff; }
 .tb-close:active { background: #c50f1f; }
+
+/* #4 还原态用内联 SVG（ri-restore-line 在 remixicon 不存在 → 空白） */
+.tb-glyph { display: block; }
 </style>
