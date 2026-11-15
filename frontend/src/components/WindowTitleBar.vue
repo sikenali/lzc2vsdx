@@ -1,7 +1,7 @@
 <template>
   <div class="window-titlebar">
     <div class="tb-title">
-      <span class="tb-logo"><i class="ri-target-line"></i></span>
+      <BrandLogo :size="18" :icon="11" :radius="5" />
       <span class="tb-name">C2VSDX</span>
     </div>
 
@@ -25,6 +25,7 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import BrandLogo from './BrandLogo.vue'
 
 const maximized = ref(false)
 let offMax = null
@@ -64,7 +65,6 @@ onBeforeUnmount(() => offMax?.())
   font-size: 12px; color: var(--ink-4);
   font-family: var(--font-display); letter-spacing: 0.5px;
 }
-.tb-logo { display: inline-flex; color: var(--primary); font-size: 14px; }
 .tb-name { font-weight: 600; letter-spacing: 0.3px; }
 
 .tb-controls {

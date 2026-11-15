@@ -245,6 +245,8 @@ test('无边框：Electron main 设置 frame:false + 窗口控制 IPC（#1）', 
   assert.match(tb, /-webkit-app-region:\s*drag/)
   assert.match(tb, /no-drag/)
   assert.doesNotMatch(tb, /ri-settings-3-line/)
+  assert.doesNotMatch(tb, /ri-target-line/)   // 品牌用 BrandLogo 徽标（不再是靶心/回旋标）
+  assert.match(tb, /BrandLogo/)
   assert.match(tb, /ri-subtract-line/)
   assert.match(tb, /ri-square-line/)
   assert.match(tb, /tb-glyph/)          // 还原态用内联 SVG（ri-restore-line 不存在）
