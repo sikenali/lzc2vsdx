@@ -129,15 +129,15 @@ test('header 64px glass + glow divider；标签无底部指示条（§2.1/§2.3�
   assert.match(header, /\.nav-item\.active\s*\{[\s\S]*color:\s*var\(--tech-cyan\)/)
 })
 
-test('nav items follow §2.3 spec: cyan hover/focus lift (round-btn removed with back/settings)', async () => {
+test('nav items follow §2.3 spec: cyan hover/focus lift + 右侧 round-btn 恢复', async () => {
   const header = await read('./components/AppHeader.vue')
   // 导航项 hover 微上浮 + 顶部微光条
   assert.match(header, /\.nav-item:hover\s*\{[\s\S]*translateY\(-1px\)/)
   assert.match(header, /\.nav-item:hover::before\s*\{[\s\S]*opacity:\s*1/)
   assert.match(header, /\.nav-item:active\s*\{[\s\S]*scale\(0\.97\)/)
   assert.match(header, /\.nav-item:focus-visible\s*\{[\s\S]*rgba\(var\(--tech-cyan-rgb\),\s*0\.3\)/)
-  // 返回/设置圆形按钮已从头部移除
-  assert.doesNotMatch(header, /\.round-btn/)
+  // 返回/设置圆形按钮已恢复（round-btn）
+  assert.match(header, /\.round-btn/)
 })
 
 test('SideNav 64px + 左侧竖条发光指示器（§2.2）', async () => {
@@ -241,11 +241,11 @@ test('无边框：Electron main 设置 frame:false + 窗口控制 IPC（#1）', 
   const pkg = JSON.parse(await read('../../electron/package.json'))
   assert.ok(pkg.build.files.includes('preload.js'), 'build.files 必须包含 preload.js')
   assert.ok(pkg.build.files.includes('main.js'))
-  // 前端标题栏组件
+  // 前端标题栏组件：仅窗口控制（设置已移除，回到 AppHeader）
   const tb = await read('./components/WindowTitleBar.vue')
   assert.match(tb, /-webkit-app-region:\s*drag/)
   assert.match(tb, /no-drag/)
-  assert.match(tb, /ri-settings-3-line/)
+  assert.doesNotMatch(tb, /ri-settings-3-line/)
   assert.match(tb, /ri-subtract-line/)
   assert.match(tb, /ri-square-line|ri-restore-line/)
   assert.match(tb, /ri-close-line/)
@@ -256,18 +256,21 @@ test('无边框：Electron main 设置 frame:false + 窗口控制 IPC（#1）', 
   assert.match(app, /--titlebar-h:\s*36px/)
 })
 
-test('AppHeader 不再显示返回/设置按钮（返回由页面内导航承担，设置移至标题栏）', async () => {
+test('AppHeader 恢复返回/设置按钮；Electron 标题栏不再有设置', async () => {
   const header = await read('./components/AppHeader.vue')
-  // 模板中不得再出现返回/设置按钮（round-btn），也不再依赖 isHome/isDesktop 判断
-  assert.doesNotMatch(header, /round-btn/)
-  assert.doesNotMatch(header, /ri-arrow-go-back-line|ri-arrow-left-line/)
-  assert.doesNotMatch(header, /ri-settings-3-line/)
-  assert.doesNotMatch(header, /isHome\s*=\s*computed\(/)
-  assert.doesNotMatch(header, /isDesktop\s*=\s*computed\(/)
-  assert.doesNotMatch(header, /function\s+back\s*\(/)
-  assert.doesNotMatch(header, /function\s+settings\s*\(/)
-  // 保留空占位保证标签居中
-  assert.match(header, /header-actions/)
+  // 返回按钮：非首页显示（首页隐藏）
+  assert.match(header, /v-if="!isHome"/)
+  assert.match(header, /ri-arrow-go-back-line|ri-arrow-left-line/)
+  // 设置按钮：始终显示（标题栏已移除设置入口）
+  assert.match(header, /ri-settings-3-line/)
+  assert.match(header, /isHome\s*=\s*computed\(/)
+  assert.match(header, /function\s+back\s*\(/)
+  assert.match(header, /function\s+settings\s*\(/)
+  assert.match(header, /\.round-btn/)
+  // 标题栏不再处理 open-settings
+  const tb = await read('./components/WindowTitleBar.vue')
+  assert.doesNotMatch(tb, /open-settings/)
+  assert.doesNotMatch(tb, /defineEmits/)
 })
 
 test('BrandLogo 去背景：透明底 + 强调色图标（#3）', async () => {

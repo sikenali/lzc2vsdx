@@ -26,8 +26,15 @@
       </nav>
     </div>
 
-    <!-- 返回/设置按钮已移除：设置移至自定义标题栏（桌面），返回由页面内导航承担 -->
-    <div class="header-actions" aria-hidden="true"></div>
+    <!-- 返回/设置按钮：返回仅非首页显示，设置始终显示（Electron 标题栏已移除设置入口） -->
+    <div class="header-actions">
+      <button v-if="!isHome" class="round-btn" title="返回" @click="back" aria-label="返回上一页">
+        <i :class="backIcon"></i>
+      </button>
+      <button class="round-btn" title="设置" @click="settings" aria-label="打开设置中心">
+        <i class="ri-settings-3-line"></i>
+      </button>
+    </div>
   </header>
 </template>
 
@@ -40,6 +47,7 @@ import { useTheme } from '../stores/theme.js'
 const route = useRoute()
 const router = useRouter()
 const { theme } = useTheme()
+const emit = defineEmits(['open-settings'])
 
 // TABS 注册表（C2VSDX 两种模式，配色对应 §2.3.2 brand 色板）
 const TABS = [
@@ -50,8 +58,13 @@ const TABS = [
 const active    = computed(() => route.meta.tab || 'text')
 const subtitle  = computed(() => route.meta.subtitle || '文本生成 Visio 图')
 const isSidebar = computed(() => theme.layout === 'sidebar')
+const backIcon  = computed(() => (route.name === 'result' ? 'ri-arrow-go-back-line' : 'ri-arrow-left-line'))
+// 首页（文本/图片生成主路由）不显示返回按钮
+const isHome    = computed(() => route.name === 'text' || route.name === 'image')
 
-function go(path) { router.push(path) }
+function go(path)   { router.push(path) }
+function back()     { if (window.history.length > 1) window.history.back(); else router.push('/') }
+function settings() { emit('open-settings') }
 </script>
 
 <style scoped>
@@ -155,11 +168,31 @@ function go(path) { router.push(path) }
 .nav-item.active.color-gold .nav-icon { color: var(--tech-cyan); }
 .nav-item.active.color-blue .nav-icon { color: var(--tech-cyan); }
 
-/* ── §2.3.4 右侧空占位（与左侧 brand 等宽，保持标签居中）──── */
+/* ── §2.3.4 右侧圆形按钮 36×36px ─────────────────────────── */
 .header-actions {
   width: 280px; display: flex; justify-content: flex-end; align-items: center; gap: 6px;
-  flex: none;
+  flex: none;   /* 与左侧 brand 等宽，保持标签居中 */
 }
+
+.round-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: transparent;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink-3); font-size: 17px; border: none;
+  transition:
+    background-color var(--t-fast) var(--ease-spring),
+    color             var(--t-fast) var(--ease-spring),
+    transform         var(--t-fast) var(--ease-spring),
+    box-shadow        var(--t-fast) var(--ease-spring);
+}
+.round-btn:hover {
+  background: var(--tech-cyan);
+  color: #0A1628;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(var(--tech-cyan-rgb), 0.35);
+}
+.round-btn:active { transform: scale(0.96); transition-duration: var(--t-snap); box-shadow: none; }
+.round-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--tech-cyan-rgb),0.35); }
 
 @media (max-width: 1100px) {
   .header-brand, .header-actions { width: auto; }

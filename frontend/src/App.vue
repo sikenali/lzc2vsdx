@@ -2,9 +2,9 @@
   <div class="app-shell" :class="{ 'layout-sidebar': isSidebar, 'desktop-frame': isDesktop }">
     <SideNav v-if="isSidebar" />
     <div class="main-col">
-      <!-- #1 无边框：桌面端显示自定义标题栏（设置/最小化/最大化/关闭） -->
-      <WindowTitleBar v-if="isDesktop" @open-settings="showSettings = true" />
-      <AppHeader />
+      <!-- #1 无边框：桌面端显示自定义标题栏（最小化/最大化/关闭） -->
+      <WindowTitleBar v-if="isDesktop" />
+      <AppHeader @open-settings="showSettings = true" />
       <main class="app-main">
         <div class="app-container" :class="{ wide: isWide }">
           <router-view v-slot="{ Component }">

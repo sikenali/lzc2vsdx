@@ -6,9 +6,6 @@
     </div>
 
     <div class="tb-controls">
-      <button class="tb-btn" title="设置" aria-label="打开设置中心" @click="$emit('open-settings')">
-        <i class="ri-settings-3-line"></i>
-      </button>
       <button class="tb-btn" title="最小化" aria-label="最小化" @click="win('minimize')">
         <i class="ri-subtract-line"></i>
       </button>
@@ -24,8 +21,6 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-
-defineEmits(['open-settings'])
 
 const maximized = ref(false)
 let offMax = null
