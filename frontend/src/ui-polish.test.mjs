@@ -273,12 +273,23 @@ test('AppHeader 恢复返回/设置按钮；Electron 标题栏不再有设置', 
   assert.doesNotMatch(tb, /defineEmits/)
 })
 
-test('BrandLogo 项目徽标：电光青圆角底 + 深色图形（匹配 exe 图标，非裸线条）', async () => {
+test('BrandLogo 项目徽标：电光青圆角底 + 层级流程图（根上/两子下，非回旋标）', async () => {
   const logo = await read('./components/BrandLogo.vue')
   assert.match(logo, /background:\s*var\(--primary\)/)
   assert.match(logo, /color:\s*var\(--primary-on\)/)
   assert.doesNotMatch(logo, /background:\s*transparent/)
-  assert.doesNotMatch(logo, /--primary-fill/)
+  // 层级流程图：根节点在上（x=8,y=3），两个子节点在下（x=2/x=14,y=15），分叉连线
+  assert.match(logo, /<rect x="8" y="3"/)
+  assert.match(logo, /<rect x="2" y="15"/)
+  assert.match(logo, /<rect x="14" y="15"/)
+  assert.match(logo, /M12 9v3M6 12h12M6 12v3M18 12v3/)
+  // 旧品字排布（两个上、一个下）已移除
+  assert.doesNotMatch(logo, /<rect x="2" y="3"/)
+  assert.doesNotMatch(logo, /<rect x="8" y="15"/)
+  // exe 图标源同步为层级图
+  const icon = await read('../../electron/build/icon.svg')
+  assert.match(icon, /M256 192v64M128 256h256M128 256v64M384 256v64/)
+  assert.match(icon, /<rect x="171" y="64"/)
 })
 
 test('Diagram 预览/骨架 深色适配：无硬编码暖色，全部用 --diagram-* 令牌', async () => {
