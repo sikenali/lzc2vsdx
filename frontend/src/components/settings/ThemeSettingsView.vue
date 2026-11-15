@@ -10,10 +10,6 @@
           <span class="crumb-sep">/</span>
           <span class="crumb current">主题管理</span>
         </nav>
-        <button type="button" class="reset-btn" @click="reset">
-          <i class="ri-restart-line"></i>
-          <span>恢复默认</span>
-        </button>
       </div>
       <h2 class="page-title">主题管理</h2>
       <p class="page-desc">统一切换外观底色、强调色与导航布局模式，修改即时生效</p>
@@ -136,7 +132,7 @@
 import { ACCENTS, useTheme } from '../../stores/theme.js'
 import { toast } from '../../utils/toast'
 
-const { theme, setMode, setAccent, setLayout, reset } = useTheme()
+const { theme, setMode, setAccent, setLayout } = useTheme()
 
 /** 布局切换：写 store（实时生效）并弹出成功 toast。 */
 function switchLayout(layout) {
@@ -181,20 +177,6 @@ function switchLayout(layout) {
 }
 .crumb-sep { color: var(--ink-5); }
 .crumb.current { color: var(--ink-3); }
-
-/* §6.1 恢复默认按钮：36px outline */
-.reset-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  height: 36px; padding: 0 14px;
-  border-radius: var(--radius-sm);
-  border: 0.6px solid rgba(var(--tech-cyan-rgb), 0.3);
-  background: transparent; color: var(--tech-cyan);
-  font-size: 12px; font-weight: 500;
-  font-family: var(--font-display);
-  transition: background var(--t-fast) ease, color var(--t-fast) ease;
-}
-.reset-btn i { font-size: 14px; }
-.reset-btn:hover { background: rgba(var(--tech-cyan-rgb), 0.1); }
 
 .page-title {
   font-size: 20px; font-weight: 600; letter-spacing: 0.3px;

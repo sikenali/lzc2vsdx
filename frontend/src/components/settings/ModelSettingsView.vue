@@ -10,17 +10,30 @@
           <span class="crumb-sep">/</span>
           <span class="crumb current">模型管理</span>
         </nav>
-        <button type="button" class="reset-btn" @click="resetAll">
-          <i class="ri-restart-line"></i>
-          <span>恢复默认</span>
-        </button>
       </div>
       <h2 class="page-title">模型管理</h2>
       <p class="page-desc">配置 OpenAI 兼容模型；未配置时图片走演示数据、文本用内置规则解析</p>
+
+      <!-- 二级标签：点击显示对应设置项 -->
+      <div class="sub-tabs" role="tablist" aria-label="模型类型">
+        <button
+          v-for="t in SUB_TABS"
+          :key="t.key"
+          type="button"
+          class="sub-tab"
+          :class="{ active: tab === t.key }"
+          role="tab"
+          :aria-selected="tab === t.key"
+          @click="tab = t.key"
+        >
+          <i :class="t.icon"></i>
+          <span>{{ t.label }}</span>
+        </button>
+      </div>
     </section>
 
-    <!-- 视觉模型卡 -->
-    <section class="theme-card">
+    <!-- 视觉模型卡（图片识别） -->
+    <section v-if="tab === 'vision'" class="theme-card">
       <h3 class="card-title">视觉模型（图片识别）</h3>
       <p class="field-note">用于识别上传图片并生成图表。留空则图片走演示数据。API Key 仅存储于本机 userData。</p>
       <div class="field-grid">
@@ -51,7 +64,7 @@
     </section>
 
     <!-- 文本解析卡 -->
-    <section class="theme-card">
+    <section v-else class="theme-card">
       <h3 class="card-title">文本解析 LLM</h3>
       <p class="field-note">用于文本生成图表的结构化解析。留空则用内置规则解析。</p>
       <div class="field-grid">
@@ -94,16 +107,18 @@ const visionShow = ref(false)
 const llmShow = ref(false)
 const saving = ref(false)
 
+// 二级标签：视觉模型 / 文本解析
+const tab = ref('vision')
+const SUB_TABS = [
+  { key: 'vision', label: '视觉模型', icon: 'ri-image-line' },
+  { key: 'llm',    label: '文本解析', icon: 'ri-file-text-line' },
+]
+
 onMounted(async () => {
   const cfg = await loadModelConfig()
   Object.assign(vision, cfg?.vision || {})
   Object.assign(llm, cfg?.llm || {})
 })
-
-function resetAll() {
-  Object.assign(vision, { baseUrl: '', apiKey: '', model: '' })
-  Object.assign(llm, { baseUrl: '', apiKey: '', model: '' })
-}
 
 async function save() {
   if (saving.value) {
@@ -163,18 +178,27 @@ async function save() {
 .crumb-sep { color: var(--ink-5); }
 .crumb.current { color: var(--ink-3); }
 
-.reset-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  height: 36px; padding: 0 14px;
-  border-radius: var(--radius-sm);
-  border: 0.6px solid rgba(var(--tech-cyan-rgb), 0.3);
-  background: transparent; color: var(--tech-cyan);
-  font-size: 12px; font-weight: 500;
-  font-family: var(--font-display);
-  transition: background var(--t-fast) ease, color var(--t-fast) ease;
+/* 二级标签：视觉模型 / 文本解析 */
+.sub-tabs {
+  display: inline-flex; gap: 4px; margin-top: 14px;
+  padding: 3px; border-radius: var(--radius-sm);
+  background: var(--bg-soft); border: 0.6px solid var(--line-soft);
 }
-.reset-btn i { font-size: 14px; }
-.reset-btn:hover { background: rgba(var(--tech-cyan-rgb), 0.1); }
+.sub-tab {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 14px;
+  border-radius: var(--radius-xs);
+  border: none; background: transparent; cursor: pointer;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.2px;
+  color: var(--ink-3); font-family: var(--font-display);
+  transition: background var(--t-fast) ease, color var(--t-fast) ease, box-shadow var(--t-fast) ease;
+}
+.sub-tab i { font-size: 14px; }
+.sub-tab:hover { color: var(--ink); }
+.sub-tab.active {
+  background: var(--bg-card); color: var(--tech-cyan); font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), var(--glow-xs);
+}
 
 .page-title {
   font-size: 20px; font-weight: 600; letter-spacing: 0.3px;

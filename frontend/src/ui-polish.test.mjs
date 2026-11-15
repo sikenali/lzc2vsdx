@@ -333,3 +333,21 @@ test('侧边栏：品牌用项目 Logo（BrandLogo），激活态无竖条', asy
   assert.doesNotMatch(nav, /sidenav-accent/)
   assert.doesNotMatch(nav, /ri-home-4-line/)
 })
+
+test('设置页去掉恢复默认按钮；模型管理改二级标签（视觉模型/文本解析）', async () => {
+  const theme = await read('./components/settings/ThemeSettingsView.vue')
+  const model = await read('./components/settings/ModelSettingsView.vue')
+  // 恢复默认按钮已移除
+  assert.doesNotMatch(theme, /reset-btn/)
+  assert.doesNotMatch(theme, /恢复默认/)
+  assert.doesNotMatch(model, /reset-btn/)
+  assert.doesNotMatch(model, /恢复默认/)
+  // 模型管理：二级标签，点击显示对应设置项
+  assert.match(model, /sub-tabs/)
+  assert.match(model, /视觉模型/)
+  assert.match(model, /文本解析/)
+  assert.match(model, /v-if="tab === 'vision'"/)
+  assert.match(model, /v-else/)
+  assert.match(model, /const tab = ref\('vision'\)/)
+  assert.match(model, /SUB_TABS/)
+})
