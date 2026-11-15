@@ -179,7 +179,7 @@ function switchLayout(layout) {
 .check-badge {
   position: absolute; top: 8px; right: 8px; z-index: 2;
   width: 20px; height: 20px; border-radius: 9999px;
-  background: var(--tech-cyan); color: #0A1628;
+  background: var(--tech-cyan); color: var(--primary-on);
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 12px;
   box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb), 0.5);

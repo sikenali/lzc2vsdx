@@ -39,7 +39,8 @@ test('各调用点使用统一 toast 助手并传类型', async () => {
 test('tokens 提供 primary-fill/on 与体系圆角（Nebula）', async () => {
   const css = await read('./styles/tokens.css')
   assert.match(css, /--primary-fill:/)
-  assert.match(css, /\[data-theme="dark"\][\s\S]*--primary-fill:/)
+  // dark×accent 交叉规则提供完整强调色（深色下强调色切换生效）
+  assert.match(css, /\[data-theme="dark"\]\[data-accent="cyan"\][\s\S]*?--primary-fill:\s*#00F5C8/)
   // §1 圆角体系 xs=4/sm=8/md=12/lg=16/xl=20
   assert.match(css, /--radius-xs:\s*4px/)
   assert.match(css, /--radius-sm:\s*8px/)
@@ -272,12 +273,12 @@ test('AppHeader 恢复返回/设置按钮；Electron 标题栏不再有设置', 
   assert.doesNotMatch(tb, /defineEmits/)
 })
 
-test('BrandLogo 去背景：透明底 + 强调色图标（#3）', async () => {
+test('BrandLogo 项目徽标：电光青圆角底 + 深色图形（匹配 exe 图标，非裸线条）', async () => {
   const logo = await read('./components/BrandLogo.vue')
-  assert.match(logo, /background:\s*transparent/)
-  assert.match(logo, /color:\s*var\(--primary\)/)
+  assert.match(logo, /background:\s*var\(--primary\)/)
+  assert.match(logo, /color:\s*var\(--primary-on\)/)
+  assert.doesNotMatch(logo, /background:\s*transparent/)
   assert.doesNotMatch(logo, /--primary-fill/)
-  assert.doesNotMatch(logo, /--primary-on/)
 })
 
 test('Diagram 预览/骨架 深色适配：无硬编码暖色，全部用 --diagram-* 令牌', async () => {
@@ -398,4 +399,20 @@ test('设置中心三页不再显示各自头部（面包屑/标题/描述）；
   assert.match(model, /视觉模型/)
   assert.match(model, /文本解析/)
   assert.match(model, /v-if="tab === 'vision'"/)
+})
+
+test('强调色切换：5 色板 token 齐全；组件无硬编码强调色（按钮/渐变用 var）', async () => {
+  const css = await read('./styles/tokens.css')
+  // 5 个 accent 色板都定义 --primary + --tech-cyan-rgb（保证切换生效）
+  for (const a of ['cyan', 'gold', 'green', 'blue', 'coral']) {
+    assert.match(css, new RegExp(`\\[data-accent="${a}"\\][\\s\\S]*?--primary:`), `${a} 色板缺 --primary`)
+    assert.match(css, new RegExp(`\\[data-accent="${a}"\\][\\s\\S]*?--tech-cyan-rgb:`), `${a} 色板缺 --tech-cyan-rgb`)
+  }
+  // 组件不再硬编码强调色（主按钮渐变 / 主色上文字色用 token）
+  const model = await read('./components/settings/ModelSettingsView.vue')
+  assert.doesNotMatch(model, /#00D4AA/)
+  assert.match(model, /linear-gradient\(135deg,\s*var\(--primary\),\s*var\(--primary-deep\)\)/)
+  const header = await read('./components/AppHeader.vue')
+  assert.doesNotMatch(header, /#0A1628/)
+  assert.match(header, /color:\s*var\(--primary-on\)/)
 })

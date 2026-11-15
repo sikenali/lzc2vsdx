@@ -187,7 +187,7 @@ function settings() { emit('open-settings') }
 }
 .round-btn:hover {
   background: var(--tech-cyan);
-  color: #0A1628;
+  color: var(--primary-on);
   transform: translateY(-2px);
   box-shadow: 0 4px 14px rgba(var(--tech-cyan-rgb), 0.35);
 }

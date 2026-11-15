@@ -188,7 +188,7 @@ async function generate() {
 .format-badge {
   width: 26px; height: 26px; border-radius: 5px;
   display: inline-flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; color: #0A1628;
+  font-size: 12px; font-weight: 700; color: var(--primary-on);
   font-family: var(--font-mono);
 }
 .format-badge.p { background: rgba(255, 77, 109, 0.85); color: #fff; }

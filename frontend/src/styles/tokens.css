@@ -186,15 +186,15 @@
 /* ── §7 Dark（TechDark 深空科技风）─────────────────────────── */
 [data-theme="dark"] {
   --tech-cyan:  #00F5C8;
-  --tech-cyan-rgb:  0, 245, 200;   /* 随强调色变化 */
+  --tech-cyan-rgb:  0, 245, 200;   /* 随强调色变化（由 §7 下方 [data-theme=dark][data-accent] 覆写） */
   --tech-blue:  #6BB3FF;
   --tech-coral: #FF6B85;
   --tech-gold:  #FFCC66;
 
   --color-primary:       var(--tech-cyan);
-  --color-primary-deep:  #00B89A;
-  --color-primary-soft:  #0A2A25;
-  --color-on-primary:    #0A1628;
+  --color-primary-deep:  var(--primary-deep);   /* 随强调色（dark×accent 提供） */
+  --color-primary-soft:  var(--primary-soft);
+  --color-on-primary:    var(--primary-on);
 
   --primary:      var(--tech-cyan);
   --primary-soft: #0A2A25;

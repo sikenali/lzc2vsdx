@@ -22,9 +22,9 @@ defineProps({
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* 去掉色块背景，仅保留强调色图标（随主题/强调色） */
-  background: transparent;
-  color: var(--primary);
+  /* 项目徽标：电光青圆角底 + 深色图形（匹配 exe 图标 icon.svg，非裸回旋标线条） */
+  background: var(--primary);
+  color: var(--primary-on);
   flex: none;
 }
 </style>

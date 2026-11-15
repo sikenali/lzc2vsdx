@@ -58,9 +58,13 @@ test('tokens 提供深色与强调色变量', async () => {
   const css = await (await import('node:fs/promises')).readFile(new URL('./styles/tokens.css', import.meta.url), 'utf8')
   assert.match(css, /\[data-theme="dark"\]/)
   assert.match(css, /\[data-accent="cyan"\]/)
-  // DESIGN-1：tech-cyan 主强调（深色更亮 #00F5C8）
+  // DESIGN-1：tech-cyan 主强调（浅色 #00D4AA）
   assert.match(css, /--tech-cyan:\s*#00D4AA/)
-  assert.match(css, /\[data-theme="dark"\][\s\S]*--tech-cyan:\s*#00F5C8/)
+  // dark×accent 交叉规则完整提供强调色（保证深色下强调色切换生效）
+  assert.match(css, /\[data-theme="dark"\]\[data-accent="gold"\][\s\S]*?--primary:\s*#FFCC66/)
+  assert.match(css, /\[data-theme="dark"\]\[data-accent="gold"\][\s\S]*?--primary-soft:\s*#1E1508/)
+  // color-primary 别名随强调色（不再固定深青）
+  assert.match(css, /\[data-theme="dark"\][\s\S]*?--color-primary-deep:\s*var\(--primary-deep\)/)
 })
 
 test('模块初始化时按持久化主题应用 data-theme/data-accent（boot 路径）', async () => {
