@@ -117,16 +117,15 @@ test('tokens define glow + transition tokens (§1.4/§11.2)', async () => {
   assert.match(tokens, /--ease-spring:\s*cubic-bezier\(0\.34,\s*1\.56,\s*0\.64,\s*1\)/)
 })
 
-test('header 64px glass + glow divider + slide indicator (§2.1/§2.3)', async () => {
+test('header 64px glass + glow divider；标签无底部指示条（§2.1/§2.3）', async () => {
   const header = await read('./components/AppHeader.vue')
   assert.match(header, /height:\s*64px/)
   assert.match(header, /backdrop-filter/)
   assert.match(header, /blur\(\s*16px\s*\)/)
   // 电光青发光分割线（随强调色 rgba 变体）
   assert.match(header, /rgba\(var\(--tech-cyan-rgb\),\s*0\.25\)/)
-  // 底部滑动指示器
-  assert.match(header, /\.nav-indicator/)
-  assert.match(header, /linear-gradient\(90deg,\s*var\(--tech-cyan\)/)
+  // 激活态用电光青文字标识（无底部滑动指示条）
+  assert.doesNotMatch(header, /\.nav-indicator/)
   assert.match(header, /\.nav-item\.active\s*\{[\s\S]*color:\s*var\(--tech-cyan\)/)
 })
 

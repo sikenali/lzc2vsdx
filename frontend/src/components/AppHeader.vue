@@ -9,14 +9,12 @@
 
     <span class="header-title">{{ subtitle }}</span>
 
-    <!-- §2.3 标签区：底部发光滑条指示器 -->
+    <!-- §2.3 标签区（无底部指示条，激活态用电光青文字标识） -->
     <div class="header-tabs-wrapper">
       <nav class="nav-center" role="navigation" aria-label="主工具导航">
-        <div class="nav-indicator" :style="indicatorStyle"></div>
         <button
-          v-for="(tab, i) in TABS"
+          v-for="tab in TABS"
           :key="tab.key"
-          ref="tabRefs"
           class="nav-item"
           :class="{ active: active === tab.key, [`color-${tab.colorName}`]: true }"
           :aria-current="active === tab.key ? 'page' : undefined"
@@ -34,7 +32,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BrandLogo from './BrandLogo.vue'
 import { useTheme } from '../stores/theme.js'
@@ -52,31 +50,6 @@ const TABS = [
 const active    = computed(() => route.meta.tab || 'text')
 const subtitle  = computed(() => route.meta.subtitle || '文本生成 Visio 图')
 const isSidebar = computed(() => theme.layout === 'sidebar')
-
-// §2.3 底部滑动指示器（发光条跟随激活标签）
-const tabRefs = ref([])
-const indicator = ref({ x: 0, w: 0 })
-const indicatorStyle = computed(() => ({
-  transform: `translateX(${indicator.value.x}px)`,
-  width: `${indicator.value.w}px`,
-}))
-
-function setIndicator(index) {
-  const el = tabRefs.value[index]
-  if (!el) return
-  indicator.value = { x: el.offsetLeft, w: el.offsetWidth }
-}
-
-watch(active, async (val) => {
-  if (!val) return
-  await nextTick()
-  setIndicator(TABS.findIndex(t => t.key === val))
-})
-
-onMounted(async () => {
-  await nextTick()
-  setIndicator(TABS.findIndex(t => t.key === active.value))
-})
 
 function go(path) { router.push(path) }
 </script>
@@ -134,20 +107,11 @@ function go(path) { router.push(path) }
 .app-header.sidebar-mode .header-tabs-wrapper { display: none; }
 .app-header.sidebar-mode .header-title { display: block; }
 
-/* ── §2.3 标签区 + 底部发光滑条 ─────────────────────────────── */
+/* ── §2.3 标签区 ────────────────────────────────────────────── */
 .header-tabs-wrapper { flex: 1; display: flex; justify-content: center; }
 
 .nav-center {
-  display: flex; align-items: center; gap: 4px; position: relative;
-}
-
-.nav-indicator {
-  position: absolute; bottom: -2px; left: 0;
-  height: 2.5px; border-radius: 2px 2px 0 0;
-  background: linear-gradient(90deg, var(--tech-cyan), var(--tech-blue));
-  box-shadow: 0 0 8px rgba(var(--tech-cyan-rgb),0.5), 0 1px 3px rgba(var(--tech-cyan-rgb),0.3);
-  transition: transform var(--t-fast) var(--ease-spring),
-              width     var(--t-fast) var(--ease-spring);
+  display: flex; align-items: center; gap: 4px;
 }
 
 .nav-item {
