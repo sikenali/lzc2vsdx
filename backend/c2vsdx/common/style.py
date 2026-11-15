@@ -3,7 +3,12 @@
 
 所有图表 renderer 共用：字体层级、节点浅色填充、连线箭头/线宽、节点阴影。
 颜色为 RGB 整数（r + g<<8 + b<<16），供 rgb_to_visio() 转 Visio 公式。
+
+健壮性：每个 cell 设置经 _safe_set() 包裹 —— 单个 cell 在用户 Visio 版本上
+不被接受时跳过该样式（不中断渲染），确保 .vsdx 始终能生成。
 """
+import sys
+
 from common.visio_utils import rgb_to_visio
 
 # ---------- 字体 ----------
@@ -53,43 +58,59 @@ SHADOW_ON = "1"
 SHADOW_COLOR = 0xC0C0C0
 
 
-def apply_font(shape, size=SIZE_NODE, color=TEXT, bold=False, font=FONT):
-    """设置形状文字：字体/字号/颜色/粗细。
+def _safe_set(shape, cell, formula):
+    """Set a cell formula; skip on failure (robustness across Visio versions).
 
-    注意：加粗用 Char.Bold（布尔 cell），勿用 Char.Style —— Char.Style 在
-    Visio 中应经 ResultIU + 索引设置，直接设 FormulaU 会触发
-    "Unexpected end of file"（意外的文件尾）导致保存失败。
+    A single rejected cell must not abort the whole diagram render. Failures
+    are reported to stderr so a specific problematic cell can be identified
+    without breaking generation.
     """
-    shape.Cells("Char.Font").FormulaU = f'"{font}"'
-    shape.Cells("Char.Size").FormulaU = f"{size} pt"
-    shape.Cells("Char.Color").FormulaU = rgb_to_visio(color)
-    shape.Cells("Char.Bold").FormulaU = "1" if bold else "0"
+    try:
+        shape.Cells(cell).FormulaU = formula
+    except Exception as e:
+        print(f"[style] 跳过 cell {cell}: {e}", file=sys.stderr)
+
+
+def _safe_text(shape, text):
+    """Set shape text; skip on failure."""
+    try:
+        shape.Text = text
+    except Exception as e:
+        print(f"[style] 跳过文本设置: {e}", file=sys.stderr)
+
+
+def apply_font(shape, size=SIZE_NODE, color=TEXT, bold=False, font=FONT):
+    """设置形状文字：字体/字号/颜色/粗细。"""
+    _safe_set(shape, "Char.Font", f'"{font}"')
+    _safe_set(shape, "Char.Size", f"{size} pt")
+    _safe_set(shape, "Char.Color", rgb_to_visio(color))
+    _safe_set(shape, "Char.Bold", "1" if bold else "0")
 
 
 def apply_fill(shape, fill=FILL_NODE, border=BORDER_NODE, weight=WEIGHT_MAIN):
     """设置节点填充 + 边框色/线宽。"""
-    shape.Cells("FillForegnd").FormulaU = rgb_to_visio(fill)
-    shape.Cells("LineColor").FormulaU = rgb_to_visio(border)
-    shape.Cells("LineWeight").FormulaU = weight
+    _safe_set(shape, "FillForegnd", rgb_to_visio(fill))
+    _safe_set(shape, "LineColor", rgb_to_visio(border))
+    _safe_set(shape, "LineWeight", weight)
 
 
 def apply_shadow(shape):
     """给形状加柔和外阴影。"""
-    shape.Cells("ShadowPattern").FormulaU = SHADOW_ON
-    shape.Cells("ShadowOffsetX").FormulaU = "0.02 in"
-    shape.Cells("ShadowOffsetY").FormulaU = "0.02 in"
-    shape.Cells("ShadowColor").FormulaU = rgb_to_visio(SHADOW_COLOR)
+    _safe_set(shape, "ShadowPattern", SHADOW_ON)
+    _safe_set(shape, "ShadowOffsetX", "0.02 in")
+    _safe_set(shape, "ShadowOffsetY", "0.02 in")
+    _safe_set(shape, "ShadowColor", rgb_to_visio(SHADOW_COLOR))
 
 
 def style_edge(conn, arrow=ARROW_SOLID, color=LINE_DARK, weight=WEIGHT_MAIN,
                label="", size=SIZE_EDGE):
     """设置连线：箭头/颜色/线宽/标签。"""
-    conn.Cells("EndArrow").FormulaU = arrow
-    conn.Cells("LineColor").FormulaU = rgb_to_visio(color)
-    conn.Cells("LineWeight").FormulaU = weight
+    _safe_set(conn, "EndArrow", arrow)
+    _safe_set(conn, "LineColor", rgb_to_visio(color))
+    _safe_set(conn, "LineWeight", weight)
     if label:
-        conn.Text = label
-        conn.Cells("Char.Font").FormulaU = f'"{FONT}"'
-        conn.Cells("Char.Size").FormulaU = f"{size} pt"
-        conn.Cells("Char.Color").FormulaU = rgb_to_visio(TEXT_MUTED)
-        conn.Cells("Para.HorzAlign").FormulaU = "1"
+        _safe_text(conn, label)
+        _safe_set(conn, "Char.Font", f'"{FONT}"')
+        _safe_set(conn, "Char.Size", f"{size} pt")
+        _safe_set(conn, "Char.Color", rgb_to_visio(TEXT_MUTED))
+        _safe_set(conn, "Para.HorzAlign", "1")
